@@ -1,0 +1,51 @@
+Paquetes y clases
+Clases
+	-UsuarioImpl
+		-int id
+		-double money
+		-string correo
+		-string password
+	-ApuestaTipo1 -> Hereda de Apuestas
+		-double apuestasMaximas
+		-int golLocal
+		-int golVisitante
+	-ApuestaTipo2 -> Hereda de Apuestas
+		-double apuestasMaximas
+		-int cantidadGoles
+		-char equipo
+	-ApuestaTipo3 -> Hereda de Apuestas
+		-double apuestasMaximas
+		-char equipo
+	-PartidoImpl
+		-int id
+		-int golLocal
+		-int golVisitante
+		-GregorianCalendar fechaInicio
+		-GregorianCalendar fechaFin
+		-string nombreLocal
+		-string nombreVisitante
+	-IngresoImpl
+		-int id
+		-int cantidad
+		-string descripcion
+		-UsuarioImpl usuario
+
+Clase Abstracta
+	-Apuestas
+		-int id
+		-double cuota
+		-int cantidad
+		-char tipo
+		-GregorianCalendar fechaHora
+		-UsuarioImpl usuario
+		-PartidoImpl partido
+Interfaces
+	-Usuario
+	-Partido
+	-Ingreso
+Gestion
+	-Gestion
+Utilidad
+	-Utilidad
+Main
+	-Main
