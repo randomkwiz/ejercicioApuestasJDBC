@@ -1,8 +1,25 @@
+/*
+ * Estudio de clase
+ * Nombre: Apuesta
+ * Propiedades
+ * 	-Basicas:
+ * 		-entero id
+ * 		-real cuota
+ * 		-entero cantidad
+ * 		-caracter tipo
+ * 		-fecha fechaHora
+ * 		-Usuario usuario
+ * 		-Partido partido
+ * 	-Derivadas
+ * 	-Compartidas
+ *
+ * Metodos de la interfaz
+ * getters y setters
+ * */
 package clases;
-
 import java.util.GregorianCalendar;
 
-public class Apuesta {
+public abstract class Apuesta {
 	
 	private int id;
 	private double cuota;
@@ -11,10 +28,27 @@ public class Apuesta {
 	GregorianCalendar fechaHora;
 	private UsuarioImpl usuario;
 	private PartidoImpl partido;
-	
-	
-	
-	
+
+	public Apuesta(int id, double cuota, int cantidad, char tipo, GregorianCalendar fechaHora, UsuarioImpl usuario, PartidoImpl partido) {
+		this.id = id;
+		this.cuota = cuota;
+		this.cantidad = cantidad;
+		this.tipo = tipo;
+		this.fechaHora = fechaHora;
+		this.usuario = usuario;
+		this.partido = partido;
+	}
+
+	public Apuesta() {
+		this.id = 0;
+		this.cuota = 0.0;
+		this.cantidad = 0;
+		this.tipo = ' ';
+		this.fechaHora = new GregorianCalendar(1990,1,1);
+		this.usuario = new UsuarioImpl();
+		this.partido = new PartidoImpl();
+	}
+
 	//getter y setters
 	public int getId() {
 		return id;
