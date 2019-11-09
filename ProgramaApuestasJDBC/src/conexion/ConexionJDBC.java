@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class ConexionJDBC {
     private String sourceURL = "jdbc:sqlserver://localhost";
-    private String usuario = "angela";
+    private String usuario = "apuestas";
     private String password = "apuestas";
 
     /*
@@ -22,6 +22,14 @@ public class ConexionJDBC {
         Connection conexionBD = null;
         try{
             conexionBD = DriverManager.getConnection(sourceURL, usuario, password);
+            /*
+            //Los buenos tests
+            if(!conexionBD.isClosed()){
+                System.out.println("La conexion se abrio");
+            }else{
+                System.out.println("La conexion no se abrio");
+            }
+             */
         }catch (SQLException e){
             e.getStackTrace();
         }
