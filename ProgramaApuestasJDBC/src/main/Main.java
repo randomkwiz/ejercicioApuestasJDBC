@@ -51,6 +51,7 @@ public class Main {
         int opcionLoginOrCreateNewAccount ;
         Validar validar = new Validar();
         UsuarioImpl usuarioLogado;
+        int opcionMenu ;
         GestionUsuarios gestionUsuarios = new GestionUsuarios();
 
 
@@ -68,10 +69,60 @@ public class Main {
                         gestionUsuarios.obtenerObjetoUsuarioCompleto(usuarioLogado);
                         if(usuarioLogado.isAdmin()){
                             //si es admin
-                            System.out.println("Eres admin!");
+                            //System.out.println("Eres admin!");
+                            opcionMenu = validar.pedirValidarMenuAdministrador();
                         }else{
                             //no es admin
-                            System.out.println("No eres admin!");
+                            //System.out.println("No eres admin!");
+                            opcionMenu = validar.pedirValidarMenuUsuarioEstandar();
+                        }
+
+                        switch (opcionMenu){
+                            case 1:
+                                //1: realizar apuesta
+                                System.out.println("Opcion 1. En construcción.");
+                                break;
+                            case 2:
+                                //2: ver los partidos disponibles para apostar
+                                System.out.println("Opcion 2. En construcción.");
+                                break;
+                            case 3:
+                                //3: comprobar el resultado de una apuesta anterior
+                                System.out.println("Opcion 3. En construcción.");
+                                break;
+                            case 4:
+                                //4: hacer un ingreso en cuenta
+                                System.out.println("Opcion 4. En construcción.");
+                                break;
+                            case 5:
+                                //5: hacer una retirada de dinero
+                                System.out.println("Opcion 5. En construcción.");
+                                break;
+                            case 6:
+                                //6: ver movimientos de la cuenta incluyendo apuestas realizadas y apuestas ganadas
+                                System.out.println("Opcion 6. En construcción.");
+                                break;
+                            case 7:
+                                //aqui empiezan las opciones de admin
+                                //7: crear un nuevo partido
+                                System.out.println("Opcion 7. En construcción.");
+                                break;
+                            case 8:
+                                //8: abrir un partido para que acepte apuestas
+                                System.out.println("Opcion 8. En construcción.");
+                                break;
+                            case 9:
+                                //9: cerrar un partido para que no se pueda apostar
+                                System.out.println("Opcion 9. En construcción.");
+                                break;
+                            case 10:
+                                //10: consultar las apuestas de un partido, indicando la cantidad de dinero apostado a cada posible resultado
+                                System.out.println("Opcion 10. En construcción.");
+                                break;
+                            case 11:
+                                //11: pagar las apuestas ganadoras de un partido finalizado
+                                System.out.println("Opcion 11. En construcción.");
+                                break;
                         }
                         break;
                     case 2:
