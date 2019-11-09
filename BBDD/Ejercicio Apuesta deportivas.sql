@@ -15,7 +15,8 @@ CREATE TABLE Usuarios(
 		constraint ck_Usuarios_saldo check(saldo >= 0),
 	correo varchar(30) null,
 		constraint ck_Usuarios_correo check(correo LIKE '%@%'),
-	contraseña varchar(25) not null
+	contraseña varchar(25) not null,
+	isAdmin bit not null
 )
 
 CREATE TABLE Partidos(
