@@ -21,18 +21,21 @@ public class UsuarioImpl implements Usuario {
     private double cantidadActualDinero;
     private String correo;
     private String password;
+    private boolean isAdmin;
 
-    public UsuarioImpl(int id, double cantidadActualDinero, String correo, String password) {
+    public UsuarioImpl(int id, double cantidadActualDinero, String correo, String password, boolean isAdmin) {
         this.id = id;
         this.cantidadActualDinero = cantidadActualDinero;
         this.correo = correo;
         this.password = password;
+        this.isAdmin = isAdmin;
     }
     public UsuarioImpl(){
         this.id = 0;
         this.cantidadActualDinero = 0;
         this.correo = " ";
         this.password = " ";
+        this.isAdmin = false;
     }
 
     //Getters y setters
@@ -66,5 +69,13 @@ public class UsuarioImpl implements Usuario {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
     }
 }
