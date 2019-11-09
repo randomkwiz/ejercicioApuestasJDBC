@@ -137,4 +137,50 @@ public class Validar {
         return exito;
     }
 
+    /*
+    * MENU USUARIO ESTANDAR
+    * */
+    public int pedirValidarMenuUsuarioEstandar(){
+        Scanner sc = new Scanner(System.in);
+        int opcion = -1;
+        do{
+            pintarMenuUsuario();
+            opcion = sc.nextInt();
+        }while (opcion < 0 || opcion >6);
+
+        return opcion;
+    }
+
+    /*
+     * MENU USUARIO ADMINISTRADOR
+     * */
+    public int pedirValidarMenuAdministrador(){
+        Scanner sc = new Scanner(System.in);
+        int opcion = -1;
+        do{
+            pintarMenuUsuario();
+            pintarOpcionesAdministrador();
+            opcion = sc.nextInt();
+        }while (opcion < 0 || opcion >11);
+
+        return opcion;
+    }
+
+    private void pintarMenuUsuario(){
+        System.out.println("0. Salir");
+        System.out.println("1. Realizar apuesta");
+        System.out.println("2. Ver los partidos disponibles para apostar");
+        System.out.println("3. Comprobar el resultado de una apuesta anterior");
+        System.out.println("4. Hacer un ingreso en la cuenta");
+        System.out.println("5. Hacer una retirada de dinero");
+        System.out.println("6. Ver movimientos de la cuenta");
+    }
+
+    private void pintarOpcionesAdministrador(){
+        System.out.println("7. Crear un nuevo partido");
+        System.out.println("8. Abrir un partido para que acepte apuestas");
+        System.out.println("9. Cerrar un partido para que no se pueda apostar");
+        System.out.println("10. Consultar las apuestas de un partido");
+        System.out.println("11. Pagar las apuestas ganadoras de un partido finalizado");
+    }
 }
