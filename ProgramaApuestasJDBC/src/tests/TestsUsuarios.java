@@ -21,7 +21,7 @@ public class TestsUsuarios {
         gestionUsuarios.obtenerObjetoUsuarioCompleto(usuario);
         System.out.println("Exito al obtener usuario completo: " + gestionUsuarios.obtenerObjetoUsuarioCompleto(usuario) );
 
-        System.out.println("Antes de obtener los datos");
+        System.out.println("Despues de obtener los datos");
         System.out.println("Correo usuario: " + usuario.getCorreo());
         System.out.println("Contraseña usuario: " + usuario.getPassword());
         System.out.println("ID usuario: " + usuario.getId());
