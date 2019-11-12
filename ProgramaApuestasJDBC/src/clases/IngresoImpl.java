@@ -48,7 +48,7 @@ public class IngresoImpl implements Ingreso {
         return cantidad;
     }
 
-    public void setCantidad(int cantidad) {
+    public void setCantidad(double cantidad) {
         this.cantidad = cantidad;
     }
 
