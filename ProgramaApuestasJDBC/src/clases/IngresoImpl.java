@@ -17,11 +17,11 @@ package clases;
 import interfaces.Ingreso;
 public class IngresoImpl implements Ingreso {
     private int id;
-    private int cantidad;
+    private double cantidad;    //he cambiado esto que era un int y debe ser double
     private String descripcion;
     private UsuarioImpl usuario;
 
-    public IngresoImpl(int id, int cantidad, String descripcion, UsuarioImpl usuario) {
+    public IngresoImpl(int id, double cantidad, String descripcion, UsuarioImpl usuario) {
         this.id = id;
         this.cantidad = cantidad;
         this.descripcion = descripcion;
@@ -44,11 +44,11 @@ public class IngresoImpl implements Ingreso {
         this.id = id;
     }
 
-    public int getCantidad() {
+    public double getCantidad() {
         return cantidad;
     }
 
-    public void setCantidad(int cantidad) {
+    public void setCantidad(double cantidad) {
         this.cantidad = cantidad;
     }
 
