@@ -18,7 +18,6 @@ public class TestsUsuarios {
         System.out.println("Saldo usuario: " + usuario.getCantidadActualDinero());
         System.out.println("isAdmin: " + usuario.isAdmin());
 
-        gestionUsuarios.obtenerObjetoUsuarioCompleto(usuario);
         System.out.println("Exito al obtener usuario completo: " + gestionUsuarios.obtenerObjetoUsuarioCompleto(usuario) );
 
         System.out.println("Despues de obtener los datos");
