@@ -102,7 +102,8 @@
                     }
 
                 } while (!isValidUser(correo, password));
-            } catch (InputMismatchException e) {
+                
+            } catch (Exception e) {
                 System.out.println("Introduce un formato valido");
                 usuario = pedirValidarCredenciales();
             }

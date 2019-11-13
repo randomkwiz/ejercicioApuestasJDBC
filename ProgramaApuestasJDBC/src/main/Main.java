@@ -42,8 +42,11 @@ fin
 * */
 package main;
 
+import java.sql.CallableStatement;
+
 import clases.IngresoImpl;
 import clases.UsuarioImpl;
+import gestion.GestionPartidos;
 import gestion.GestionSaldo;
 import gestion.GestionUsuarios;
 import validacion.Validar;
@@ -58,6 +61,7 @@ public class Main {
         int opcionMenu ;
         GestionUsuarios gestionUsuarios = new GestionUsuarios();
         GestionSaldo gestionSaldo = new GestionSaldo();
+        GestionPartidos gestionPartidos=new GestionPartidos();
 
 
         do{
@@ -90,6 +94,7 @@ public class Main {
                                     break;
                                 case 2:
                                     //2: ver los partidos disponibles para apostar
+                                	gestionPartidos.VerPartidosDisponibles();
                                     System.out.println("Opcion 2. En construcción.");
                                     break;
                                 case 3:
