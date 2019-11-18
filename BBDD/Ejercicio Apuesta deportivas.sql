@@ -22,6 +22,9 @@ CREATE TABLE Usuarios(
 CREATE TABLE Partidos(
 	id smallint identity not null constraint pk_id_partidos primary key,
 	--------------------------------------------------------------------------
+	isPeriodoApuestasAbierto bit not null,	
+	--si es 0 NO esta abierto, si es 1 SI esta abierto
+
 	golLocal tinyint not null
 		constraint ck_partidos_golLocal check (golLocal >= 0),
 	golVisitante tinyint not null

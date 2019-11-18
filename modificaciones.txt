@@ -1,0 +1,7 @@
+Modificaciones:
+	-Dice Leo que añadamos una columna sobre si el periodo de apuestas esta abierto para
+		un partido o no
+	Falta modificar el trigger que deja o no deja apostar, haciendo que consulte 
+	la columna nueva esa
+
+	-Así ya puedes hacer el case 8 y 9
