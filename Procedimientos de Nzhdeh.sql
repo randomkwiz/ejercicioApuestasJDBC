@@ -10,7 +10,7 @@ set dateformat 'ymd'
 go
 create procedure PartidosDisponibles as
 begin
-	select * from Partidos
+	select nombreLocal,nombreVisitante,fechaInicio from Partidos
 	where GETDATE() between DATEADD(day, -2, fechaInicio) and DATEADD(minute, -10, fechaFin)
 end
 go
