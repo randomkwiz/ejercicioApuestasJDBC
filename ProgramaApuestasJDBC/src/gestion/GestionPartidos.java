@@ -121,7 +121,7 @@ public class GestionPartidos
 			//Ejecuto
 			resultSet = preparedStatement.executeQuery();
 
-			if (resultSet.next()) {
+			while (resultSet.next()) {
 				partido = new PartidoImpl();
 				fechaInicio = new GregorianCalendar();
 				fechaFin = new GregorianCalendar();
