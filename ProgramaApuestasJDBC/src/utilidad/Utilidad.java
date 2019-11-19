@@ -12,7 +12,7 @@ public class Utilidad {
      * Precondiciones:
      * Entradas: objeto de tipo GregorianCalendar
      * Salidas: String con la fecha formateada
-     * Postcondiciones: Asociado al nombre se devuelve un String con la fecha formateada bajo patron "dd/MM/yyyy HH:mm:s",
+     * Postcondiciones: Asociado al nombre se devuelve un String con la fecha formateada bajo patron "dd/MM/yyyy HH:mm:ss",
      *                   o bien una cadena vacia si hay algun error o el objeto GregorianCalendar de entrada es null.
      * */
 
@@ -21,7 +21,7 @@ public class Utilidad {
      * de forma "dd/MM/yyyy"
      *
      * @param fecha fecha a formatear
-     * @return Asociado al nombre se devuelve un String con la fecha formateada bajo patron "dd/MM/yyyy HH:mm:s",
+     * @return Asociado al nombre se devuelve un String con la fecha formateada bajo patron "dd/MM/yyyy HH:mm:ss",
      * o bien una cadena vacia si hay algun error o el objeto GregorianCalendar de entrada es null.
      */
     public String formatearFecha(GregorianCalendar fecha) {
