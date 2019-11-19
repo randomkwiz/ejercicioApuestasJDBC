@@ -328,7 +328,7 @@
                         System.out.println("Partido Nº: ");
                         opcion = sc.nextInt() - 1;   //porque las opciones empiezan en 1
                     } while (opcion < 0 || opcion >= listadoPartidos.size());
-                    partido = listadoPartidos.get(opcion-1);
+                    partido = listadoPartidos.get(opcion);
                 }catch (InputMismatchException e){
                 partido = pedirValidarPartidoDeUnaLista(listadoPartidos);
             }
