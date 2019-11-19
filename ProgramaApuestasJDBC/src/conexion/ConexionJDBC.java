@@ -24,7 +24,7 @@ public class ConexionJDBC {
             conexionBD = DriverManager.getConnection(sourceURL, usuario, password);
 
             //Los buenos tests
-            /*
+/*
             if(!conexionBD.isClosed()){
                 System.out.println("La conexion se abrio");
             }else{
@@ -55,7 +55,7 @@ public class ConexionJDBC {
                 exito = true;
             }
             //Los buenos tests
-            /*
+/*
             if(conexion.isClosed()){
                 System.out.println("La conexion se cerro");
             }else{
