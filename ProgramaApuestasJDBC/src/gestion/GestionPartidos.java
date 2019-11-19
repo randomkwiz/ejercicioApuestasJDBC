@@ -15,9 +15,21 @@ import conexion.ConexionJDBC;
 
 public class GestionPartidos 
 {
+	/*
+	prototipo: public void VerPartidosDisponibles()
+	comentarios: este método nos muestra los partidos disponibles para apostar
+					se puede apostra si la fecha de la apuesta está entre dos 
+					días antes de la fecha del partido y diez minutos antes del final del partido
+	precondiciones: no hay
+	entradas: no hay
+	salidas: no hay
+	entradas/salidas: no hay 
+	postcondiciones: no hya, solo muestra una lista de los partidos en los que se puede apostar
+	*/
+	
 	public void VerPartidosDisponibles() 
 	{
-		
+		 //ArrayList<PartidoImpl> partidosQueSePuedeApostar =new ArrayList<>(); 
 		 ConexionJDBC conexionJDBC = new ConexionJDBC();
 	     Connection connection = conexionJDBC.getConnection();
 	     ResultSet rs=null;
@@ -28,7 +40,7 @@ public class GestionPartidos
 			
 			rs=cst.getResultSet();
 			
-			if(rs.next()) {
+			while(rs.next()) {
 				cst.registerOutParameter(1, java.sql.Types.VARCHAR);
 				cst.registerOutParameter(2, java.sql.Types.VARCHAR);
 				cst.registerOutParameter(3, java.sql.Types.DATE);
@@ -37,9 +49,11 @@ public class GestionPartidos
 				String nombreVisitante = cst.getString(2);
 				Date fechaIni = cst.getDate(3); 
 
+				System.out.println("Local: "+nombreLocal+" Visitante: "+nombreVisitante+" Fecha del Partido"+fechaIni);
 			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+		} 
+	    catch (SQLException e) 
+	    {
 			e.printStackTrace();
 		}
 		//System.out.println("En resguardo");
