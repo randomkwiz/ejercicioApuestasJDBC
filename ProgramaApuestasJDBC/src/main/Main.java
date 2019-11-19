@@ -45,6 +45,7 @@ package main;
 import java.sql.CallableStatement;
 
 import clases.IngresoImpl;
+import clases.PartidoImpl;
 import clases.UsuarioImpl;
 import gestion.GestionPartidos;
 import gestion.GestionSaldo;
@@ -57,7 +58,7 @@ public class Main {
         Validar validar = new Validar();
         UsuarioImpl usuarioLogado;
         IngresoImpl movimientoSaldo;
-
+        PartidoImpl partidoElegido = null;
         int opcionMenu ;
         GestionUsuarios gestionUsuarios = new GestionUsuarios();
         GestionSaldo gestionSaldo = new GestionSaldo();
@@ -76,17 +77,18 @@ public class Main {
                         //puede iniciar sesion como admin o como user estandar
                         usuarioLogado = validar.pedirValidarCredenciales();
                         gestionUsuarios.obtenerObjetoUsuarioCompleto(usuarioLogado);
-                        if(usuarioLogado.isAdmin()){
-                            //si es admin
-                            //System.out.println("Eres admin!");
-                            opcionMenu = validar.pedirValidarMenuAdministrador();
-                        }else{
-                            //no es admin
-                            //System.out.println("No eres admin!");
-                            opcionMenu = validar.pedirValidarMenuUsuarioEstandar();
-                        }
-
                         do {
+                            if(usuarioLogado.isAdmin()){
+                                //si es admin
+                                //System.out.println("Eres admin!");
+                                opcionMenu = validar.pedirValidarMenuAdministrador();
+                            }else{
+                                //no es admin
+                                //System.out.println("No eres admin!");
+                                opcionMenu = validar.pedirValidarMenuUsuarioEstandar();
+                            }
+
+
                             switch (opcionMenu) {
                                 case 1:
                                     //1: realizar apuesta
@@ -133,11 +135,21 @@ public class Main {
                                     break;
                                 case 8:
                                     //8: abrir un partido para que acepte apuestas
-                                    System.out.println("Opcion 8. En construcción.");
+
+                                    System.out.println("Abrir un partido para que acepte apuestas.");
+
+                                    partidoElegido = validar.pedirValidarPartidoDeUnaLista(gestionPartidos.obtenerListadoPartidos());
+                                    if(partidoElegido != null){
+                                        gestionPartidos.modificarAperturaPeriodoApuestasDePartido(partidoElegido,true);
+                                    }
                                     break;
                                 case 9:
                                     //9: cerrar un partido para que no se pueda apostar
-                                    System.out.println("Opcion 9. En construcción.");
+                                    System.out.println("Cerrar un partido para que no se pueda apostar.");
+                                    partidoElegido = validar.pedirValidarPartidoDeUnaLista(gestionPartidos.obtenerListadoPartidos());
+                                    if(partidoElegido != null){
+                                        gestionPartidos.modificarAperturaPeriodoApuestasDePartido(partidoElegido,false);
+                                    }
                                     break;
                                 case 10:
                                     //10: consultar las apuestas de un partido, indicando la cantidad de dinero apostado a cada posible resultado
