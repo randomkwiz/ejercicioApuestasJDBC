@@ -1,14 +1,17 @@
     package validacion;
 
     import clases.IngresoImpl;
+    import clases.PartidoImpl;
     import clases.UsuarioImpl;
     import conexion.ConexionJDBC;
+    import utilidad.Utilidad;
 
     import java.io.Console;
     import java.sql.Connection;
     import java.sql.PreparedStatement;
     import java.sql.ResultSet;
     import java.sql.SQLException;
+    import java.util.ArrayList;
     import java.util.InputMismatchException;
     import java.util.Scanner;
 
@@ -92,10 +95,10 @@
                 do {
 
                     System.out.println("Introduce tu correo electrónico: ");
-                    correo = sc.next();
+                    correo = sc.nextLine();
                     System.out.println("Introduce tu contraseña: ");
                     if (console == null) {
-                        password = sc.next();
+                        password = sc.nextLine();
                     } else {
                         pw = console.readPassword();   //con esto hacemos que no se vea en pantalla al escribir
                         password = String.valueOf(pw);
@@ -104,6 +107,7 @@
                 } while (!isValidUser(correo, password));
                 
             } catch (Exception e) {
+                e.printStackTrace();
                 System.out.println("Introduce un formato valido");
                 usuario = pedirValidarCredenciales();
             }
@@ -299,5 +303,70 @@
                 estaSeguro = pedirValidarEstaSeguroDeseaRealizarMovimiento(movimiento);
             }
             return estaSeguro;
+        }
+
+
+        /*Signatura:public PartidoImpl pedirValidarPartidoDeUnaLista(ArrayList<PartidoImpl> listadoPartidos)
+        * Comentario:
+        *   A partir de una lista de partidos, los muestra en pantalla y pide al usuario
+        *   que escoja uno de ellos. Devuelve el partido seleccionado.
+        * Precondiciones:
+        * Entradas: lista de partidos
+        * Salidas: partido seleccionado
+        * Postcondiciones: Si no hay partidos en la lista recibida, se mostrará un mensaje acorde a la situación.
+        *                   y se devolverá null.
+        *                  Si sí hay partidos, se devolverá el partido seleccionado.
+        * */
+        public PartidoImpl pedirValidarPartidoDeUnaLista(ArrayList<PartidoImpl> listadoPartidos){
+            int opcion = 0;
+            Scanner sc = new Scanner(System.in);
+            PartidoImpl partido = null;
+            if(listadoPartidos.size() > 0){
+                try {
+                    do {
+                        mostrarPartidosComoUnMenu(listadoPartidos);
+                        System.out.println("Partido Nº: ");
+                        opcion = sc.nextInt() - 1;   //porque las opciones empiezan en 1
+                    } while (opcion < 0 || opcion >= listadoPartidos.size());
+                    partido = listadoPartidos.get(opcion-1);
+                }catch (InputMismatchException e){
+                partido = pedirValidarPartidoDeUnaLista(listadoPartidos);
+            }
+            }else{
+                System.out.println("No existen partidos disponibles");
+            }
+            return partido;
+        }
+
+    /*Signatura:
+    Comentario: muestra en pantalla un listado de partidos como un menu con todos los datos de los partidos.
+    * */
+        private void mostrarPartidosComoUnMenu(ArrayList<PartidoImpl> listadoPartidos){
+            Utilidad utilidad = new Utilidad();
+            if(listadoPartidos.size() > 0){
+                for(int i = 0; i < listadoPartidos.size(); i ++){
+                    System.out.println("Partido Nº: " + (i+1));
+                    System.out.println("Equipo local: ");
+                    System.out.println(listadoPartidos.get(i).getNombreLocal());
+                    System.out.println("Goles local: ");
+                    System.out.println(listadoPartidos.get(i).getGolesLocal());
+                    System.out.println("Equipo visitante: ");
+                    System.out.println(listadoPartidos.get(i).getNombreVisitante());
+                    System.out.println("Goles visitante: ");
+                    System.out.println(listadoPartidos.get(i).getGolesVisitante());
+                    System.out.println("Fecha inicio: ");
+                    System.out.println(utilidad.formatearFecha(listadoPartidos.get(i).getFechaInicio()));
+                    System.out.println("Fecha fin: ");
+                    System.out.println(utilidad.formatearFecha(listadoPartidos.get(i).getFechaFin()));
+                    System.out.print("Periodo de apuestas: ");
+                    if(listadoPartidos.get(i).isPeriodoApuestasAbierto()){
+                        System.out.println("Abierto");
+                    }else{
+                        System.out.println("Cerrado");
+                    }
+                    System.out.println("------------------------------------------");
+                }
+            }
+
         }
     }
