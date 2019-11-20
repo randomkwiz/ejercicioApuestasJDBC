@@ -1,0 +1,27 @@
+package gestion;
+
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import conexion.ConexionJDBC;
+
+public class GestionPartidos 
+{
+	public void VerPartidosDisponibles() 
+	{
+		 ConexionJDBC conexionJDBC = new ConexionJDBC();
+	     Connection connection = conexionJDBC.getConnection();
+	     
+	     try 
+	     {
+			CallableStatement cst = connection.prepareCall("{call PartidosDisponibles}");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//System.out.println("En resguardo");
+	}
+}

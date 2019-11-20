@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="java.sql.CallableStatement"/>
+<fullyQualifiedTypeName name="conexion.ConexionJDBC"/>
+<fullyQualifiedTypeName name="gestion.GestionPartidos"/>
+<fullyQualifiedTypeName name="java.util.Date"/>
+<fullyQualifiedTypeName name="java.util.GregorianCalendar"/>
+<fullyQualifiedTypeName name="clases.PartidoImpl"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="clases.IngresoImpl"/>
+<fullyQualifiedTypeName name="clases.UsuarioImpl"/>
+<fullyQualifiedTypeName name="gestion.GestionUsuarios"/>
+</qualifiedTypeNameHistroy>

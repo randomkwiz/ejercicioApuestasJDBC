@@ -1,0 +1,60 @@
+package gestion;
+
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.GregorianCalendar;
+
+import clases.PartidoImpl;
+import conexion.ConexionJDBC;
+
+public class GestionPartidos 
+{
+	/*
+	prototipo: public void VerPartidosDisponibles()
+	comentarios: este método nos muestra los partidos disponibles para apostar
+					se puede apostra si la fecha de la apuesta está entre dos 
+					días antes de la fecha del partido y diez minutos antes del final del partido
+	precondiciones: no hay
+	entradas: no hay
+	salidas: no hay
+	entradas/salidas: no hay 
+	postcondiciones: no hya, solo muestra una lista de los partidos en los que se puede apostar
+	*/
+	
+	public void VerPartidosDisponibles() 
+	{
+		 //ArrayList<PartidoImpl> partidosQueSePuedeApostar =new ArrayList<>(); 
+		 ConexionJDBC conexionJDBC = new ConexionJDBC();
+	     Connection connection = conexionJDBC.getConnection();
+	     ResultSet rs=null;
+	     try 
+	     {
+			CallableStatement cst = connection.prepareCall("{call PartidosDisponibles}");
+			cst.execute();
+			
+			rs=cst.getResultSet();
+			
+			if(rs.next()) {
+				cst.registerOutParameter(1, java.sql.Types.VARCHAR);
+				cst.registerOutParameter(2, java.sql.Types.VARCHAR);
+				cst.registerOutParameter(3, java.sql.Types.DATE);
+				
+				String nombreLocal = cst.getString(1);
+				String nombreVisitante = cst.getString(2);
+				Date fechaIni = cst.getDate(3); 
+
+				System.out.println("Local: "+nombreLocal+" Visitante: "+nombreVisitante+" Fecha del Partido"+fechaIni);
+			}
+		} 
+	    catch (SQLException e) 
+	    {
+			e.printStackTrace();
+		}
+		//System.out.println("En resguardo");
+	}
+}
