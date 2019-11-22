@@ -15,14 +15,15 @@ CREATE TABLE Usuarios(
 		constraint ck_Usuarios_saldo check(saldo >= 0),
 	correo varchar(30) null,
 		constraint ck_Usuarios_correo check(correo LIKE '%@%'),
+		constraint UQ_Correo unique(correo),--añadido por Nzhdeh
 	contraseña varchar(25) not null,
-	isAdmin bit not null
+	isAdmin bit not null--añadodo por Angela
 )
 
 CREATE TABLE Partidos(
 	id smallint identity not null constraint pk_id_partidos primary key,
 	--------------------------------------------------------------------------
-	isPeriodoApuestasAbierto bit not null,	
+	isPeriodoApuestasAbierto bit not null,	--añadido por Angela
 	--si es 0 NO esta abierto, si es 1 SI esta abierto
 
 	golLocal tinyint not null

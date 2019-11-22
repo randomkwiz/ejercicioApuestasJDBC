@@ -58,4 +58,49 @@ public class GestionUsuarios {
         }
         return exito;
     }
+	
+	 /*
+	prototipo: public UsuarioImpl ObtenerUsuarioPorId(int idUsuario)  
+	comentarios: sirve para obtener un usuario seguin una id dada
+	precondiciones: id correcto
+	entradas: entero idUsuario
+	salidas: objeto usuario
+	entradas/salidas: no hay 
+	postcondiciones: AN devuelve un objeto usuario
+	*/
+	
+	public UsuarioImpl ObtenerUsuarioPorId(int idUsuario) 
+	{
+		ConexionJDBC conexionJDBC = new ConexionJDBC();
+		Connection connection = conexionJDBC.getConnection();
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		UsuarioImpl usuario = null;
+
+		String miSelect = "select * from Usuarios where id=idUsuario";//preguntar
+		try {
+			//Preparo el statement
+			preparedStatement = connection.prepareStatement(miSelect);
+			//Ejecuto
+			resultSet = preparedStatement.executeQuery();
+
+			while (resultSet.next()) 
+			{
+				usuario = new UsuarioImpl();
+				
+				usuario.setId(resultSet.getInt("id"));
+                usuario.setCantidadActualDinero(resultSet.getDouble("saldo"));
+                usuario.setCorreo(resultSet.getString("correo"));
+                usuario.setPassword(resultSet.getString("contraseña"));
+                usuario.setAdmin(resultSet.getBoolean("isAdmin"));
+			}
+
+
+			preparedStatement.close();
+			conexionJDBC.closeConnection(connection);
+		}catch (SQLException e){
+			e.getStackTrace();
+		}
+		return usuario;
+	}
 }
