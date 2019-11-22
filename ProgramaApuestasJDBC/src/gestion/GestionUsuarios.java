@@ -77,10 +77,11 @@ public class GestionUsuarios {
 		ResultSet resultSet = null;
 		UsuarioImpl usuario = null;
 
-		String miSelect = "select * from Usuarios where id=idUsuario";//preguntar
+		String miSelect = "select * from Usuarios where id= ?";//preguntar
 		try {
 			//Preparo el statement
 			preparedStatement = connection.prepareStatement(miSelect);
+			preparedStatement.setInt(1,idUsuario);
 			//Ejecuto
 			resultSet = preparedStatement.executeQuery();
 

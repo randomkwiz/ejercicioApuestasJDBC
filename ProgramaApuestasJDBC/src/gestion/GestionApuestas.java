@@ -1,6 +1,18 @@
 package gestion;
 
+import clases.Apuesta;
+import clases.ApuestaTipo1;
+import clases.ApuestaTipo2;
+import clases.ApuestaTipo3;
+import conexion.ConexionJDBC;
+import validacion.Validar;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class GestionApuestas {
 
@@ -13,14 +25,14 @@ public class GestionApuestas {
      * Entradas:
      * Salidas:
      * Estrada/Salidas:
-     * Postcondiciones:*/
+     * Postcondiciones:
     public void menuTiposApuestas(){ //debe ir en validaciones
         Scanner sc = new Scanner(System.in);
         int opcion = -1;
 
         int opcionTipoApuesta = pedirValidarMenuTiposApuestas();
-            /*TODO: falta método para pedir los datos a insertar al usuario, que incluirán
-                todos los datos correspondientes a la elección del usuario*/
+            //TODO: falta método para pedir los datos a insertar al usuario, que incluirán
+              //  todos los datos correspondientes a la elección del usuario
         Validar objValidar = new Validar();
         //PedirValidarTipoApuesta
 
@@ -45,7 +57,7 @@ public class GestionApuestas {
                 break;
         }
     }
-
+*/
     //TODO: Error en menú, revisar
 
     public int pedirValidarMenuTiposApuestas(){
@@ -97,7 +109,7 @@ public class GestionApuestas {
                 preparedStatement.setInt(1, apuesta.getId());
                 preparedStatement.setDouble(2, apuesta.getCuota());
                 preparedStatement.setInt(3, apuesta.getCantidad());
-                preparedStatement.setDate(4, apuesta.getFechaHora());
+            //    preparedStatement.setDate(4, apuesta.getFechaHora());
                 preparedStatement.setInt(5, apuesta.getUsuario().getId()); //usuario implementado
                 preparedStatement.setInt(6, apuesta.getPartido().getId()); //usuario implementado
             }

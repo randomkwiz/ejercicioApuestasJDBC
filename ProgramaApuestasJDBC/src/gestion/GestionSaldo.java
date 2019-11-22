@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class GestionSaldo {
     /*
@@ -87,7 +88,7 @@ public class GestionSaldo {
 				ingreso.setId(resultSet.getInt("id"));
 				ingreso.setCantidad(resultSet.getInt("cantidad"));
 				ingreso.setDescripcion(resultSet.getString("descripcion"));
-				usuario=gu.ObtenerUsuario(idUsuario);
+				usuario=gu.ObtenerUsuarioPorId(idUsuario);
 				ingreso.setUsuario(usuario);
 
 				listadoIngresos.add(ingreso);
