@@ -370,6 +370,8 @@
 
         }
 
+/*-------------------------------------------------------*/
+
         //VALIDACIONES DIANA
         //Validaciones Ejercicio1: realizar Apuesta
 

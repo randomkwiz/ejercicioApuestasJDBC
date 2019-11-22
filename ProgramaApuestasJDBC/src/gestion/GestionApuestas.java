@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 public class GestionApuestas {
 
+    //TODO revisar
+
     /*
      * Signatura: public void realizarApuestaTipo1
      * Comentario: método que inserta datos en tabla
