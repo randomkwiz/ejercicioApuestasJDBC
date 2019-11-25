@@ -1,6 +1,5 @@
 package gestion;
 
-import clases.IngresoImpl;
 import clases.UsuarioImpl;
 import conexion.ConexionJDBC;
 
@@ -8,7 +7,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 public class GestionUsuarios {
 
@@ -60,9 +58,9 @@ public class GestionUsuarios {
         }
         return exito;
     }
-    
-    /*
-	prototipo: public UsuarioImpl ObtenerUsuario(int idUsuario)  
+	
+	 /*
+	prototipo: public UsuarioImpl ObtenerUsuarioPorId(int idUsuario)  
 	comentarios: sirve para obtener un usuario seguin una id dada
 	precondiciones: id correcto
 	entradas: entero idUsuario
@@ -71,7 +69,7 @@ public class GestionUsuarios {
 	postcondiciones: AN devuelve un objeto usuario
 	*/
 	
-	public UsuarioImpl ObtenerUsuario(int idUsuario) 
+	public UsuarioImpl ObtenerUsuarioPorId(int idUsuario) 
 	{
 		ConexionJDBC conexionJDBC = new ConexionJDBC();
 		Connection connection = conexionJDBC.getConnection();
@@ -79,10 +77,11 @@ public class GestionUsuarios {
 		ResultSet resultSet = null;
 		UsuarioImpl usuario = null;
 
-		String miSelect = "select * from Usuarios where id=idUsuario";//preguntar
+		String miSelect = "select * from Usuarios where id= ?";//preguntar
 		try {
 			//Preparo el statement
 			preparedStatement = connection.prepareStatement(miSelect);
+			preparedStatement.setInt(1,idUsuario);
 			//Ejecuto
 			resultSet = preparedStatement.executeQuery();
 
@@ -93,7 +92,7 @@ public class GestionUsuarios {
 				usuario.setId(resultSet.getInt("id"));
                 usuario.setCantidadActualDinero(resultSet.getDouble("saldo"));
                 usuario.setCorreo(resultSet.getString("correo"));
-                usuario.setPassword(resultSet.getString("contraseña"));
+                usuario.setPassword(resultSet.getString("contraseÃ±a"));
                 usuario.setAdmin(resultSet.getBoolean("isAdmin"));
 			}
 

@@ -10,15 +10,16 @@ import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
 import clases.PartidoImpl;
+import com.sun.org.apache.bcel.internal.generic.GOTO;
 import conexion.ConexionJDBC;
 
 public class GestionPartidos 
 {
 	/*
 	prototipo: public ArrayList<PartidoImpl> VerPartidosDisponibles()
-	comentarios: este método nos muestra los partidos disponibles para apostar
-					se puede apostra si la fecha de la apuesta está entre dos 
-					días antes de la fecha del partido y diez minutos antes del final del partido
+	comentarios: este mÃ©todo nos muestra los partidos disponibles para apostar
+					se puede apostra si la fecha de la apuesta estÃ¡ entre dos 
+					dÃ­as antes de la fecha del partido y diez minutos antes del final del partido
 	precondiciones: no hay
 	entradas: no hay
 	salidas: ArrayList<PartidoImpl> listadoPartidos
@@ -37,10 +38,11 @@ public class GestionPartidos
 		GregorianCalendar fechaInicio;
 		GregorianCalendar fechaFin;
 
-		String miSelect = "select * from Partidos where isPeriodoApuestasAbierto=1";
+		String miSelect = "select * from Partidos where isPeriodoApuestasAbierto=?";
 		try {
 			//Preparo el statement
 			preparedStatement = connection.prepareStatement(miSelect);
+			preparedStatement.setBoolean(1, true);
 			//Ejecuto
 			resultSet = preparedStatement.executeQuery();
 

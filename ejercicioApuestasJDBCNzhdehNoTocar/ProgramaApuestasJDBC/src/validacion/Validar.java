@@ -12,6 +12,7 @@
     import java.sql.ResultSet;
     import java.sql.SQLException;
     import java.util.ArrayList;
+    import java.util.GregorianCalendar;
     import java.util.InputMismatchException;
     import java.util.Scanner;
 
@@ -368,5 +369,129 @@
                 }
             }
 
+        }
+
+/*-------------------------------------------------------*/
+
+        //VALIDACIONES DIANA
+        //Validaciones Ejercicio1: realizar Apuesta
+
+        //PedirValidarTipoApuesta: comprueba que el numero de tipo de apuesta sea 1, 2 o 3
+        public int pedirValidarTipoApuesta(){
+            Scanner sc = new Scanner(System.in);
+            //TODO: comprobar que el dato introducido es un número y no un carácter
+            int tipoApuesta = 0;
+            do{
+                pintarMenuTiposApuestas();
+                tipoApuesta = sc.nextInt();
+                if(tipoApuesta<1 || tipoApuesta>3){
+                    System.out.println("La opción no es correcta, vuelva a introducir un tipo de apuesta");
+                }
+            }while (tipoApuesta<1 || tipoApuesta>3);
+            return tipoApuesta;
+        }
+
+        //Menú para pedir tipo de apuesta a realizar
+        public void pintarMenuTiposApuestas(){
+            System.out.println("Elija un tipo de apuesta:" +
+                    "\n1- Apuesta Tipo 1: por goles equipo local y goles Equipo Visitante" +
+                    "\n2- Apuesta Tipo 2: por Cantidad de goles y nombre de Equipo" +
+                    "\n3- Apuesta Tipo 3: por Nombre de Equipo");
+        }
+
+        //PedirValidarCantidadApuesta
+        public int pedirValidarCantidadApuesta(){
+            Scanner sc = new Scanner(System.in);
+            //TODO: comprobar que el dato introducido es un número y no un carácter
+            int cantidadApuesta = 0;
+            do{
+                cantidadApuesta = sc.nextInt();
+                if(cantidadApuesta<1){
+                    System.out.println("No puede introducir una cantidad negativa, vuelva a introducirla");
+                }
+            }while (cantidadApuesta < 1);
+            return cantidadApuesta;
+        }
+
+        //Comprobar que dato introducido es un entero y no un caracter
+
+        //Leer fecha por teclado
+        public GregorianCalendar pedirValidarFecha(){
+            GregorianCalendar fecha;
+            int dia, mes, anio, hora, minutos;
+            dia = pedirValidarDia();
+            mes = pedirValidarMes();
+            anio = pedirValidarAnio();
+            hora = pedirValidarHora();
+            minutos = pedirValidarMinutos();
+
+            fecha = new GregorianCalendar(anio, mes, dia, hora, minutos);
+
+            return fecha;
+        }
+
+        //Validaciones datos fecha
+        public int pedirValidarDia(){
+            Scanner sc = new Scanner(System.in);
+            int dia;
+            do{
+                System.out.println("Introducir día");
+                dia = sc.nextInt();
+                if(dia<1 || dia>31){
+                    System.out.println("Error al introducir el día, vuelva a introducirlo");
+                }
+            }while (dia<1 || dia>31);
+            return dia;
+        }
+
+        public  int pedirValidarMes(){
+            Scanner sc = new Scanner(System.in);
+            int mes;
+            do{
+                System.out.println("Introducir mes");
+                mes = sc.nextInt();
+                if(mes<1 || mes>12){
+                    System.out.println("Error al introducir el mes, vuelva a introducirlo");
+                }
+            }while (mes<1 || mes>12);
+            return mes;
+        }
+
+        public int pedirValidarAnio(){
+            Scanner sc = new Scanner(System.in);
+            int anio;
+            do{
+                System.out.println("Introducir año");
+                anio = sc.nextInt();
+                if(anio<1900){
+                    System.out.println("Error al introducir el año, vuelva a introducirlo");
+                }
+            }while (anio<1900);
+            return anio;
+        }
+        public int pedirValidarHora(){
+            Scanner sc = new Scanner(System.in);
+            int hora;
+            do{
+                System.out.println("Introducir hora");
+                hora = sc.nextInt();
+                if(hora<0 || hora>23){
+                    System.out.println("Error al introducir la hora, vuelva a introducirla");
+                }
+            }while (hora<0 || hora>23);
+            return hora;
+        }
+
+        public int pedirValidarMinutos(){
+            Scanner sc = new Scanner(System.in);
+            int minutos;
+            do{
+                System.out.println("Introducir minutos");
+                minutos = sc.nextInt();
+                if(minutos<0 || minutos>59){
+                    System.out.println("Error al introducir la hora, vuelva a introducirla");
+                }
+            }while (minutos<0 || minutos>59);
+            return minutos;
         }
     }

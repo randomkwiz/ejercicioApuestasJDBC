@@ -43,7 +43,6 @@ fin
 package main;
 
 import java.sql.CallableStatement;
-import java.util.ArrayList;
 
 import clases.IngresoImpl;
 import clases.PartidoImpl;
@@ -61,7 +60,6 @@ public class Main {
         IngresoImpl movimientoSaldo;
         PartidoImpl partidoElegido = null;
         int opcionMenu ;
-        ArrayList<PartidoImpl> partidosDisponoblesParaApostar=new ArrayList<PartidoImpl>();
         GestionUsuarios gestionUsuarios = new GestionUsuarios();
         GestionSaldo gestionSaldo = new GestionSaldo();
         GestionPartidos gestionPartidos=new GestionPartidos();
@@ -98,7 +96,7 @@ public class Main {
                                     break;
                                 case 2:
                                     //2: ver los partidos disponibles para apostar
-                                	partidosDisponoblesParaApostar=gestionPartidos.VerPartidosDisponibles();
+                                	gestionPartidos.VerPartidosDisponibles();
                                     System.out.println("Opcion 2. En construcción.");
                                     break;
                                 case 3:
