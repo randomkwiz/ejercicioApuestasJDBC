@@ -217,6 +217,8 @@ public class GestionPartidos
 	 * 					cuya fecha de fin sea posterior a la fecha actual en
 	 * 					la BBDD. Si no hay partidos, se devolverá un arraylist vacío.
 	 * */
+	
+	//TODO:faltan modificar algunas cosillas, no funciona bien
 	public void crearObjetoPartido(){
 		Scanner sc = new Scanner(System.in);
 		//Variables inserción en base de datos
