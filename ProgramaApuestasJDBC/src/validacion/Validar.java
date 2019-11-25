@@ -422,8 +422,8 @@
             dia = pedirValidarDia();
             mes = pedirValidarMes();
             anio = pedirValidarAnio();
-            hora = pedirValidarHora();
-            minutos = pedirValidarMinutos();
+            //hora = pedirValidarHora();
+            //minutos = pedirValidarMinutos();
 
             fecha = new GregorianCalendar(anio, mes, dia, hora, minutos);
 
@@ -494,4 +494,48 @@
             }while (minutos<0 || minutos>59);
             return minutos;
         }
+//Nuevas validaciones 25/11/2019
+        public int pedirValidarNumeroGoles(){
+            Scanner sc = new Scanner(System.in);
+            int numeroGoles;
+            do{
+                numeroGoles = sc.nextInt();
+                if(numeroGoles<0){
+                    System.out.println("No puede introducir un número negativo, vuelva a introducir el número de goles");
+                }
+            }while (numeroGoles<0);
+            return numeroGoles;
+        }
+
+        public GregorianCalendar introducirTiempoPartido(GregorianCalendar tiempoPartido){
+            tiempoPartido.set(Calendar.HOUR_OF_DAY, pedirValidarHora());
+            tiempoPartido.set(Calendar.MINUTE, pedirValidarMinutos());
+            return tiempoPartido;
+        }
+
+
+        public boolean validarFechaFinPosteriorFechaInicio(GregorianCalendar fechaInicio, GregorianCalendar fechaFin){
+            boolean exito = false;
+            if (fechaFin.after(fechaInicio)) {
+                exito = true;
+                System.out.println("Fechas correctas");
+            } else {
+                System.out.println("Hora de inicio no puede ser posterior a hora de fin, por favor vuelva a introducirlas\n");
+            }
+            return exito;
+        }
+
+        public boolean pedirValidarIsPeriodoApuestasAbierto(){
+            Scanner sc = new Scanner(System.in);
+            String respueta = "";
+            boolean isAbierto = false;
+            System.out.println("Establecer si el período de apuestas está abierto: si/no");
+            respueta = sc.next();
+
+            if(respueta == "si"){
+                isAbierto = true;
+            }
+            return isAbierto;
+        }
+
     }
