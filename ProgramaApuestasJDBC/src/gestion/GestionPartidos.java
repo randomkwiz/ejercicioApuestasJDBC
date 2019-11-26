@@ -21,7 +21,7 @@ public class GestionPartidos
 {
 	/*
 	prototipo: public ArrayList<PartidoImpl> VerPartidosDisponibles()
-	comentarios: este mÃ©todo nos muestra los partidos disponibles para apostar
+	comentarios: este metodo nos muestra los partidos disponibles para apostar
 					se puede apostra si la fecha de la apuesta estÃ¡ entre dos 
 					dÃ­as antes de la fecha del partido y diez minutos antes del final del partido
 	precondiciones: no hay
