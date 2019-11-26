@@ -221,7 +221,7 @@
         }
 
         /*
-         * Signatura: public double pedirValidarCantidadIngresoDinero()
+         * Signatura: public double pedirValidarCantidadDinero()
          * Comentario: pide y valida una cantidad de dinero para INGRESAR en la cuenta
          * Precondiciones:
          * Entradas:
@@ -230,19 +230,19 @@
          * Postcondiciones: Asociado al nombre se devuelve un double que sera la cantidad a ingresar. La cantidad sera superior a 0.0
          * */
 
-        public double pedirValidarCantidadIngresoDinero() {
+        public double pedirValidarCantidadDinero() {
             Scanner sc = new Scanner(System.in);
             double cantidad = 0.0;
             try {
                 do {
 
-                    System.out.println("Introduzca la cantidad que desea ingresar: ");
+                    System.out.println("Introduzca la cantidad : ");
                     cantidad = sc.nextDouble();
 
                 } while (cantidad <= 0.0);
             } catch (InputMismatchException e) {
                 System.out.println("Introduce una cantidad en formato 0.00");
-                cantidad = pedirValidarCantidadIngresoDinero();
+                cantidad = pedirValidarCantidadDinero();
             }
             return cantidad;
         }

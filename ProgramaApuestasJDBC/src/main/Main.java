@@ -107,7 +107,7 @@ public class Main {
                                     //System.out.println("Opcion 4. En construcción.");
                                     System.out.println("Hacer un ingreso en cuenta");
                                     movimientoSaldo = new IngresoImpl();
-                                    movimientoSaldo.setCantidad(validar.pedirValidarCantidadIngresoDinero());
+                                    movimientoSaldo.setCantidad(validar.pedirValidarCantidadDinero());
                                     movimientoSaldo.setDescripcion(validar.pedirValidarDescripcionMovimientoDinero());
                                     if (validar.pedirValidarEstaSeguroDeseaRealizarMovimiento(movimientoSaldo)) {
                                         gestionSaldo.realizarIngresoEnCuentaUsuario(usuarioLogado, movimientoSaldo);
@@ -121,9 +121,10 @@ public class Main {
                                     break;
                                 case 5:
                                     //5: hacer una retirada de dinero
+                                    //System.out.println("Opcion 5. En construcción.");
                                 	 System.out.println("Hacer una retirada de la cuenta");
                                      movimientoSaldo = new IngresoImpl();
-                                     movimientoSaldo.setCantidad(validar.pedirValidarCantidadIngresoDinero());
+                                     movimientoSaldo.setCantidad(validar.pedirValidarCantidadDinero());
                                      movimientoSaldo.setDescripcion(validar.pedirValidarDescripcionMovimientoDinero());
                                      if (validar.pedirValidarEstaSeguroDeseaRealizarMovimiento(movimientoSaldo)) {
                                          gestionSaldo.RetirarDineroDeLaCuentaUsuario(usuarioLogado, movimientoSaldo);
@@ -131,9 +132,9 @@ public class Main {
                                          gestionUsuarios.obtenerObjetoUsuarioCompleto(usuarioLogado);
                                          System.out.println("Su saldo ha sido modificado, ahora es de " + usuarioLogado.getCantidadActualDinero());
                                      } else {
-                                         System.out.println("No se ha realizado el ingreso.");
+                                         System.out.println("No se ha realizado la retirada.");
                                      }
-                                    System.out.println("Opcion 5. En construcciÃ³n.");
+
                                     break;
                                 case 6:
                                     //6: ver movimientos de la cuenta incluyendo apuestas realizadas y apuestas ganadas
