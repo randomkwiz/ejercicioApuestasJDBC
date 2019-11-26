@@ -43,6 +43,7 @@ fin
 package main;
 
 import java.sql.CallableStatement;
+import java.util.ArrayList;
 
 import clases.IngresoImpl;
 import clases.PartidoImpl;
@@ -63,7 +64,7 @@ public class Main {
         GestionUsuarios gestionUsuarios = new GestionUsuarios();
         GestionSaldo gestionSaldo = new GestionSaldo();
         GestionPartidos gestionPartidos=new GestionPartidos();
-	ArrayList<PartidoImpl> listadoPartidosAApostar=new ArrayList<PartidoImpl>();
+	    ArrayList<PartidoImpl> listadoPartidosAApostar=new ArrayList<PartidoImpl>();
 
 
         do{
@@ -108,7 +109,7 @@ public class Main {
                                     //System.out.println("Opcion 4. En construcción.");
                                     System.out.println("Hacer un ingreso en cuenta");
                                     movimientoSaldo = new IngresoImpl();
-                                    movimientoSaldo.setCantidad(validar.pedirValidarCantidadIngresoDinero());
+                                    movimientoSaldo.setCantidad(validar.pedirValidarCantidadDinero());
                                     movimientoSaldo.setDescripcion(validar.pedirValidarDescripcionMovimientoDinero());
                                     if (validar.pedirValidarEstaSeguroDeseaRealizarMovimiento(movimientoSaldo)) {
                                         gestionSaldo.realizarIngresoEnCuentaUsuario(usuarioLogado, movimientoSaldo);
@@ -124,7 +125,7 @@ public class Main {
                                     //5: hacer una retirada de dinero
                                 	 System.out.println("Hacer una retirada de la cuenta");
                                      movimientoSaldo = new IngresoImpl();
-                                     movimientoSaldo.setCantidad(validar.pedirValidarCantidadIngresoDinero());
+                                     movimientoSaldo.setCantidad(validar.pedirValidarCantidadDinero());
                                      movimientoSaldo.setDescripcion(validar.pedirValidarDescripcionMovimientoDinero());
                                      if (validar.pedirValidarEstaSeguroDeseaRealizarMovimiento(movimientoSaldo)) {
                                          gestionSaldo.RetirarDineroDeLaCuentaUsuario(usuarioLogado, movimientoSaldo);
