@@ -368,6 +368,11 @@
 
         }
 
+	//pinta la lista de los partidos disponibles para apostar
+        public void MostrarListadoPartidosAApostar(ArrayList<PartidoImpl> listadoPartidos)
+        {
+        	mostrarPartidosComoUnMenu(listadoPartidos);
+        }
 /*-------------------------------------------------------*/
 
         //VALIDACIONES DIANA

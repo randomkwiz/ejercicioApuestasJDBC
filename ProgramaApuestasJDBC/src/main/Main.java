@@ -99,6 +99,9 @@ public class Main {
                                 case 2:
                                     //2: ver los partidos disponibles para apostar
                                     listadoPartidosAApostar=gestionPartidos.VerPartidosDisponibles();
+
+					//MostrarListadoPartidosAApostar
+                                	validar.MostrarListadoPartidosAApostar(listadoPartidosAApostar);
                                     break;
                                 case 3:
                                     //3: comprobar el resultado de una apuesta anterior
