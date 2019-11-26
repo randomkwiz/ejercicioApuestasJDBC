@@ -26,6 +26,7 @@ public class GestionApuestas {
     * */
     public double calcularCantidadTotalApostadaEnApuestasIguales(Apuesta apuesta, int tipoApuesta){
         //En resguardo
+        //TODO esto
         return 0.0;
     }
 
