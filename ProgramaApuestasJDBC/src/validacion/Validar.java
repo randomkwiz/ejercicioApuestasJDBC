@@ -11,10 +11,7 @@
     import java.sql.PreparedStatement;
     import java.sql.ResultSet;
     import java.sql.SQLException;
-    import java.util.ArrayList;
-    import java.util.GregorianCalendar;
-    import java.util.InputMismatchException;
-    import java.util.Scanner;
+    import java.util.*;
 
     public class Validar {
 
@@ -425,7 +422,7 @@
             //hora = pedirValidarHora();
             //minutos = pedirValidarMinutos();
 
-            fecha = new GregorianCalendar(anio, mes, dia, hora, minutos);
+            fecha = new GregorianCalendar(anio, mes, dia, 0, 0);
 
             return fecha;
         }
@@ -494,7 +491,8 @@
             }while (minutos<0 || minutos>59);
             return minutos;
         }
-//Nuevas validaciones 25/11/2019
+
+        //Nuevas validaciones 25/11/2019
         public int pedirValidarNumeroGoles(){
             Scanner sc = new Scanner(System.in);
             int numeroGoles;

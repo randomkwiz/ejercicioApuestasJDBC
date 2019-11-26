@@ -7,11 +7,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Scanner;
 
 import clases.PartidoImpl;
 import com.sun.org.apache.bcel.internal.generic.GOTO;
 import conexion.ConexionJDBC;
+import utilidad.Utilidad;
+import validacion.Validar;
 
 public class GestionPartidos 
 {
@@ -208,25 +212,68 @@ public class GestionPartidos
 	//Crear partido:
 
 	/*
-	 * Signatura: public void crearObjetoPartido()
-	 * Comentario: Este método crea un objeto nuevo de partido y lo inserta en la base de datos
+	 * Signatura: public boolean insertarPartido(PartidoImpl partidoNuevo)
+	 * Comentario: Este método recibe un objeto nuevo de partido y lo inserta en la base de datos
 	 * Precondiciones:
 	 * Entradas:
-	 * Salidas: ArrayList de Partidos
-	 * Postcondiciones: Asociado al nombre se devolverá un arraylist con todos los partidos existentes
-	 * 					cuya fecha de fin sea posterior a la fecha actual en
-	 * 					la BBDD. Si no hay partidos, se devolverá un arraylist vacío.
+	 * Salidas: Boolean que indica si la operación se realizó con éxito o no.
+	 * Postcondiciones: Asociado al nombre se devolverá un buleano que indicará si la operación se realizó con éxito (true) o no (false).
+	 * 					Se considerará éxito si el número de filas afectadas es igual a 1.
 	 * */
 	
 	//TODO:faltan modificar algunas cosillas, no funciona bien
-	public void crearObjetoPartido(){
-		Scanner sc = new Scanner(System.in);
+	public boolean insertarPartido(PartidoImpl partidoNuevo){
+		Utilidad objUtilidad = new Utilidad();
 		//Variables inserción en base de datos
 		ConexionJDBC objConexion = new ConexionJDBC();
 		Connection conexion = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultset;
 		String sentenciaSql = "INSERT INTO Partidos VALUES(?, ?, ?, ?, ?, ?, ?)";
+		boolean exito = false;
+
+
+		try{
+			conexion = objConexion.getConnection();
+			preparedStatement = conexion.prepareStatement(sentenciaSql);
+			if(!conexion.isClosed()){
+				preparedStatement.setBoolean(1, partidoNuevo.isPeriodoApuestasAbierto());
+				preparedStatement.setInt(2, partidoNuevo.getGolesLocal());
+				preparedStatement.setInt(3, partidoNuevo.getGolesVisitante());
+				//preparedStatement.setDate(4, (java.sql.Date) partidoNuevo.getFechaInicio().getTime()); //TODO: revisar
+				//preparedStatement.setDate(5, (java.sql.Date) partidoNuevo.getFechaFin().getTime()); //TODO: revisar
+				preparedStatement.setString(4, objUtilidad.formatearFecha(partidoNuevo.getFechaInicio()));
+				preparedStatement.setString(5, objUtilidad.formatearFecha(partidoNuevo.getFechaFin()));
+				preparedStatement.setString(6, partidoNuevo.getNombreLocal());
+				preparedStatement.setString(7, partidoNuevo.getNombreVisitante());
+
+
+
+				if(preparedStatement.executeUpdate() == 1){
+					exito = true;
+				}else{
+					System.out.println("Error al intentar insertar el partido");
+				}
+			}
+
+		}catch (SQLException e){
+			e.printStackTrace();
+		}finally {
+			//Cierra conexión y prepareStatement
+			try {
+				preparedStatement.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			objConexion.closeConnection(conexion);
+		}
+		return exito;
+	}
+
+	public PartidoImpl crearObjetoPartido(){
+		Scanner sc = new Scanner(System.in);
+		Validar objValidar = new Validar();
+		PartidoImpl partidoNuevo = new PartidoImpl();
 
 		//Variables datos
 		int golLocal, golVisitante;
@@ -234,9 +281,6 @@ public class GestionPartidos
 		String nombreLocal, nombreVisitante;
 		boolean fechasCorrectas = false;
 		boolean periodoApuestasIsAbierto = false;
-
-		Validar objValidar = new Validar();
-		PartidoImpl nuevoPartido = new PartidoImpl();
 
 
 		System.out.println("Introduzca los Goles de equipo Local");
@@ -251,7 +295,7 @@ public class GestionPartidos
 		fechaFin = new GregorianCalendar(fechaComun.get(Calendar.YEAR),fechaComun.get(Calendar.MONTH),fechaComun.get(Calendar.DAY_OF_MONTH),0,0);
 
         /*Pido introducir tiempo de inicio y final de partido y compruebo que final vaya después de inicio,
-        se repita la opreación hasta que el usuasrio lo introduzca correctamente*/
+        se repite la operación hasta que el usuario lo introduzca correctamente*/
 		do{
 			System.out.println("Introduzca tiempo inicio Partido");
 			fechaInicio = objValidar.introducirTiempoPartido(fechaInicio);
@@ -260,7 +304,6 @@ public class GestionPartidos
 			fechasCorrectas = objValidar.validarFechaFinPosteriorFechaInicio(fechaInicio, fechaFin);
 		}while (!fechasCorrectas);
 
-
 		System.out.println("Introduzca Nombre del equipo Local");
 		nombreLocal = sc.nextLine();
 		System.out.println("Introduzca Nombre del Equipo Visitante");
@@ -268,9 +311,7 @@ public class GestionPartidos
 
 		periodoApuestasIsAbierto = objValidar.pedirValidarIsPeriodoApuestasAbierto();
 
-
-		//Creación de objeto partido
-		PartidoImpl partidoNuevo = new PartidoImpl();
+		//Creación de objeto partido pasándole los datos obtenidos por teclado
 		partidoNuevo.setPeriodoApuestasAbierto(periodoApuestasIsAbierto);
 		partidoNuevo.setGolesLocal(golLocal);
 		partidoNuevo.setGolesVisitante(golVisitante);
@@ -279,31 +320,7 @@ public class GestionPartidos
 		partidoNuevo.setNombreLocal(nombreLocal);
 		partidoNuevo.setNombreVisitante(nombreVisitante);
 
-
-		try{
-			conexion = objConexion.getConnection();
-			if(!conexion.isClosed()){
-				preparedStatement.setBoolean(1, partidoNuevo.isPeriodoApuestasAbierto());
-				preparedStatement.setInt(2, partidoNuevo.getGolesLocal());
-				preparedStatement.setInt(3, partidoNuevo.getGolesVisitante());
-				preparedStatement.setDate(4, (java.sql.Date) partidoNuevo.getFechaInicio().getTime()); //TODO: revisar
-				preparedStatement.setDate(5, (java.sql.Date) partidoNuevo.getFechaFin().getTime()); //TODO: revisar
-				preparedStatement.setString(6, partidoNuevo.getNombreLocal());
-				preparedStatement.setString(7, partidoNuevo.getNombreVisitante());
-			}
-
-		}catch (SQLException e){
-			e.printStackTrace();
-		}finally {
-			//Cerrar conexión
-			boolean conexionCerrada = objConexion.closeConnection(conexion);
-
-			if(conexionCerrada){
-				System.out.println("Conexión cerrada");
-			}else{
-				System.out.println("Fallo al cerrar la conexión");
-			}
-		}
+		return partidoNuevo;
 	}
 
 
