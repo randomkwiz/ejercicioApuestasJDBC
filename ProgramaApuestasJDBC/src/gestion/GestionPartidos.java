@@ -289,7 +289,7 @@ public class GestionPartidos
 		System.out.println("Introduzca los Goles de equipo Visitante");
 		golVisitante = objValidar.pedirValidarNumeroGoles();
 
-		fechaComun = objValidar.pedirValidarFecha(); // Pido la fecha sólo con día, mes y año del partido, que será común al inicio y al final
+		fechaComun = objValidar.pedirValidarFechaHora(); // Pido la fecha sólo con día, mes y año del partido, que será común al inicio y al final
 		//Paso la fecha común a la de inicio y final, para más tarde introducirles la hora
 		fechaInicio = new GregorianCalendar(fechaComun.get(Calendar.YEAR),fechaComun.get(Calendar.MONTH),fechaComun.get(Calendar.DAY_OF_MONTH),0,0);
 		fechaFin = new GregorianCalendar(fechaComun.get(Calendar.YEAR),fechaComun.get(Calendar.MONTH),fechaComun.get(Calendar.DAY_OF_MONTH),0,0);

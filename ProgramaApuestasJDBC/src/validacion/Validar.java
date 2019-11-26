@@ -391,15 +391,18 @@
         //PedirValidarTipoApuesta: comprueba que el numero de tipo de apuesta sea 1, 2 o 3
         public int pedirValidarTipoApuesta(){
             Scanner sc = new Scanner(System.in);
-            //TODO: comprobar que el dato introducido es un número y no un carácter
             int tipoApuesta = 0;
-            do{
-                pintarMenuTiposApuestas();
-                tipoApuesta = sc.nextInt();
-                if(tipoApuesta<1 || tipoApuesta>3){
-                    System.out.println("La opción no es correcta, vuelva a introducir un tipo de apuesta");
-                }
-            }while (tipoApuesta<1 || tipoApuesta>3);
+            try{
+                do{
+                    pintarMenuTiposApuestas();
+                    tipoApuesta = sc.nextInt();
+                    if(tipoApuesta<1 || tipoApuesta>3){
+                        System.out.println("La opción no es correcta, vuelva a introducir un tipo de apuesta");
+                    }
+                }while (tipoApuesta<1 || tipoApuesta>3);
+            }catch (InputMismatchException e){
+                tipoApuesta = pedirValidarTipoApuesta();
+            }
             return tipoApuesta;
         }
 
@@ -414,30 +417,53 @@
         //PedirValidarCantidadApuesta
         public int pedirValidarCantidadApuesta(){
             Scanner sc = new Scanner(System.in);
-            //TODO: comprobar que el dato introducido es un número y no un carácter
             int cantidadApuesta = 0;
-            do{
-                cantidadApuesta = sc.nextInt();
-                if(cantidadApuesta<1){
-                    System.out.println("No puede introducir una cantidad negativa, vuelva a introducirla");
-                }
-            }while (cantidadApuesta < 1);
+            try{
+                do{
+                    cantidadApuesta = sc.nextInt();
+                    if(cantidadApuesta<0){
+                        System.out.println("No puede introducir una cantidad negativa, vuelva a introducirla");
+                    }
+                }while (cantidadApuesta < 0);
+            }catch (InputMismatchException e){
+                cantidadApuesta = pedirValidarCantidadApuesta();
+            }
+
             return cantidadApuesta;
         }
 
-        //Comprobar que dato introducido es un entero y no un caracter
-
-        //Leer fecha por teclado
-        public GregorianCalendar pedirValidarFecha(){
-            GregorianCalendar fecha;
+        /*
+        * Signatura: public GregorianCalendar pedirValidarFechaHora()
+        * Comentario: pide y valida una fecha y hora
+        * Precondiciones:
+        * Entradas:
+        * Salidas: objeto GregorianCalendar
+        * Postcondiciones: Asociado al nombre devuelve un objeto GregorianCalendar con la fecha y hora
+        * validada que haya introducido el usuario.
+        * */
+        public GregorianCalendar pedirValidarFechaHora(){
+            GregorianCalendar fecha = null;
+            GregorianCalendar fechaReal ;
             int dia, mes, anio, hora, minutos;
-            dia = pedirValidarDia();
-            mes = pedirValidarMes();
-            anio = pedirValidarAnio();
-            //hora = pedirValidarHora();
-            //minutos = pedirValidarMinutos();
+            do{
+                dia = pedirValidarDia();
+                mes = pedirValidarMes()-1; //porque calendar va de 0 a 11
+                anio = pedirValidarAnio();
+                hora = pedirValidarHora();
+                minutos = pedirValidarMinutos();
+                fechaReal = new GregorianCalendar(anio, mes, dia, hora, minutos);
 
-            fecha = new GregorianCalendar(anio, mes, dia, 0, 0);
+                if(fechaReal.get(Calendar.DAY_OF_MONTH) == dia
+                        && fechaReal.get(Calendar.MONTH) == mes
+                        && fechaReal.get(Calendar.YEAR) == anio
+                        //Nota: Calendar.HOUR devuelve hora formato 12 H, Calendar.HOUR_OF_DAY es formato 24 h
+                        && fechaReal.get(Calendar.HOUR_OF_DAY) == hora
+                        && fechaReal.get(Calendar.MINUTE) == minutos
+                ){
+                    fecha = new GregorianCalendar(anio, mes, dia, hora, minutos);
+                }
+            }while (fecha == null);
+
 
             return fecha;
         }
@@ -446,98 +472,125 @@
         public int pedirValidarDia(){
             Scanner sc = new Scanner(System.in);
             int dia;
-            do{
-                System.out.println("Introducir día");
-                dia = sc.nextInt();
-                if(dia<1 || dia>31){
-                    System.out.println("Error al introducir el día, vuelva a introducirlo");
-                }
-            }while (dia<1 || dia>31);
+            try{
+                do{
+                    System.out.println("Introducir día");
+                    dia = sc.nextInt();
+                    if(dia<1 || dia>31){
+                        System.out.println("Error al introducir el día, vuelva a introducirlo");
+                    }
+                }while (dia<1 || dia>31);
+            }  catch (InputMismatchException e){
+                dia = pedirValidarDia();
+            }
             return dia;
         }
 
         public  int pedirValidarMes(){
             Scanner sc = new Scanner(System.in);
-            int mes;
-            do{
-                System.out.println("Introducir mes");
-                mes = sc.nextInt();
-                if(mes<1 || mes>12){
-                    System.out.println("Error al introducir el mes, vuelva a introducirlo");
-                }
-            }while (mes<1 || mes>12);
+            int mes = 0;
+            try{
+                do{
+                    System.out.println("Introducir mes");
+                    mes = sc.nextInt();
+                    if(mes<1 || mes>12){
+                        System.out.println("Error al introducir el mes, vuelva a introducirlo");
+                    }
+                }while (mes<1 || mes>12);
+            }catch (InputMismatchException e){
+                mes = pedirValidarMes();
+            }
             return mes;
         }
 
+
         public int pedirValidarAnio(){
             Scanner sc = new Scanner(System.in);
-            int anio;
-            do{
-                System.out.println("Introducir año");
-                anio = sc.nextInt();
-                if(anio<1900){
-                    System.out.println("Error al introducir el año, vuelva a introducirlo");
-                }
-            }while (anio<1900);
+            int anio = 0;
+            try{
+                do{
+                    System.out.println("Introducir año");
+                    anio = sc.nextInt();
+                    if(anio<1900){
+                        System.out.println("Error al introducir el año, vuelva a introducirlo");
+                    }
+                }while (anio<1900);
+            }catch (InputMismatchException e){
+                anio = pedirValidarAnio();
+            }
+
             return anio;
         }
         public int pedirValidarHora(){
             Scanner sc = new Scanner(System.in);
-            int hora;
-            do{
-                System.out.println("Introducir hora");
-                hora = sc.nextInt();
-                if(hora<0 || hora>23){
-                    System.out.println("Error al introducir la hora, vuelva a introducirla");
-                }
-            }while (hora<0 || hora>23);
+            int hora = 0;
+            try{
+                do{
+                    System.out.println("Introducir hora");
+                    hora = sc.nextInt();
+                    if(hora<0 || hora>23){
+                        System.out.println("Error al introducir la hora, vuelva a introducirla");
+                    }
+                }while (hora<0 || hora>23);
+            }catch (InputMismatchException e){
+                hora = pedirValidarHora();
+            }
+
             return hora;
         }
 
         public int pedirValidarMinutos(){
             Scanner sc = new Scanner(System.in);
-            int minutos;
-            do{
-                System.out.println("Introducir minutos");
-                minutos = sc.nextInt();
-                if(minutos<0 || minutos>59){
-                    System.out.println("Error al introducir la hora, vuelva a introducirla");
-                }
-            }while (minutos<0 || minutos>59);
+            int minutos = 0;
+            try{
+                do{
+                    System.out.println("Introducir minutos");
+                    minutos = sc.nextInt();
+                    if(minutos<0 || minutos>59){
+                        System.out.println("Error al introducir la hora, vuelva a introducirla");
+                    }
+                }while (minutos<0 || minutos>59);
+            }catch (InputMismatchException e){
+                minutos = pedirValidarMinutos();
+            }
+
             return minutos;
         }
 
         //Nuevas validaciones 25/11/2019
         public int pedirValidarNumeroGoles(){
             Scanner sc = new Scanner(System.in);
-            int numeroGoles;
-            do{
-                numeroGoles = sc.nextInt();
-                if(numeroGoles<0){
-                    System.out.println("No puede introducir un número negativo, vuelva a introducir el número de goles");
-                }
-            }while (numeroGoles<0);
+            int numeroGoles = 0;
+            try{
+                do{
+                    numeroGoles = sc.nextInt();
+                    if(numeroGoles<0){
+                        System.out.println("No puede introducir un número negativo, vuelva a introducir el número de goles");
+                    }
+                }while (numeroGoles<0);
+            } catch (InputMismatchException e){
+                numeroGoles = pedirValidarNumeroGoles();
+            }
+
             return numeroGoles;
         }
 
+        /*
         public GregorianCalendar introducirTiempoPartido(GregorianCalendar tiempoPartido){
             tiempoPartido.set(Calendar.HOUR_OF_DAY, pedirValidarHora());
             tiempoPartido.set(Calendar.MINUTE, pedirValidarMinutos());
             return tiempoPartido;
         }
-
+*/
 
         public boolean validarFechaFinPosteriorFechaInicio(GregorianCalendar fechaInicio, GregorianCalendar fechaFin){
             boolean exito = false;
             if (fechaFin.after(fechaInicio)) {
                 exito = true;
-                System.out.println("Fechas correctas");
-            } else {
-                System.out.println("Hora de inicio no puede ser posterior a hora de fin, por favor vuelva a introducirlas\n");
             }
             return exito;
         }
-
+/*
         public boolean pedirValidarIsPeriodoApuestasAbierto(){
             Scanner sc = new Scanner(System.in);
             String respueta = "";
@@ -550,5 +603,5 @@
             }
             return isAbierto;
         }
-
+*/
     }

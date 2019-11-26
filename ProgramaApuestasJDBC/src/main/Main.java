@@ -45,9 +45,7 @@ package main;
 import java.sql.CallableStatement;
 import java.util.ArrayList;
 
-import clases.IngresoImpl;
-import clases.PartidoImpl;
-import clases.UsuarioImpl;
+import clases.*;
 import gestion.GestionPartidos;
 import gestion.GestionSaldo;
 import gestion.GestionUsuarios;
@@ -61,6 +59,13 @@ public class Main {
         IngresoImpl movimientoSaldo;
         PartidoImpl partidoElegido = null;
         int opcionMenu ;
+        int tipoApuesta = 0;
+        double cuotaApuesta = 0.0;
+        double cantidadDineroAApostar = 0.0;
+        Apuesta apuesta = null;
+        ApuestaTipo1 apuestaTipo1 = null;
+        ApuestaTipo2 apuestaTipo2 = null;
+        ApuestaTipo3 apuestaTipo3 = null;
         GestionUsuarios gestionUsuarios = new GestionUsuarios();
         GestionSaldo gestionSaldo = new GestionSaldo();
         GestionPartidos gestionPartidos=new GestionPartidos();
@@ -95,6 +100,31 @@ public class Main {
                                 case 1:
                                     //1: realizar apuesta
                                     System.out.println("Opcion 1. En construcción.");
+                                    //PedirValidar el partido al que quiere apostar
+                                    partidoElegido = validar.pedirValidarPartidoDeUnaLista
+                                            (gestionPartidos.VerPartidosDisponibles());
+                                    //PedirValidar tipo apuesta
+                                    tipoApuesta = validar.pedirValidarTipoApuesta();
+                                    //PedirValidar la cantidad de dinero
+                                    cantidadDineroAApostar = validar.pedirValidarCantidadDinero();
+                                    //Calcular la cuota (se calcula con una formula)
+                                    //TODO hacer un metodo en gestion apuestas que calcule la cuota
+
+                                    //segun el tipo de apuesta
+                                        //pedir los datos necesarios para cada tipo
+
+                                    switch (tipoApuesta){
+                                        case 1:
+                                            break;
+                                        case 2:
+                                            break;
+                                        case 3:
+                                            break;
+                                    }
+
+
+
+
                                     break;
                                 case 2:
                                     //2: ver los partidos disponibles para apostar
