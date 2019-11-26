@@ -96,8 +96,7 @@ public class Main {
                                     break;
                                 case 2:
                                     //2: ver los partidos disponibles para apostar
-                                	gestionPartidos.VerPartidosDisponibles();
-                                    System.out.println("Opcion 2. En construcción.");
+                                    listadoPartidosAApostar=gestionPartidos.VerPartidosDisponibles();
                                     break;
                                 case 3:
                                     //3: comprobar el resultado de una apuesta anterior
