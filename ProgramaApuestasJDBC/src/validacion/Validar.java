@@ -337,7 +337,8 @@
         }
 
     /*Signatura:
-    Comentario: muestra en pantalla un listado de partidos como un menu con todos los datos de los partidos.
+        Comentario: muestra en pantalla un listado de partidos como un menu con todos los datos de los partidos.
+        Postcondiciones: Si no hay partidos en el arraylist mostrará un mensaje indicando que no hay partidos.
     * */
         private void mostrarPartidosComoUnMenu(ArrayList<PartidoImpl> listadoPartidos){
             Utilidad utilidad = new Utilidad();
@@ -362,10 +363,12 @@
                     }else{
                         System.out.println("Cerrado");
                     }
-                    System.out.println("------------------------------------------");
-                }
-            }
 
+                }
+            }else{
+                System.out.println("No existen partidos");
+            }
+            System.out.println("------------------------------------------");
         }
 
 	    //pinta la lista de los partidos disponibles para apostar
