@@ -371,7 +371,14 @@
             System.out.println("------------------------------------------");
         }
 
-	    //pinta la lista de los partidos disponibles para apostar
+	/* prototipo: public void MostrarListadoPartidosAApostar(ArrayList<PartidoImpl> listadoPartidos)
+         * Comentario: pinta la lista de los partidos disponibles para apostar
+         * Precondiciones: array lleno
+         * Entradas: lista de partidos
+         * Salidas: no hay
+         * Entrada/salida: no hay
+         * Postcondiciones: no hay, solo pinta una lista de los partidos disponibles para apostar
+         * */
         public void MostrarListadoPartidosAApostar(ArrayList<PartidoImpl> listadoPartidos)
         {
         	mostrarPartidosComoUnMenu(listadoPartidos);
