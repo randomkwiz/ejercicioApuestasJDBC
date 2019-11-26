@@ -100,7 +100,7 @@ public class Main {
                                     //2: ver los partidos disponibles para apostar
                                     listadoPartidosAApostar=gestionPartidos.VerPartidosDisponibles();
 
-					//MostrarListadoPartidosAApostar
+					                //MostrarListadoPartidosAApostar
                                 	validar.MostrarListadoPartidosAApostar(listadoPartidosAApostar);
                                     break;
                                 case 3:
