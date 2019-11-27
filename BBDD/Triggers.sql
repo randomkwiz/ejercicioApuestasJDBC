@@ -248,58 +248,69 @@ INSERT INTO Ingresos (cantidad,descripcion,id_usuario)
 VALUES (300,'Ingreso',1),(-300,'Reintegro',2),(2000,'Ingreso',3)
 
 INSERT INTO Partidos 
-VALUES(3,2,'2019-01-12 12:00','2019-01-12 13:45','Sevilla','Betis'),(0,5,'2019-01-13 13:00','2019-01-13 14:45','Carmona','Coria'),
-(2,2,'2019-03-03 22:00','2019-03-03 23:45','Barcelona','Madrid')
+VALUES(3,1,2,'2019-01-12 12:00','2019-01-12 13:45','Sevilla','Betis'),
+(0,1,5,'2019-01-13 13:00','2019-01-13 14:45','Carmona','Coria'),
+(2,1,2,'2019-03-03 22:00','2019-03-03 23:45','Barcelona','Madrid')
 
 INSERT INTO Apuestas
-VALUES (1.2,50,1,'2019-01-11 12:00',1,1),(2.0,20,2,'2019-01-12 12:00',2,2),(2.50,300,3,'2019-02-03 12:00',3,3)
+VALUES (1.2,50,1,'2019-01-11 12:00',1,1),
+(2.0,20,2,'2019-01-12 12:00',2,2),
+(2.50,300,3,'2019-02-03 12:00',3,3)
 
 INSERT INTO Apuestas
-VALUES (1.2,50,1,'2019-01-11 12:00',1,1),(2.0,20,2,'2019-01-12 12:00',2,2),(2.50,300,3,'2019-02-03 12:00',3,3)
+VALUES (1.2,50,1,'2019-01-11 12:00',1,4),(2.0,20,2,'2019-01-12 12:00',2,4),(2.50,300,3,'2019-02-03 12:00',3,4)
 
 INSERT INTO Apuestas_tipo1
-VALUES (1,500,3,2)
+VALUES (9,500,3,2)
 
 INSERT INTO Apuestas_tipo2
-VALUES (2,1000,5,'2')
+VALUES (10,1000,5,'2')
 
 INSERT INTO Apuestas_tipo3
-VALUES (3,10000,'x')
+VALUES (11,10000,'x')
 
---Pensar en calcular la cuota
+/*Actualizado por Angela*/
 GO
-CREATE PROCEDURE insertarApuesta @IDUsuario SMALLINT, @cantidad MONEY, @golLocal TINYINT, @golVisitante TINYINT, @puja CHAR(1), @tipo CHAR(1),
-@ApuestasMaximas MONEY
+CREATE PROCEDURE insertarApuesta 
+@cuota decimal(5,2),
+@cantidad MONEY, 
+@tipo CHAR(1),
+@IDUsuario SMALLINT, 
+@IDPartido smallint,
+@golLocal tinyint,
+@golVisitante tinyint,
+@gol tinyint,
+@puja char(1)
+
+
 AS
 BEGIN
---DECLARE @tipo CHAR(1)
-	
-	--IF()
 
-	INSERT Apuestas (cuota, cantidad, tipo, fechaHora)
-	VALUES (@cantidad * 0.25, @cantidad, @tipo, CURRENT_TIMESTAMP)
+
+	INSERT Apuestas (cuota, cantidad, tipo, fechaHora, id_usuario, id_partido)
+	VALUES (@cuota, @cantidad, @tipo, CURRENT_TIMESTAMP, @IDUsuario, @IDPartido)
 
 	IF(@tipo = 1)
 	BEGIN
-		INSERT Apuestas_tipo1(id, apuestasMáximas, golLocal, golVisitante)
-		VALUES (@@IDENTITY , @ApuestasMaximas, @golLocal, @golVisitante)
+		INSERT Apuestas_tipo1(id, golLocal, golVisitante)
+		VALUES (@@IDENTITY, @golLocal, @golVisitante)
 	END
 
-	IF(@tipo = 2 AND @golLocal IS NULL)
+	IF(@tipo = 2 )
 	BEGIN
-		INSERT Apuestas_tipo2(id, apuestasMáximas, gol, puja)
-		VALUES (@@IDENTITY , @ApuestasMaximas, @golVisitante, @puja)
+		INSERT Apuestas_tipo2(id, gol, puja)
+		VALUES (@@IDENTITY ,  @gol, @puja)
 	END
 	ELSE
 	BEGIN
-		INSERT Apuestas_tipo2(id, apuestasMáximas, gol, puja)
-		VALUES (@@IDENTITY , @ApuestasMaximas, @golLocal, @puja)
+		INSERT Apuestas_tipo2(id, gol, puja)
+		VALUES (@@IDENTITY , @gol, @puja)
 	END
 
 	IF(@tipo = 3)
 	BEGIN
-		INSERT Apuestas_tipo3(id, apuestasMáximas, puja)
-		VALUES (@@IDENTITY , @ApuestasMaximas, @puja)
+		INSERT Apuestas_tipo3(id,  puja)
+		VALUES (@@IDENTITY , @puja)
 	END
 
 END
