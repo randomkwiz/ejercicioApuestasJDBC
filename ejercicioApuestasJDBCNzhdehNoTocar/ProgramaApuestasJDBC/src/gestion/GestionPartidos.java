@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
 import clases.PartidoImpl;
-import com.sun.org.apache.bcel.internal.generic.GOTO;
 import conexion.ConexionJDBC;
 
 public class GestionPartidos 
@@ -89,6 +88,58 @@ public class GestionPartidos
 			e.getStackTrace();
 		}
 		return listadoPartidos;
+	}
+	
+	/*
+	prototipo: public void DineroApostadoPorUnPosibleResultadoDeUnPartido(int idPartido)
+	comentarios: este metodo calcula el total del dinero apostado por cada resultado de un partido
+	precondiciones: el id tiene que existir
+	entradas: entero id de un partido
+	salidas: no hay
+	entradas/salidas: no hay 
+	postcondiciones: solo pintara en pantalla el dinero apostado por cada resultado mde un partido
+	*/
+	
+	public void DineroApostadoPorUnPosibleResultadoDeUnPartido(int idPartido)
+	{
+		ConexionJDBC conexionJDBC = new ConexionJDBC();
+		Connection connection = conexionJDBC.getConnection();
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		int golLocal=0,golVisitante=0,gol=0;
+		String pujaTipo2=" ",pujaTipo3=" ";
+		double cantidadApostada=0.;
+
+		String miSelect = "select AT1.golLocal,AT1.golVisitante,AT2.gol,AT2.puja as PujaTipo2,AT3.puja as PujaTipo3,SUM(A.cantidad) as [Cantidat Total] from Apuestas as A\r\n" + 
+				"	left join Apuestas_tipo1 as AT1 on A.id=AT1.id\r\n" + 
+				"	left join Apuestas_tipo2 as AT2 on A.id=AT2.id\r\n" + 
+				"	left join Apuestas_tipo3 as AT3 on A.id=AT3.id\r\n" + 
+				"	where A.id_partido=?\r\n" + 
+				"	group by AT1.golLocal,AT1.golVisitante,AT2.gol,AT2.puja,AT3.puja";
+		try {
+			//Preparo el statement
+			preparedStatement = connection.prepareStatement(miSelect);
+			preparedStatement.setBoolean(1, true);
+			//Ejecuto
+			resultSet = preparedStatement.executeQuery();
+
+			while (resultSet.next()) 
+			{
+				golLocal=resultSet.getInt("AT1.golLocal");
+				golLocal=resultSet.getInt("AT1.golVisitante");
+				gol=resultSet.getInt("AT2.gol");
+				pujaTipo2=resultSet.getString("PujaTipo2");
+				pujaTipo3=resultSet.getString("PujaTipo3");
+				cantidadApostada=resultSet.getDouble("[Cantidat Total]");
+				
+				System.out.println(golLocal+", "+golVisitante+", "+gol+", "+pujaTipo2+", "+pujaTipo3+", "+cantidadApostada);
+			}
+			preparedStatement.close();
+			conexionJDBC.closeConnection(connection);
+		}catch (SQLException e)
+		{
+			e.getStackTrace();
+		}
 	}
 
 	/*
