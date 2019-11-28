@@ -290,24 +290,19 @@ BEGIN
 	INSERT Apuestas (cuota, cantidad, tipo, fechaHora, id_usuario, id_partido)
 	VALUES (@cuota, @cantidad, @tipo, CURRENT_TIMESTAMP, @IDUsuario, @IDPartido)
 
-	IF(@tipo = 1)
+	IF(@tipo = '1')
 	BEGIN
 		INSERT Apuestas_tipo1(id, golLocal, golVisitante)
 		VALUES (@@IDENTITY, @golLocal, @golVisitante)
 	END
 
-	IF(@tipo = 2 )
+	ELSE IF(@tipo = '2' )
 	BEGIN
 		INSERT Apuestas_tipo2(id, gol, puja)
 		VALUES (@@IDENTITY ,  @gol, @puja)
 	END
 	ELSE
-	BEGIN
-		INSERT Apuestas_tipo2(id, gol, puja)
-		VALUES (@@IDENTITY , @gol, @puja)
-	END
-
-	IF(@tipo = 3)
+	IF(@tipo = '3')
 	BEGIN
 		INSERT Apuestas_tipo3(id,  puja)
 		VALUES (@@IDENTITY , @puja)
