@@ -12,7 +12,7 @@ import java.util.GregorianCalendar;
 import java.util.Scanner;
 
 import clases.PartidoImpl;
-import com.sun.org.apache.bcel.internal.generic.GOTO;
+
 import conexion.ConexionJDBC;
 import utilidad.Utilidad;
 import validacion.Validar;
@@ -269,7 +269,7 @@ public class GestionPartidos
 		}
 		return exito;
 	}
-
+	//TODO Esto hay que modularlo.
 	public PartidoImpl crearObjetoPartido(){
 		Scanner sc = new Scanner(System.in);
 		Validar objValidar = new Validar();
@@ -283,7 +283,7 @@ public class GestionPartidos
 		boolean periodoApuestasIsAbierto = false;
 
 
-		System.out.println("Introduzca los Goles de equipo Local");
+		System.out.println("Introduzca los Goles de equipo Local"); //TODO No se lee ni escribe en un módulo a no ser que ese sea su cometido
 		golLocal = objValidar.pedirValidarNumeroGoles();
 
 		System.out.println("Introduzca los Goles de equipo Visitante");
@@ -299,17 +299,23 @@ public class GestionPartidos
 		do{
 			System.out.println("Introduzca tiempo inicio Partido");
 			fechaInicio = objValidar.introducirTiempoPartido(fechaInicio);
+
 			System.out.println("Introduzca tiempo final partido");
 			fechaFin = objValidar.introducirTiempoPartido(fechaFin);
-			fechasCorrectas = objValidar.validarFechaFinPosteriorFechaInicio(fechaInicio, fechaFin);
+
+			fechasCorrectas = fechaFin.after(fechaInicio);
 		}while (!fechasCorrectas);
 
+		//TODO No se lee ni escribe en un módulo a no ser que ese sea su cometido
 		System.out.println("Introduzca Nombre del equipo Local");
 		nombreLocal = sc.nextLine();
 		System.out.println("Introduzca Nombre del Equipo Visitante");
 		nombreVisitante = sc.nextLine();
 
-		periodoApuestasIsAbierto = objValidar.pedirValidarIsPeriodoApuestasAbierto();
+		//periodoApuestasIsAbierto = objValidar.pedirValidarIsPeriodoApuestasAbierto();
+
+		//Para probar una cosa
+		periodoApuestasIsAbierto = true;
 
 		//Creación de objeto partido pasándole los datos obtenidos por teclado
 		partidoNuevo.setPeriodoApuestasAbierto(periodoApuestasIsAbierto);

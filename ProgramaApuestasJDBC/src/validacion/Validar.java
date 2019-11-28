@@ -1,9 +1,9 @@
     package validacion;
 
-    import clases.IngresoImpl;
-    import clases.PartidoImpl;
-    import clases.UsuarioImpl;
+    import clases.*;
     import conexion.ConexionJDBC;
+    import gestion.GestionApuestas;
+    import gestion.GestionPartidos;
     import utilidad.Utilidad;
 
     import java.io.Console;
@@ -126,7 +126,7 @@
          * */
         public boolean isValidUser(String correo, String password) {
             ConexionJDBC conexionJDBC = new ConexionJDBC();
-            Connection connection = conexionJDBC.getConnection();
+            Connection connection ;
             PreparedStatement preparedStatement;
             ResultSet resultSet;
             boolean exito = false;
@@ -135,6 +135,7 @@
                     "        and\n" +
                     "                contraseña = ?";
             try {
+                connection = conexionJDBC.getConnection();
                 //Preparo el statement
                 if (!connection.isClosed()) {
                     preparedStatement = connection.prepareStatement(miSelect);
@@ -414,6 +415,7 @@
                     "\n3- Apuesta Tipo 3: por Nombre de Equipo");
         }
 
+        /*
         //PedirValidarCantidadApuesta
         public int pedirValidarCantidadApuesta(){
             Scanner sc = new Scanner(System.in);
@@ -431,7 +433,7 @@
 
             return cantidadApuesta;
         }
-
+*/
         /*
         * Signatura: public GregorianCalendar pedirValidarFechaHora()
         * Comentario: pide y valida una fecha y hora
@@ -563,6 +565,7 @@
             int numeroGoles = 0;
             try{
                 do{
+                    System.out.println("Introduce el numero de goles: ");
                     numeroGoles = sc.nextInt();
                     if(numeroGoles<0){
                         System.out.println("No puede introducir un número negativo, vuelva a introducir el número de goles");
@@ -575,33 +578,137 @@
             return numeroGoles;
         }
 
-        /*
+
         public GregorianCalendar introducirTiempoPartido(GregorianCalendar tiempoPartido){
             tiempoPartido.set(Calendar.HOUR_OF_DAY, pedirValidarHora());
             tiempoPartido.set(Calendar.MINUTE, pedirValidarMinutos());
             return tiempoPartido;
         }
-*/
 
-        public boolean validarFechaFinPosteriorFechaInicio(GregorianCalendar fechaInicio, GregorianCalendar fechaFin){
-            boolean exito = false;
-            if (fechaFin.after(fechaInicio)) {
-                exito = true;
-            }
-            return exito;
-        }
-/*
-        public boolean pedirValidarIsPeriodoApuestasAbierto(){
+
+//        public boolean validarFechaFinPosteriorFechaInicio(GregorianCalendar fechaInicio, GregorianCalendar fechaFin){
+//            boolean exito = false;
+//            if (fechaFin.after(fechaInicio)) {
+//                exito = true;
+//            }
+//            return exito;
+//        }
+
+        /*Pide y valida un equipo que sera
+         '1' o '2'
+        * */
+        public char pedirValidarEquipoPuja(){
             Scanner sc = new Scanner(System.in);
-            String respueta = "";
-            boolean isAbierto = false;
-            System.out.println("Establecer si el período de apuestas está abierto: si/no");
-            respueta = sc.next();
-
-            if(respueta == "si"){
-                isAbierto = true;
+            char puja = ' ';
+            try{
+                do{
+                    System.out.println("Introduce el equipo: ");
+                    System.out.println("1. Local");
+                    System.out.println("2. Visitante");
+                    puja = sc.nextLine().charAt(0);
+                    if(puja != '1' && puja != '2'){
+                        System.out.println("Introduce 1 o 2");
+                    }
+                }while (puja != '1' && puja != '2');
+            } catch (InputMismatchException e){
+                puja = pedirValidarEquipoPuja();
             }
-            return isAbierto;
+
+            return puja;
         }
-*/
+        /*Pide y valida un resultado
+         '1' o '2' o 'x'
+        * */
+        public char pedirValidarResultadoPuja(){
+            Scanner sc = new Scanner(System.in);
+            char puja = ' ';
+            try{
+                do{
+                    System.out.println("Introduce el equipo por el que apuestas: ");
+                    System.out.println("1. Local");
+                    System.out.println("2. Visitante");
+                    System.out.println("X. Empate");
+                    puja = sc.nextLine().charAt(0);
+                    puja = Character.toLowerCase(puja);
+                    if(puja != '1' && puja != '2' && puja != 'x'){
+                        System.out.println("Introduce 1, x ó 2");
+                    }
+                }while (puja != '1' && puja != '2' && puja != 'x');
+            } catch (InputMismatchException e){
+                puja = pedirValidarResultadoPuja();
+            }
+
+            return puja;
+        }
+
+
+        /*
+        * Signatura: public Apuesta pedirValidarApuesta()
+        * Comentario: pide los datos y construye un objeto apuesta
+        * Precondiciones:
+        * Entradas: objeto usuario que realiza la apuesta
+        * Salidas: objeto Apuesta
+        * Postcondiciones: asociado al nombre se devolverá un objeto apuesta
+        * */
+        public Apuesta pedirValidarApuesta(UsuarioImpl usuario){
+            PartidoImpl partidoElegido;
+            int tipoApuesta;
+            GestionPartidos gestionPartidos = new GestionPartidos();
+            GestionApuestas gestionApuestas = new GestionApuestas();
+            double cantidadDineroAApostar = 0.0;
+            Apuesta apuesta = null;
+            double cuotaApuesta = 0.0;
+
+
+            //PedirValidar el partido al que quiere apostar
+            partidoElegido = pedirValidarPartidoDeUnaLista
+                    (gestionPartidos.VerPartidosDisponibles());
+            //PedirValidar tipo apuesta
+            tipoApuesta = pedirValidarTipoApuesta();
+            //PedirValidar la cantidad de dinero
+            cantidadDineroAApostar = pedirValidarCantidadDinero();
+            //Calcular la cuota (se calcula con una formula)
+
+
+            //segun el tipo de apuesta
+            //pedir los datos necesarios para cada tipo
+            switch (tipoApuesta){
+                case 1:
+                    apuesta = new ApuestaTipo1();
+                    apuesta = (ApuestaTipo1) apuesta;
+
+                    apuesta.setTipo('1');
+                    //PedirValidar Goles Locales y goles Visitante
+                    System.out.println("GOLES EQUIPO LOCAL: ");
+                    ((ApuestaTipo1) apuesta).setGolesLocal(pedirValidarNumeroGoles());
+
+                    System.out.println("GOLES EQUIPO VISITANTE: ");
+                    ((ApuestaTipo1) apuesta).setGolesVisitante(pedirValidarNumeroGoles());
+                    break;
+                case 2:
+                    apuesta = new ApuestaTipo2();
+                    apuesta = (ApuestaTipo2) apuesta;
+                    apuesta.setTipo('2');
+                    //PedirValidar cantidad de goles y equipo
+                    ((ApuestaTipo2) apuesta).setCantidadGoles(pedirValidarNumeroGoles());
+                    ((ApuestaTipo2) apuesta).setEquipo(pedirValidarEquipoPuja());
+                    break;
+                case 3:
+                    apuesta = new ApuestaTipo3();
+                    apuesta = (ApuestaTipo3) apuesta;
+                    apuesta.setTipo('3');
+                    //Pedir validar equipo
+                    ((ApuestaTipo3) apuesta).setEquipo(pedirValidarResultadoPuja());
+
+                    break;
+            }
+            if(apuesta != null){
+                apuesta.setUsuario(usuario);
+                apuesta.setPartido(partidoElegido);
+                apuesta.setCantidad(cantidadDineroAApostar);
+                cuotaApuesta = gestionApuestas.calcularCuotaApuesta(apuesta, tipoApuesta);
+                apuesta.setCuota(cuotaApuesta);
+            }
+            return apuesta;
+        }
     }

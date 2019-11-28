@@ -46,6 +46,7 @@ import java.sql.CallableStatement;
 import java.util.ArrayList;
 
 import clases.*;
+import gestion.GestionApuestas;
 import gestion.GestionPartidos;
 import gestion.GestionSaldo;
 import gestion.GestionUsuarios;
@@ -68,7 +69,8 @@ public class Main {
         ApuestaTipo3 apuestaTipo3 = null;
         GestionUsuarios gestionUsuarios = new GestionUsuarios();
         GestionSaldo gestionSaldo = new GestionSaldo();
-        GestionPartidos gestionPartidos=new GestionPartidos();
+        GestionPartidos gestionPartidos = new GestionPartidos();
+        GestionApuestas gestionApuestas = new GestionApuestas();
 	    ArrayList<PartidoImpl> listadoPartidosAApostar=new ArrayList<PartidoImpl>();
 
 
@@ -99,32 +101,13 @@ public class Main {
                             switch (opcionMenu) {
                                 case 1:
                                     //1: realizar apuesta
-                                    System.out.println("Opcion 1. En construcción.");
-                                    //PedirValidar el partido al que quiere apostar
-                                    partidoElegido = validar.pedirValidarPartidoDeUnaLista
-                                            (gestionPartidos.VerPartidosDisponibles());
-                                    //PedirValidar tipo apuesta
-                                    tipoApuesta = validar.pedirValidarTipoApuesta();
-                                    //PedirValidar la cantidad de dinero
-                                    cantidadDineroAApostar = validar.pedirValidarCantidadDinero();
-                                    //Calcular la cuota (se calcula con una formula)
-                                    //TODO hacer un metodo en gestion apuestas que calcule la cuota
+                                    //System.out.println("Opcion 1. En construcción.");
 
-                                    //segun el tipo de apuesta
-                                        //pedir los datos necesarios para cada tipo
-
-                                    switch (tipoApuesta){
-                                        case 1:
-                                            break;
-                                        case 2:
-                                            break;
-                                        case 3:
-                                            break;
-                                    }
-
-
-
-
+                                    apuesta = validar.pedirValidarApuesta(usuarioLogado);
+                                    //TODO realizar la inserción de la apuesta
+                                    String mensaje = (gestionApuestas.realizarApuesta(apuesta)) ? "La apuesta se realizó correctamente" :
+                                            "Hubo un problema, inténtelo de nuevo más tarde";
+                                    System.out.println(mensaje);
                                     break;
                                 case 2:
                                     //2: ver los partidos disponibles para apostar

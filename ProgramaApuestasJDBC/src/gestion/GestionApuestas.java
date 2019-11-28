@@ -6,12 +6,87 @@ import clases.ApuestaTipo2;
 import clases.ApuestaTipo3;
 import conexion.ConexionJDBC;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.lang.reflect.Type;
+import java.sql.*;
 
 public class GestionApuestas {
+
+    /*
+    * Signatura: public boolean realizarApuesta(Apuesta apuesta)
+    * Comentario: Este método llama al procedure de insertar apuesta de la BBDD y realiza
+    * la inserción de la apuesta recibida como parámetro.
+    * Precondiciones: La apuesta debe estar correctamente construida.
+    * Entradas: objeto apuesta
+    * Salidas: boolean que indicará si la operación se realizó con éxito
+    * Postcondiciones: Asociado al nombre se devolverá un boolean que será true si la operación finalizó con éxito
+    * o no. En caso afirmativo se insertará la apuesta indicada.
+    * */
+    public boolean realizarApuesta(Apuesta apuesta){
+        CallableStatement cstmt = null;
+        ResultSet rs = null;
+        ConexionJDBC conexionJDBC = new ConexionJDBC();
+        Connection connection ;
+        int results = 0;
+        boolean exito = false;
+        try {
+            connection = conexionJDBC.getConnection();
+            cstmt = connection.prepareCall(
+                    "{call insertarApuesta(?,?,?,?,?,?,?,?,?)}"
+                    );
+
+            cstmt.setDouble("cuota", apuesta.getCuota());
+            cstmt.setDouble("cantidad", apuesta.getCantidad());
+            cstmt.setString("tipo", String.valueOf(apuesta.getTipo()));
+            cstmt.setInt("IDUsuario", apuesta.getUsuario().getId());
+            cstmt.setInt("IDPartido", apuesta.getPartido().getId());
+
+            switch (apuesta.getTipo()){
+                case '1':
+                    apuesta = (ApuestaTipo1) apuesta;
+                    cstmt.setInt("golLocal", ((ApuestaTipo1) apuesta).getGolesLocal());
+                    cstmt.setInt("golVisitante", ((ApuestaTipo1) apuesta).getGolesVisitante());
+
+
+                    //Lo demas lo ponemos a null
+                    cstmt.setNull("gol",java.sql.Types.INTEGER );
+                    cstmt.setNull("puja", Types.CHAR );
+                    break;
+                case '2':
+                    apuesta = (ApuestaTipo2) apuesta;
+                    cstmt.setInt("gol", ((ApuestaTipo2) apuesta).getCantidadGoles());
+                    cstmt.setString("puja", String.valueOf(((ApuestaTipo2) apuesta).getEquipo()));
+
+
+                    //Lo demas lo ponemos a null
+                    cstmt.setNull("golLocal", Types.INTEGER);
+                    cstmt.setNull("golVisitante", Types.INTEGER);
+
+                    break;
+                case '3':
+                    apuesta = (ApuestaTipo3) apuesta;
+                    cstmt.setString("puja", String.valueOf(((ApuestaTipo3) apuesta).getEquipo()));
+
+                    //Lo demas lo ponemos a null
+                    cstmt.setNull("golLocal", Types.INTEGER);
+                    cstmt.setNull("golVisitante", Types.INTEGER);
+                    cstmt.setNull("gol", Types.INTEGER);
+                    break;
+            }
+
+            results = cstmt.executeUpdate();
+            if(results == 1){
+                exito = true;
+            }
+
+
+            cstmt.close();
+            conexionJDBC.closeConnection(connection);
+
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+        return exito;
+    }
 
     /*
     * Signatura: public double calcularCantidadTotalApostadaEnApuestasIguales(Apuesta apuesta, int tipoApuesta)
@@ -24,7 +99,7 @@ public class GestionApuestas {
     public double calcularCantidadTotalApostadaEnApuestasIguales(Apuesta apuesta, int tipoApuesta){
         String miSelect = "";
         ConexionJDBC conexionJDBC = new ConexionJDBC();
-        Connection connection = conexionJDBC.getConnection();
+        Connection connection ;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         double total = 0.0;
@@ -60,6 +135,7 @@ public class GestionApuestas {
         }
 
         try {
+            connection = conexionJDBC.getConnection();
             //Preparo el statement
 
             preparedStatement = connection.prepareStatement(miSelect);
@@ -98,7 +174,7 @@ public class GestionApuestas {
      * */
     public double calcularCantidadTotalApostadaEnApuestasDeEseTipo(Apuesta apuesta, int tipoApuesta){
         ConexionJDBC conexionJDBC = new ConexionJDBC();
-        Connection connection = conexionJDBC.getConnection();
+        Connection connection;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         double total = 0.0;
@@ -107,6 +183,7 @@ public class GestionApuestas {
                 "from Apuestas\n" +
                 "where tipo = ?";
         try {
+            connection = conexionJDBC.getConnection();
             //Preparo el statement
             preparedStatement = connection.prepareStatement(miSelect);
             preparedStatement.setDouble(1,apuesta.getCantidad());
@@ -137,8 +214,8 @@ public class GestionApuestas {
     public double calcularCuotaApuesta(Apuesta apuesta, int tipoApuesta){
         double cuota = 0.0;
         //TODO testea estos metodos
-        double cantidadTotalApostadaEnApuestasIguales = calcularCantidadTotalApostadaEnApuestasIguales(apuesta, tipoApuesta);
-        double cantidadTotalApostadaEnApuestasDeEseTipo = calcularCantidadTotalApostadaEnApuestasDeEseTipo(apuesta, tipoApuesta);
+        double cantidadTotalApostadaEnApuestasIguales = 0.0;
+        double cantidadTotalApostadaEnApuestasDeEseTipo = 0.0;
 
         if(apuesta.getCantidad() < 40){
             switch (tipoApuesta){
@@ -153,6 +230,9 @@ public class GestionApuestas {
                     break;
             }
         }else{
+            cantidadTotalApostadaEnApuestasIguales = calcularCantidadTotalApostadaEnApuestasIguales(apuesta, tipoApuesta);
+            cantidadTotalApostadaEnApuestasDeEseTipo = calcularCantidadTotalApostadaEnApuestasDeEseTipo(apuesta, tipoApuesta);
+
             cuota = ((cantidadTotalApostadaEnApuestasDeEseTipo/cantidadTotalApostadaEnApuestasIguales)-1)*0.8;
         }
 
