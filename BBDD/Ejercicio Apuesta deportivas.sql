@@ -34,12 +34,20 @@ CREATE TABLE Partidos(
 	fechaFin DATETIME not null,
 	nombreLocal varchar(20) not null,
 	nombreVisitante varchar(20) not null,
+	--modificado por angela porque no puedes poner el maximo de apuesta en la entidad ApuestaTipoX
+	maximoApuestaTipo1 money not null,
+		constraint ck_maxApuestasTipo1 check (maximoApuestaTipo1 > 0),
+	maximoApuestaTipo2 money not null,
+	constraint ck_maxApuestasTipo2 check (maximoApuestaTipo2 > 0),
+	maximoApuestaTipo3 money not null,
+	constraint ck_maxApuestasTipo3 check (maximoApuestaTipo3 > 0)
+	
 )
 
 CREATE TABLE Ingresos(
 	id smallint identity not null constraint pk_id_ingresos primary key,
 	--------------------------------------------------------------------------
-	cantidad int not null,
+	cantidad money not null,
 	descripcion varchar(100) null,
 	id_usuario smallint not null,
 	constraint fk_id_usuario_Ingresos foreign key (id_usuario) references Usuarios(id)
@@ -66,8 +74,7 @@ CREATE TABLE Apuestas(
 CREATE TABLE Apuestas_tipo1(
 	id smallint not null constraint pk_id_apuestas_tipo1 primary key,
 	--------------------------------------------------------------------------
-	apuestasMáximas money not null
-		constraint ck_partidos_tipo2_apuestasMáximas check (apuestasMáximas > 0),
+	
 	golLocal tinyint null
 		constraint ck_Apuestas_tipo1_golLocal check(golLocal >= 0),
 	golVisitante tinyint null
@@ -78,8 +85,7 @@ CREATE TABLE Apuestas_tipo1(
 CREATE TABLE Apuestas_tipo2(
 	id smallint not null constraint pk_id_apuestas_tipo2 primary key,
 	--------------------------------------------------------------------------
-	apuestasMáximas money not null
-		constraint ck_Apuesta_tipo2_apuestasMáximas check (apuestasMáximas > 0),
+	
 	gol tinyint not null
 		constraint ck_Apuestas_tipo2_gol check(gol >= 0),
 	puja char(1) not null
@@ -90,8 +96,7 @@ CREATE TABLE Apuestas_tipo2(
 CREATE TABLE Apuestas_tipo3(
 	id smallint not null constraint pk_id_apuestas_tipo3 primary key,
 	--------------------------------------------------------------------------
-	apuestasMáximas money not null
-		constraint ck_partidos_tipo3_apuestasMáximas check (apuestasMáximas > 0),
+	
 	puja char(1) not null
 		constraint ck_Apuestas_tipo3_puja check(puja in ('1','x','2'))
 	constraint fk_Apuestas_tipo3 foreign key (id) references Apuestas(id)
