@@ -711,4 +711,87 @@
             }
             return apuesta;
         }
+
+        //29/11/2019
+
+        /* Signatura:public String pedirValidarCorreo()
+         * Comentario:
+         *   Método que pide al usuario un correo y valida que éste no supere los 30 caracteres
+         *   ya que la BBDD sólo admite hasta 30.
+         * Precondiciones:
+         * Entradas:
+         * Salidas: String correo, es el correo del usuario.
+         * Postcondiciones:
+         * */
+        public String pedirValidarCorreo(){
+            Scanner sc = new Scanner(System.in);
+            String correo;
+            do {
+                System.out.println("Introduzca un correo");
+                correo = sc.next();
+                if (correo.length() >= 30 || correo == null) {
+                    System.out.println("Error, debe introducir un correo no superior a 30 carateres");
+                }
+            }while (correo.length() >= 30 || correo == null);
+
+            return correo;
+        }
+
+        //TODO añadir a proyecto común
+
+        /* Signatura:public String pedirValidarPassword()
+         * Comentario:
+         *   Método que pide al usuario una contraseña y valida que ésta no supere los 25 caracteres
+         *   ya que la BBDD sólo admite hasta 25.
+         * Precondiciones:
+         * Entradas:
+         * Salidas: String password, es la contraseña del usuario.
+         * Postcondiciones:
+         * */
+        public String pedirValidarPassword(){
+            Scanner sc = new Scanner(System.in);
+            String password;
+            do{
+                System.out.println("Introduzca la contraseña");
+                password = sc.next();
+                if(password.length() >= 25 || password == null){
+                    System.out.println("Error, debe introducir una contraseña no superior a 25 caracteres");
+                }
+            }while (password.length() >= 25 || password == null);
+
+            return password;
+        }
+
+        //TODO añadir a proyecto común
+
+        /* Signatura: public boolean pedirValidarIsAdministrador()
+         * Comentario:
+         *   Método que muestra un menú preguntado si se desea registrar como Administrador o usuario estándar, y valida
+         *   que el dato introducido sea correcto.
+         * Precondiciones:
+         * Entradas:
+         * Salidas: boolean idAdmin, indica si es administrador o usuario estándar.
+         * Postcondiciones: Asociado al nombre se devuelve un boolean que indica si es Administrador (true) o usuario estándar (false).
+         * */
+        public boolean pedirValidarIsAdministrador(){
+            Scanner sc = new Scanner(System.in);
+            int opcionAdmin;
+            boolean isAdmin = false;
+
+            do{
+                System.out.println("¿Cómo desea registrarse?" +
+                        "\n1: Administrador" +
+                        "\n2: Usuario Estándar");
+                opcionAdmin = sc.nextInt();
+                if(opcionAdmin < 1 || opcionAdmin > 2){
+                    System.out.println("Error, introduzca opción de menú");
+                }else{
+                    if(opcionAdmin == 1){
+                        isAdmin = true;
+                    }
+                }
+            }while (opcionAdmin < 1 || opcionAdmin > 2);
+            return isAdmin;
+        }
+
     }

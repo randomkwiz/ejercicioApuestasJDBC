@@ -104,4 +104,58 @@ public class GestionUsuarios {
 		}
 		return usuario;
 	}
+
+    public UsuarioImpl insertarUsuario(UsuarioImpl nuevoUsuario){
+        ConexionJDBC objConexionJDBC = new ConexionJDBC();
+        Connection conexion = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        //UsuarioImpl usuario = new UsuarioImpl();
+        String sentenciaSql = "INSERT INTO Usuarios VALUES (?, ?, ?, ?)";
+        int filasAfectadas = 0;
+        boolean exito = false;
+        try{
+            conexion = objConexionJDBC.getConnection();
+            preparedStatement = conexion.prepareStatement(sentenciaSql);
+
+            preparedStatement.setDouble(1, nuevoUsuario.getCantidadActualDinero());
+            preparedStatement.setString(2, nuevoUsuario.getCorreo());
+            preparedStatement.setString(3, nuevoUsuario.getPassword());
+            preparedStatement.setBoolean(4, nuevoUsuario.isAdmin());
+
+            filasAfectadas = preparedStatement.executeUpdate();
+            if(filasAfectadas == 1){
+                exito = true;
+            }
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }finally {
+            try {
+                resultSet.close();
+                preparedStatement.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            objConexionJDBC.closeConnection(conexion);
+        }
+        return nuevoUsuario;
+    }
+
+    public UsuarioImpl crearObjetoUsuario(){
+        Validar objValidar = new Validar();
+        UsuarioImpl nuevoUsuario = new UsuarioImpl();
+
+        double cantidadActualDinero = objValidar.pedirValidarCantidadDinero();
+        String correo = objValidar.pedirValidarCorreo();
+        String password = objValidar.pedirValidarPassword();
+        boolean isAdmin = objValidar.pedirValidarIsAdministrador();
+
+        nuevoUsuario.setCantidadActualDinero(cantidadActualDinero);
+        nuevoUsuario.setCorreo(correo);
+        nuevoUsuario.setPassword(password);
+        nuevoUsuario.setAdmin(isAdmin);
+
+        return nuevoUsuario;
+    }
 }
