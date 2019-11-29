@@ -271,7 +271,7 @@ VALUES (11,10000,'x')
 
 /*Actualizado por Angela*/
 GO
-CREATE PROCEDURE insertarApuesta 
+CREATE or alter PROCEDURE insertarApuesta 
 @cuota decimal(5,2),
 @cantidad MONEY, 
 @tipo CHAR(1),
