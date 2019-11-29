@@ -106,12 +106,20 @@ public class GestionUsuarios {
 		return usuario;
 	}
 
-    public UsuarioImpl insertarUsuario(UsuarioImpl nuevoUsuario){
+    /*
+     * Signatura: public UsuarioImpl insertarUsuario(UsuarioImpl nuevoUsuario)
+     * Comentario: Método que inserta un nuevo usuario en la BBDD pasado por parámetro.
+     * Precondiciones: Los datos del objeto nuevoUsuario estarán validados
+     * Entradas: Objeto nuevoUsuario
+     * Salidas: boolean exito
+     * Entrada/Salida:
+     * Postcondiciones: Asociado al nombre devuelve un boolean que indica si el usario se insertó correctament (true) o no (false).
+     * */
+    public boolean insertarUsuario(UsuarioImpl nuevoUsuario){
         ConexionJDBC objConexionJDBC = new ConexionJDBC();
         Connection conexion = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
-        //UsuarioImpl usuario = new UsuarioImpl();
         String sentenciaSql = "INSERT INTO Usuarios VALUES (?, ?, ?, ?)";
         int filasAfectadas = 0;
         boolean exito = false;
@@ -140,9 +148,18 @@ public class GestionUsuarios {
             }
             objConexionJDBC.closeConnection(conexion);
         }
-        return nuevoUsuario;
+        return exito;
     }
 
+    /*
+     * Signatura: public UsuarioImpl crearObjetoUsuario()
+     * Comentario: Método que crea un objeto usuario para insertar en la BBDD.
+     * Precondiciones:
+     * Entradas:
+     * Salidas: Objeto nuevoUsuario
+     * Entrada/Salida:
+     * Postcondiciones: Devuelve un objeto UsuarioImpl con los datos validados.
+     * */
     public UsuarioImpl crearObjetoUsuario(){
         Validar objValidar = new Validar();
         UsuarioImpl nuevoUsuario = new UsuarioImpl();

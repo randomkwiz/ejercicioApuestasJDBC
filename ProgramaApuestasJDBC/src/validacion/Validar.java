@@ -471,6 +471,15 @@
         }
 
         //Validaciones datos fecha
+
+        /*
+         * Signatura: public int pedirValidarDia()
+         * Comentario: pide y valida un día
+         * Precondiciones:
+         * Entradas:
+         * Salidas: entero dia
+         * Postcondiciones: Asociado al nombre devuelve un entero con el dia validado introducido por el usuario
+         * */
         public int pedirValidarDia(){
             Scanner sc = new Scanner(System.in);
             int dia;
@@ -487,7 +496,14 @@
             }
             return dia;
         }
-
+        /*
+         * Signatura: public  int pedirValidarMes()
+         * Comentario: pide y valida un mes
+         * Precondiciones:
+         * Entradas:
+         * Salidas: entero mes
+         * Postcondiciones: Asociado al nombre devuelve un entero con el mes validado introducido por el usuario
+         * */
         public  int pedirValidarMes(){
             Scanner sc = new Scanner(System.in);
             int mes = 0;
@@ -505,7 +521,14 @@
             return mes;
         }
 
-
+        /*
+         * Signatura:  public int pedirValidarAnio()
+         * Comentario: pide y valida un año
+         * Precondiciones:
+         * Entradas:
+         * Salidas: entero anio
+         * Postcondiciones: Asociado al nombre devuelve un entero con el año validado introducido por el usuario
+         * */
         public int pedirValidarAnio(){
             Scanner sc = new Scanner(System.in);
             int anio = 0;
@@ -523,6 +546,15 @@
 
             return anio;
         }
+
+        /*
+         * Signatura:  public int pedirValidarHora()
+         * Comentario: pide y valida una hora
+         * Precondiciones:
+         * Entradas:
+         * Salidas: entero hora
+         * Postcondiciones: Asociado al nombre devuelve un entero con la hora validada introducida por el usuario
+         * */
         public int pedirValidarHora(){
             Scanner sc = new Scanner(System.in);
             int hora = 0;
@@ -541,6 +573,14 @@
             return hora;
         }
 
+        /*
+         * Signatura:  public int pedirValidarMinutos()
+         * Comentario: pide y valida minutos
+         * Precondiciones:
+         * Entradas:
+         * Salidas: entero minutos
+         * Postcondiciones: Asociado al nombre devuelve un entero con los minutos validados introducidos por el usuario
+         * */
         public int pedirValidarMinutos(){
             Scanner sc = new Scanner(System.in);
             int minutos = 0;
@@ -560,6 +600,15 @@
         }
 
         //Nuevas validaciones 25/11/2019
+
+        /*
+         * Signatura:  public int pedirValidarNumeroGoles()
+         * Comentario: pide y valida el número de goles
+         * Precondiciones:
+         * Entradas:
+         * Salidas: entero numeroGoles
+         * Postcondiciones: Asociado al nombre devuelve un entero con el número de goles validados introducidos por el usuario
+         * */
         public int pedirValidarNumeroGoles(){
             Scanner sc = new Scanner(System.in);
             int numeroGoles = 0;
@@ -716,12 +765,12 @@
 
         /* Signatura:public String pedirValidarCorreo()
          * Comentario:
-         *   Método que pide al usuario un correo y valida que éste no supere los 30 caracteres
-         *   ya que la BBDD sólo admite hasta 30.
+         *   Método que pide al usuario un correo y lo valida
          * Precondiciones:
          * Entradas:
-         * Salidas: String correo, es el correo del usuario.
-         * Postcondiciones:
+         * Salidas: Cadena correo
+         * Postcondiciones: Asociado al nombre devuelve un String correo validado introducido por el usuario.
+         *                  El correo no superará los 30 caracteres ya que la BBDD sólo admite hasta 30.
          * */
         public String pedirValidarCorreo(){
             Scanner sc = new Scanner(System.in);
@@ -737,16 +786,15 @@
             return correo;
         }
 
-        //TODO añadir a proyecto común
-
         /* Signatura:public String pedirValidarPassword()
          * Comentario:
-         *   Método que pide al usuario una contraseña y valida que ésta no supere los 25 caracteres
+         *   Método que pide al usuario una contraseña y la valida que ésta no supere los 25 caracteres
          *   ya que la BBDD sólo admite hasta 25.
          * Precondiciones:
          * Entradas:
-         * Salidas: String password, es la contraseña del usuario.
-         * Postcondiciones:
+         * Salidas: Cadena password
+         * Postcondiciones: Asociado al nombre devuelve un String password validado introducido por el usuario.
+         *                  La contraseña no superará los 25 caracteres ya que la BBDD sólo admite hasta 25.
          * */
         public String pedirValidarPassword(){
             Scanner sc = new Scanner(System.in);
@@ -762,7 +810,6 @@
             return password;
         }
 
-        //TODO añadir a proyecto común
 
         /* Signatura: public boolean pedirValidarIsAdministrador()
          * Comentario:
@@ -770,7 +817,7 @@
          *   que el dato introducido sea correcto.
          * Precondiciones:
          * Entradas:
-         * Salidas: boolean idAdmin, indica si es administrador o usuario estándar.
+         * Salidas: boolean idAdmin
          * Postcondiciones: Asociado al nombre se devuelve un boolean que indica si es Administrador (true) o usuario estándar (false).
          * */
         public boolean pedirValidarIsAdministrador(){
