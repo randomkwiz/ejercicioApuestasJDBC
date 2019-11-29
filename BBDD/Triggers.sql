@@ -248,9 +248,9 @@ INSERT INTO Ingresos (cantidad,descripcion,id_usuario)
 VALUES (300,'Ingreso',1),(-300,'Reintegro',2),(2000,'Ingreso',3)
 
 INSERT INTO Partidos 
-VALUES(3,1,2,'2019-01-12 12:00','2019-01-12 13:45','Sevilla','Betis'),
-(0,1,5,'2019-01-13 13:00','2019-01-13 14:45','Carmona','Coria'),
-(2,1,2,'2019-03-03 22:00','2019-03-03 23:45','Barcelona','Madrid')
+VALUES(3,1,2,'2019-01-12 12:00','2019-01-12 13:45','Sevilla','Betis', 5000,1000,6000),
+(0,1,5,'2019-01-13 13:00','2019-01-13 14:45','Carmona','Coria',6000,12000,500),
+(2,1,2,'2019-03-03 22:00','2019-03-03 23:45','Barcelona','Madrid',6000,9054,6987)
 
 INSERT INTO Apuestas
 VALUES (1.2,50,1,'2019-01-11 12:00',1,1),

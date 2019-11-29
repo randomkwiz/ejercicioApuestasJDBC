@@ -16,5 +16,5 @@ PROCEDURE insertarApuesta
 
 select * from Usuarios
 select * from Partidos
-select * from Apuestas_tipo3
+select * from Apuestas_tipo2
 select * from Apuestas
