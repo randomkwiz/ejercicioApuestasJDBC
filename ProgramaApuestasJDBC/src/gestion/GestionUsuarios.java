@@ -2,6 +2,7 @@ package gestion;
 
 import clases.UsuarioImpl;
 import conexion.ConexionJDBC;
+import validacion.Validar;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
