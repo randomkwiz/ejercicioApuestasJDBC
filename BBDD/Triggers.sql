@@ -2,6 +2,7 @@ USE ApuestasDeportivas
 --USE master
 --En la tabla ingresos cuando se hace un insert hay que hacer un trigger que aumente el saldo del usuario 
 --(Cuando se retira también funcionaria igual).
+--
 GO
 CREATE TRIGGER modificarSaldo ON Ingresos
 AFTER INSERT AS
