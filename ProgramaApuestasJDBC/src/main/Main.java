@@ -60,18 +60,23 @@ public class Main {
         IngresoImpl movimientoSaldo;
         PartidoImpl partidoElegido = null;
         int opcionMenu ;
+        /*
         int tipoApuesta = 0;
         double cuotaApuesta = 0.0;
         double cantidadDineroAApostar = 0.0;
-        Apuesta apuesta = null;
         ApuestaTipo1 apuestaTipo1 = null;
         ApuestaTipo2 apuestaTipo2 = null;
         ApuestaTipo3 apuestaTipo3 = null;
+        */
+        Apuesta apuesta = null;
+
+
+
         GestionUsuarios gestionUsuarios = new GestionUsuarios();
         GestionSaldo gestionSaldo = new GestionSaldo();
         GestionPartidos gestionPartidos = new GestionPartidos();
         GestionApuestas gestionApuestas = new GestionApuestas();
-	    ArrayList<PartidoImpl> listadoPartidosAApostar=new ArrayList<PartidoImpl>();
+	    ArrayList<PartidoImpl> listadoPartidosAApostar = new ArrayList<PartidoImpl>();
 
 
         do{
@@ -102,22 +107,26 @@ public class Main {
                                 case 1:
                                     //1: realizar apuesta
                                     //System.out.println("Opcion 1. En construcción.");
-
+                                    String mensaje = "";
                                     apuesta = validar.pedirValidarApuesta(usuarioLogado);
-                                    //TODO realizar la inserción de la apuesta
-                                    String mensaje = (gestionApuestas.realizarApuesta(apuesta)) ? "La apuesta se realizó correctamente" :
-                                            "Hubo un problema, inténtelo de nuevo más tarde";
+
+                                    if(apuesta.getCuota() > 1.5){
+                                        mensaje = (gestionApuestas.realizarApuesta(apuesta)) ? "La apuesta se realizó correctamente" :
+                                                "Hubo un problema, inténtelo de nuevo más tarde";
+                                    }else{
+                                        mensaje = "La cuota sale inferior a 1.5€, por lo que no se puede realizar esta apuesta.";
+                                    }
                                     System.out.println(mensaje);
                                     break;
                                 case 2:
                                     //2: ver los partidos disponibles para apostar
                                     listadoPartidosAApostar=gestionPartidos.VerPartidosDisponibles();
-
 					                //MostrarListadoPartidosAApostar
                                 	validar.MostrarListadoPartidosAApostar(listadoPartidosAApostar);
                                     break;
                                 case 3:
                                     //3: comprobar el resultado de una apuesta anterior
+                                    //TODO
                                     System.out.println("Opcion 3. En construcción.");
                                     break;
                                 case 4:
@@ -151,7 +160,7 @@ public class Main {
                                      } else {
                                          System.out.println("No se ha realizado el ingreso.");
                                      }
-                                    System.out.println("Opcion 5. En construcciÃ³n.");
+                                    //System.out.println("Opcion 5. En construccion.");
                                     break;
                                 case 6:
                                     //6: ver movimientos de la cuenta incluyendo apuestas realizadas y apuestas ganadas
@@ -164,9 +173,7 @@ public class Main {
                                     break;
                                 case 8:
                                     //8: abrir un partido para que acepte apuestas
-
                                     System.out.println("Abrir un partido para que acepte apuestas.");
-
                                     partidoElegido = validar.pedirValidarPartidoDeUnaLista(gestionPartidos.obtenerListadoPartidos());
                                     if(partidoElegido != null){
                                         gestionPartidos.modificarAperturaPeriodoApuestasDePartido(partidoElegido,true);
