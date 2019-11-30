@@ -59,7 +59,7 @@ public class Main {
         UsuarioImpl usuarioLogado;
         IngresoImpl movimientoSaldo;
         PartidoImpl partidoElegido = null;
-        int opcionMenu, opcionCaso10;
+        int opcionMenu ;
         /*
         int tipoApuesta = 0;
         double cuotaApuesta = 0.0;
@@ -189,11 +189,6 @@ public class Main {
                                     break;
                                 case 10:
                                     //10: consultar las apuestas de un partido, indicando la cantidad de dinero apostado a cada posible resultado
-                                	do 
-                                	{
-                                		System.out.println("Pulsa el numero que quieres consultar o 0 para salir");
-                                		
-                                	}while(opcionCaso10<0 || gestionPartidos.ComprobarExistenciaPartidoPorID(idPartido, partidos));
                                     System.out.println("Opcion 10. En construcción.");
                                     break;
                                 case 11:

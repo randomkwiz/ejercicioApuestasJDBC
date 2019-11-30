@@ -193,7 +193,7 @@ public class Main {
                                 	{
                                 		System.out.println("Pulsa el numero que quieres consultar o 0 para salir");
                                 		
-                                	}while(opcionCaso10<0 || gestionPartidos.ComprobarExistenciaPartidoPorID(idPartido, partidos));
+                                	}while();
                                     System.out.println("Opcion 10. En construcción.");
                                     break;
                                 case 11:
