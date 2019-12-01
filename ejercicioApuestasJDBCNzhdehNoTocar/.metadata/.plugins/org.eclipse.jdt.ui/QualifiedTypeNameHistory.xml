@@ -5,9 +5,9 @@
 <fullyQualifiedTypeName name="gestion.GestionPartidos"/>
 <fullyQualifiedTypeName name="java.util.Date"/>
 <fullyQualifiedTypeName name="java.util.GregorianCalendar"/>
-<fullyQualifiedTypeName name="clases.PartidoImpl"/>
 <fullyQualifiedTypeName name="java.util.ArrayList"/>
 <fullyQualifiedTypeName name="clases.IngresoImpl"/>
 <fullyQualifiedTypeName name="clases.UsuarioImpl"/>
 <fullyQualifiedTypeName name="gestion.GestionUsuarios"/>
+<fullyQualifiedTypeName name="clases.PartidoImpl"/>
 </qualifiedTypeNameHistroy>
