@@ -107,7 +107,17 @@ public class GestionUsuarios {
 		return usuario;
 	}
 
-    public UsuarioImpl insertarUsuario(UsuarioImpl nuevoUsuario){
+    /*
+     * Signatura: public UsuarioImpl insertarUsuario(UsuarioImpl nuevoUsuario)
+     * Comentario: inserta nuevo usuario en la BBDD
+     * Precondiciones: los datos del nuevo usuario estarán validados
+     * Entradas: Objeto UsuarioImpl nuevoUsuario
+     * Salidas: Boolean exito
+     * Entrada/Salida:
+     * Postcondiciones: inserta nuevo usuario en la BBDD. Asociado al nombre devuelve un boolean que indica si la
+     *                  operación se realizó con éxito(true) o no (false)
+     * */
+    public boolean insertarUsuario(UsuarioImpl nuevoUsuario){
         ConexionJDBC objConexionJDBC = new ConexionJDBC();
         Connection conexion = null;
         PreparedStatement preparedStatement = null;
@@ -141,9 +151,18 @@ public class GestionUsuarios {
             }
             objConexionJDBC.closeConnection(conexion);
         }
-        return nuevoUsuario;
+        return exito;
     }
 
+    /*
+     * Signatura: public UsuarioImpl crearObjetoUsuario()
+     * Comentario: crea un objeto usuario
+     * Precondiciones:
+     * Entradas:
+     * Salidas: Objeto UsuarioImpl
+     * Entrada/Salida:
+     * Postcondiciones: Asicado al nombre devuelve un objeto UsuarioImpl con los datos validados
+     * */
     public UsuarioImpl crearObjetoUsuario(){
         Validar objValidar = new Validar();
 	    UsuarioImpl nuevoUsuario = new UsuarioImpl();
