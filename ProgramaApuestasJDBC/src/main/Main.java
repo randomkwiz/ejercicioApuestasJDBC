@@ -44,6 +44,7 @@ package main;
 
 import java.sql.CallableStatement;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import clases.*;
 import gestion.GestionApuestas;
@@ -59,7 +60,7 @@ public class Main {
         UsuarioImpl usuarioLogado;
         IngresoImpl movimientoSaldo;
         PartidoImpl partidoElegido = null;
-        int opcionMenu ;
+        int opcionMenu, opcionCaso10;
         /*
         int tipoApuesta = 0;
         double cuotaApuesta = 0.0;
@@ -194,6 +195,7 @@ public class Main {
                                 	//MostrarListadoPartidosAApostar
                                 	do 
                                 	{
+                                	    Scanner sc = new Scanner(System.in);
                                 		System.out.println("Pulsa 0 para salir o el numero del partido ");
                                 		validar.MostrarListadoPartidosAApostar(listadoPartidosAApostar);
                                 		opcionCaso10=sc.nextInt();
