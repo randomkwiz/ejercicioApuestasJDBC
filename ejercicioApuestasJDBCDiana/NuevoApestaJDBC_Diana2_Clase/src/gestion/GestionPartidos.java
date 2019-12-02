@@ -270,69 +270,69 @@ public class GestionPartidos
 		return exito;
 	}
 
-	//TODO no añadir a proyecto común, esto ha sido modificado
-	//TODO Esto hay que modularlo.
-	public PartidoImpl crearObjetoPartido(){
-		//TODO: (Diana) hacer validar datos objetos Partido, y luego hacer la creacion del partido
-		Scanner sc = new Scanner(System.in);
-		Validar objValidar = new Validar();
-		PartidoImpl partidoNuevo = new PartidoImpl();
-
-		//Variables datos
-		int golLocal, golVisitante;
-		GregorianCalendar fechaComun, fechaInicio, fechaFin;
-		String nombreLocal, nombreVisitante;
-		boolean fechasCorrectas = false;
-		boolean periodoApuestasIsAbierto = false;
-
-
-		System.out.println("Introduzca los Goles de equipo Local"); //TODO No se lee ni escribe en un módulo a no ser que ese sea su cometido
-		golLocal = objValidar.pedirValidarNumeroGoles();
-
-		System.out.println("Introduzca los Goles de equipo Visitante");
-		golVisitante = objValidar.pedirValidarNumeroGoles();
-
-
-		//fechaComun = objValidar.pedirValidarFechaHora(); // Pido la fecha sólo con día, mes y año del partido, que será común al inicio y al final
-		//Paso la fecha común a la de inicio y final, para más tarde introducirles la hora
-		//fechaInicio = new GregorianCalendar(fechaComun.get(Calendar.YEAR),fechaComun.get(Calendar.MONTH),fechaComun.get(Calendar.DAY_OF_MONTH),0,0);
-		//fechaFin = new GregorianCalendar(fechaComun.get(Calendar.YEAR),fechaComun.get(Calendar.MONTH),fechaComun.get(Calendar.DAY_OF_MONTH),0,0);
-
-        /*Pido introducir tiempo de inicio y final de partido y compruebo que final vaya después de inicio,
-        se repite la operación hasta que el usuario lo introduzca correctamente*/
-
-        //TODO puede modularse haciendo que una vez introducidos los datos de partido de haga esta validación
-		do{
-			System.out.println("Introduzca tiempo inicio Partido");
-			//fechaInicio = objValidar.introducirTiempoPartido(fechaInicio);
-			fechaInicio = objValidar.pedirValidarFechaHora();
-			System.out.println("Introduzca tiempo final partido");
-			//fechaFin = objValidar.introducirTiempoPartido(fechaFin);
-			fechaFin = objValidar.pedirValidarFechaHora();
-			fechasCorrectas = objValidar.validarFechaFinPosteriorFechaInicio(fechaInicio, fechaFin);
-			if(!fechasCorrectas){
-				System.out.println("Fechas incorrectas, vuelva a introducirlas");
-			}
-		}while (!fechasCorrectas);
-
-		System.out.println("Introduzca Nombre del equipo Local");
-		nombreLocal = sc.nextLine();
-		System.out.println("Introduzca Nombre del Equipo Visitante");
-		nombreVisitante = sc.nextLine();
-
-		periodoApuestasIsAbierto = objValidar.pedirValidarIsPeriodoApuestasAbierto();
-
-		//Creación de objeto partido pasándole los datos obtenidos por teclado
-		partidoNuevo.setPeriodoApuestasAbierto(periodoApuestasIsAbierto);
-		partidoNuevo.setGolesLocal(golLocal);
-		partidoNuevo.setGolesVisitante(golVisitante);
-		partidoNuevo.setFechaInicio(fechaInicio);
-		partidoNuevo.setFechaFin(fechaFin);
-		partidoNuevo.setNombreLocal(nombreLocal);
-		partidoNuevo.setNombreVisitante(nombreVisitante);
-
-		return partidoNuevo;
-	}
+//	//TODO no añadir a proyecto común, esto ha sido modificado
+//	//TODO Esto hay que modularlo.
+//	public PartidoImpl crearObjetoPartido(){
+//		//TODO: (Diana) hacer validar datos objetos Partido, y luego hacer la creacion del partido
+//		Scanner sc = new Scanner(System.in);
+//		Validar objValidar = new Validar();
+//		PartidoImpl partidoNuevo = new PartidoImpl();
+//
+//		//Variables datos
+//		int golLocal, golVisitante;
+//		GregorianCalendar fechaComun, fechaInicio, fechaFin;
+//		String nombreLocal, nombreVisitante;
+//		boolean fechasCorrectas = false;
+//		boolean periodoApuestasIsAbierto = false;
+//
+//
+//		System.out.println("Introduzca los Goles de equipo Local"); //TODO No se lee ni escribe en un módulo a no ser que ese sea su cometido
+//		golLocal = objValidar.pedirValidarNumeroGoles();
+//
+//		System.out.println("Introduzca los Goles de equipo Visitante");
+//		golVisitante = objValidar.pedirValidarNumeroGoles();
+//
+//
+//		//fechaComun = objValidar.pedirValidarFechaHora(); // Pido la fecha sólo con día, mes y año del partido, que será común al inicio y al final
+//		//Paso la fecha común a la de inicio y final, para más tarde introducirles la hora
+//		//fechaInicio = new GregorianCalendar(fechaComun.get(Calendar.YEAR),fechaComun.get(Calendar.MONTH),fechaComun.get(Calendar.DAY_OF_MONTH),0,0);
+//		//fechaFin = new GregorianCalendar(fechaComun.get(Calendar.YEAR),fechaComun.get(Calendar.MONTH),fechaComun.get(Calendar.DAY_OF_MONTH),0,0);
+//
+//        /*Pido introducir tiempo de inicio y final de partido y compruebo que final vaya después de inicio,
+//        se repite la operación hasta que el usuario lo introduzca correctamente*/
+//
+//        //TODO puede modularse haciendo que una vez introducidos los datos de partido de haga esta validación
+//		do{
+//			System.out.println("Introduzca tiempo inicio Partido");
+//			//fechaInicio = objValidar.introducirTiempoPartido(fechaInicio);
+//			fechaInicio = objValidar.pedirValidarFechaHora();
+//			System.out.println("Introduzca tiempo final partido");
+//			//fechaFin = objValidar.introducirTiempoPartido(fechaFin);
+//			fechaFin = objValidar.pedirValidarFechaHora();
+//			fechasCorrectas = objValidar.validarFechaFinPosteriorFechaInicio(fechaInicio, fechaFin);
+//			if(!fechasCorrectas){
+//				System.out.println("Fechas incorrectas, vuelva a introducirlas");
+//			}
+//		}while (!fechasCorrectas);
+//
+//		System.out.println("Introduzca Nombre del equipo Local");
+//		nombreLocal = sc.nextLine();
+//		System.out.println("Introduzca Nombre del Equipo Visitante");
+//		nombreVisitante = sc.nextLine();
+//
+//		periodoApuestasIsAbierto = objValidar.pedirValidarIsPeriodoApuestasAbierto();
+//
+//		//Creación de objeto partido pasándole los datos obtenidos por teclado
+//		partidoNuevo.setPeriodoApuestasAbierto(periodoApuestasIsAbierto);
+//		partidoNuevo.setGolesLocal(golLocal);
+//		partidoNuevo.setGolesVisitante(golVisitante);
+//		partidoNuevo.setFechaInicio(fechaInicio);
+//		partidoNuevo.setFechaFin(fechaFin);
+//		partidoNuevo.setNombreLocal(nombreLocal);
+//		partidoNuevo.setNombreVisitante(nombreVisitante);
+//
+//		return partidoNuevo;
+//	}
 
 	//TODO: añadir a proyecto común 01/12/2019
 

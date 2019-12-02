@@ -71,6 +71,8 @@ public class Main {
         GestionPartidos gestionPartidos=new GestionPartidos();
 	    ArrayList<PartidoImpl> listadoPartidosAApostar=new ArrayList<PartidoImpl>();
 
+	    PartidoImpl partidoNuevo;
+
 
         do{
             //pedirValidarSiCrearCuentaOIniciarSesion
@@ -178,6 +180,10 @@ public class Main {
                                     //aqui empiezan las opciones de admin
                                     //7: crear un nuevo partido
                                     System.out.println("Opcion 7. En construcción.");
+
+                                    partidoNuevo = validar.pedirValidarDatosPartido();
+                                    gestionPartidos.insertarPartido(partidoNuevo);
+
                                     break;
                                 case 8:
                                     //8: abrir un partido para que acepte apuestas
