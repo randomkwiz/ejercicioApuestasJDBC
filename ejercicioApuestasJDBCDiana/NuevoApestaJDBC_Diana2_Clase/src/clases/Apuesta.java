@@ -55,11 +55,11 @@ public abstract class Apuesta {
 	 * Signatura: public abstract void consultarResultadoApuesta(int id)
 	 * Comentario: muestra los resultados de una apuesta anterior
 	 * Precondiciones: los datos de la apuesta deberán existir en la BBDD
-	 * Entradas:
+	 * Entradas: entero idApuesta
 	 * Salidas:
 	 * Postcondiciones:
 	 * */
-	public abstract void consultarResultadoApuesta(int id);
+	public abstract void consultarResultadoApuesta(int idApuesta);
 
 	//getter y setters
 	public int getId() {
