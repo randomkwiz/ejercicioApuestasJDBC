@@ -159,7 +159,7 @@ public class Main {
                                          gestionUsuarios.obtenerObjetoUsuarioCompleto(usuarioLogado);
                                          System.out.println("Su saldo ha sido modificado, ahora es de " + usuarioLogado.getCantidadActualDinero());
                                      } else {
-                                         System.out.println("No se ha realizado el ingreso.");
+                                         System.out.println("No se ha realizado la retiraada.");
                                      }
                                     //System.out.println("Opcion 5. En construccion.");
                                     break;
