@@ -42,7 +42,8 @@ public class ApuestaTipo2 extends Apuesta{
 
     /*
      * Signatura: public abstract void consultarResultadoApuesta(int id)
-     * Comentario: muestra los resultados de una apuesta anterior del tipo2
+     * Comentario: los datos de la apuesta deberán existir en la BBDD. El idApuesta lo habrá consultado el usuario
+     *             previamente para saber qué Apuesta concreta debe consultar.
      * Precondiciones: los datos de la apuesta deberán existir en la BBDD
      * Entradas: entero idApuesta
      * Salidas:

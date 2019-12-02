@@ -154,31 +154,7 @@ public class GestionUsuarios {
         return exito;
     }
 
-    /*
-     * Signatura: public UsuarioImpl crearObjetoUsuario()
-     * Comentario: crea un objeto usuario
-     * Precondiciones:
-     * Entradas:
-     * Salidas: Objeto UsuarioImpl
-     * Entrada/Salida:
-     * Postcondiciones: Asicado al nombre devuelve un objeto UsuarioImpl con los datos validados
-     * */
-    public UsuarioImpl crearObjetoUsuario(){
-        Validar objValidar = new Validar();
-	    UsuarioImpl nuevoUsuario = new UsuarioImpl();
 
-	    double cantidadActualDinero = objValidar.pedirValidarCantidadDinero();
-	    String correo = objValidar.pedirValidarCorreo();
-	    String password = objValidar.pedirValidarPassword();
-	    boolean isAdmin = objValidar.pedirValidarIsAdministrador();
-
-        nuevoUsuario.setCantidadActualDinero(cantidadActualDinero);
-        nuevoUsuario.setCorreo(correo);
-        nuevoUsuario.setPassword(password);
-        nuevoUsuario.setAdmin(isAdmin);
-
-        return nuevoUsuario;
-    }
 
 
 }

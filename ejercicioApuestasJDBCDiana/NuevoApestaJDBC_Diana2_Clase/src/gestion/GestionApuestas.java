@@ -177,74 +177,7 @@ public class GestionApuestas {
 
 
     //Consultar apuesta según fecha
-    //TODO añadir a proyecto común
 
-    /*
-     * Signatura: public ArrayList<Apuesta> obtenerListaApuestasPorFecha(UsuarioImpl usuarioApuesta)
-     * Comentario: obtiene un listado de apuestas según la fecha
-     * Precondiciones:
-     * Entradas:
-     * Salidas: ArrayList de apuesta
-     * Postcondiciones: asociado al nombre se devuelve la lista de apuestas según la fecha instroudcida por el usuario
-     * */
-    public ArrayList<Apuesta> obtenerListaApuestasPorFecha(UsuarioImpl usuarioApuesta){  //Usuario que realiza la consulta, no estoy segura de si haría falta
-        Validar objValidar = new Validar();
-        ConexionJDBC objConexion = new ConexionJDBC();
-        Connection conexion = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-
-        Apuesta apuesta = null;
-        PartidoImpl partido;
-        GestionPartidos gestionPartidos = new GestionPartidos();
-        ArrayList<Apuesta> listaApuestasPorFecha = new ArrayList<>();
-
-        //Fecha original
-        GregorianCalendar fechaApuesta = objValidar.pedirValidarFechaHora();
-        //Fecha formateada para consulta: mes/dia/año
-        String fechaFormatoConversion = objValidar.pedirValidarFechaParaFormatoConversion(fechaApuesta); //Convierto la fecha al formato necesario para la sentencia Sql
-
-        String sentenciaSql = "SELECT * FROM  Apuestas WHERE Convert(VARCHAR(10),fechaHora,101) =  Convert(Varchar(10), ?,101) and id_usuario = ?";
-
-
-        try{
-            conexion = objConexion.getConnection();
-            preparedStatement = conexion.prepareStatement(sentenciaSql);
-            preparedStatement.setString(1, fechaFormatoConversion);
-            preparedStatement.setInt(2, usuarioApuesta.getId());
-            resultSet = preparedStatement.executeQuery();
-
-            //Partido según fecha apuesta
-            partido = gestionPartidos.obtenerPartidoPorFechaApuesta(fechaApuesta);
-
-
-            while (resultSet.next()){
-                apuesta.setId(resultSet.getInt("id"));
-                apuesta.setCuota(resultSet.getInt("cuota"));
-                apuesta.setCantidad(resultSet.getDouble("cantidad"));
-                apuesta.setTipo(resultSet.getString("tipo").charAt(0)); //Para tipo char
-//              //Fecha //TODO revisar
-                fechaApuesta.setTime(resultSet.getDate("fechaHora"));
-                apuesta.setFechaHora(fechaApuesta); //TODO creo que no hace falta
-                apuesta.setUsuario(usuarioApuesta); //TODO creo que no hace falta
-                apuesta.setPartido(partido);
-//                usuarioApuesta.setId(resultSet.getInt("id_usuario"));
-
-                listaApuestasPorFecha.add(apuesta);
-            }
-        }catch (SQLException e){
-            e.printStackTrace();
-        }finally {
-            try {
-                resultSet.close();
-                preparedStatement.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            objConexion.closeConnection(conexion);
-        }
-        return listaApuestasPorFecha;
-    }
 
     //TODO añadir a proyecto común
 
@@ -256,7 +189,7 @@ public class GestionApuestas {
      * Salidas: ArrayList de apuesta
      * Postcondiciones:
      * */
-    public void verResultadosApuesta(UsuarioImpl usuarioApuesta, Apuesta tipoApuesta) {
+    public void verResultadosApuesta(UsuarioImpl usuarioApuesta) {
         Validar objValidar = new Validar();
 
         ConexionJDBC objConexion = new ConexionJDBC();
@@ -269,7 +202,7 @@ public class GestionApuestas {
         Apuesta apuesta = null;
 
         //Obtengo lista apuestas
-        ArrayList<Apuesta> listaApuestas = obtenerListaApuestasPorFecha(usuarioApuesta);
+        ArrayList<Apuesta> listaApuestas = objValidar.validarListaApuestasPorFecha(usuarioApuesta);
         //Muestro lista apuestas
         objValidar.mostrarListaApuestasPorFecha(listaApuestas);
 

@@ -5,6 +5,7 @@
     import clases.PartidoImpl;
     import clases.UsuarioImpl;
     import conexion.ConexionJDBC;
+    import gestion.GestionPartidos;
     import interfaces.Partido;
     import utilidad.Utilidad;
 
@@ -220,6 +221,33 @@
             System.out.println("9. Cerrar un partido para que no se pueda apostar");
             System.out.println("10. Consultar las apuestas de un partido");
             System.out.println("11. Pagar las apuestas ganadoras de un partido finalizado");
+        }
+
+        //TODO cambiar en común
+        /*
+         * Signatura: public UsuarioImpl pedirValidarDatosUsuario()
+         * Comentario: crea un objeto usuario
+         * Precondiciones:
+         * Entradas:
+         * Salidas: Objeto UsuarioImpl
+         * Entrada/Salida:
+         * Postcondiciones: Asicado al nombre devuelve un objeto UsuarioImpl con los datos validados
+         * */
+        public UsuarioImpl pedirValidarDatosUsuario(){
+            Validar objValidar = new Validar();
+            UsuarioImpl nuevoUsuario = new UsuarioImpl();
+
+            double cantidadActualDinero = objValidar.pedirValidarCantidadDinero();
+            String correo = objValidar.pedirValidarCorreo();
+            String password = objValidar.pedirValidarPassword();
+            boolean isAdmin = objValidar.pedirValidarIsAdministrador();
+
+            nuevoUsuario.setCantidadActualDinero(cantidadActualDinero);
+            nuevoUsuario.setCorreo(correo);
+            nuevoUsuario.setPassword(password);
+            nuevoUsuario.setAdmin(isAdmin);
+
+            return nuevoUsuario;
         }
 
         /*
@@ -862,7 +890,7 @@
             int mes = fechaApuesta.get(Calendar.MONTH);
             int anio = fechaApuesta.get(Calendar.YEAR);
 
-            fechaFormatoConversion = dia + "/" + mes + "/" + anio;   // mes/dia/año
+            fechaFormatoConversion = mes + "/" + dia + "/" + anio;   // mes/dia/año, así es como funciona en la consulta
 
             return fechaFormatoConversion;
 
@@ -888,6 +916,75 @@
                 }
             }while (idApuesta < 0);
             return idApuesta;
+        }
+
+        //TODO añadir a proyecto común
+
+        /*
+         * Signatura: public ArrayList<Apuesta> obtenerListaApuestasPorFecha(UsuarioImpl usuarioApuesta)
+         * Comentario: obtiene un listado de apuestas según la fecha
+         * Precondiciones:
+         * Entradas:
+         * Salidas: ArrayList de apuesta
+         * Postcondiciones: asociado al nombre se devuelve la lista de apuestas según la fecha instroudcida por el usuario
+         * */
+        public ArrayList<Apuesta> validarListaApuestasPorFecha(UsuarioImpl usuarioApuesta){  //Usuario que realiza la consulta, no estoy segura de si haría falta
+            //Atributos conexion
+            ConexionJDBC objConexion = new ConexionJDBC();
+            Connection conexion = null;
+            PreparedStatement preparedStatement = null;
+            ResultSet resultSet = null;
+
+            Validar objValidar = new Validar();
+            Apuesta apuesta = null;
+            PartidoImpl partido;
+            GestionPartidos gestionPartidos = new GestionPartidos();
+            ArrayList<Apuesta> listaApuestasPorFecha = new ArrayList<>();
+
+            //Fecha original
+            GregorianCalendar fechaApuesta = objValidar.pedirValidarFechaHora();
+            //Fecha formateada para consulta: mes/dia/año
+            String fechaFormatoConversion = objValidar.pedirValidarFechaParaFormatoConversion(fechaApuesta); //Convierto la fecha al formato necesario para la sentencia Sql
+
+            String sentenciaSql = "SELECT * FROM  Apuestas WHERE Convert(VARCHAR(10),fechaHora,101) =  Convert(Varchar(10), ?,101) and id_usuario = ?";
+
+
+            try{
+                conexion = objConexion.getConnection();
+                preparedStatement = conexion.prepareStatement(sentenciaSql);
+                preparedStatement.setString(1, fechaFormatoConversion);
+                preparedStatement.setInt(2, usuarioApuesta.getId());
+                resultSet = preparedStatement.executeQuery();
+
+                //Partido según fecha apuesta
+                partido = gestionPartidos.obtenerPartidoPorFechaApuesta(fechaApuesta);
+
+
+                while (resultSet.next()){
+                    apuesta.setId(resultSet.getInt("id"));
+                    apuesta.setCuota(resultSet.getInt("cuota"));
+                    apuesta.setCantidad(resultSet.getDouble("cantidad"));
+                    apuesta.setTipo(resultSet.getString("tipo").charAt(0)); //Para tipo char
+//              //Fecha //TODO revisar
+                    fechaApuesta.setTime(resultSet.getDate("fechaHora"));
+                    apuesta.setFechaHora(fechaApuesta); //TODO creo que no hace falta
+                    apuesta.setUsuario(usuarioApuesta); //TODO creo que no hace falta
+                    apuesta.setPartido(partido);
+
+                    listaApuestasPorFecha.add(apuesta);
+                }
+            }catch (SQLException e){
+                e.printStackTrace();
+            }finally {
+                try {
+                    resultSet.close();
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                objConexion.closeConnection(conexion);
+            }
+            return listaApuestasPorFecha;
         }
 
         /*

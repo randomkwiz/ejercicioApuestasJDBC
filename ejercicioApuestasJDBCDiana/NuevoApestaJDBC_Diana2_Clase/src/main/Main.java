@@ -42,10 +42,10 @@ fin
 * */
 package main;
 
-import java.sql.CallableStatement;
 import java.util.ArrayList;
 
 import clases.*;
+import gestion.GestionApuestas;
 import gestion.GestionPartidos;
 import gestion.GestionSaldo;
 import gestion.GestionUsuarios;
@@ -56,6 +56,7 @@ public class Main {
         int opcionLoginOrCreateNewAccount ;
         Validar validar = new Validar();
         UsuarioImpl usuarioLogado;
+        UsuarioImpl nuevoUsuario;
         IngresoImpl movimientoSaldo;
         PartidoImpl partidoElegido = null;
         int opcionMenu ;
@@ -69,9 +70,10 @@ public class Main {
         GestionUsuarios gestionUsuarios = new GestionUsuarios();
         GestionSaldo gestionSaldo = new GestionSaldo();
         GestionPartidos gestionPartidos=new GestionPartidos();
+        GestionApuestas gestionApuestas = new GestionApuestas();
 	    ArrayList<PartidoImpl> listadoPartidosAApostar=new ArrayList<PartidoImpl>();
 
-	    PartidoImpl partidoNuevo;
+	    PartidoImpl partidoNuevo = null;
 
 
         do{
@@ -137,7 +139,10 @@ public class Main {
                                     break;
                                 case 3:
                                     //3: comprobar el resultado de una apuesta anterior
-                                    System.out.println("Opcion 3. En construcción.");
+                                    //System.out.println("Opcion 3. En construcción.");
+                                    //TODO añadir a proyecto común
+                                    System.out.println("Comprobar resultado de una apuesta");
+                                    gestionApuestas.verResultadosApuesta(usuarioLogado);
                                     break;
                                 case 4:
                                     //4: hacer un ingreso en cuenta
@@ -179,10 +184,16 @@ public class Main {
                                 case 7:
                                     //aqui empiezan las opciones de admin
                                     //7: crear un nuevo partido
-                                    System.out.println("Opcion 7. En construcción.");
-
+                                    //System.out.println("Opcion 7. En construcción.");
+                                    //TODO añadir a proyecto común
+                                    System.out.println("Registrar nuevo partido");
                                     partidoNuevo = validar.pedirValidarDatosPartido();
-                                    gestionPartidos.insertarPartido(partidoNuevo);
+                                    boolean exito = gestionPartidos.insertarPartido(partidoNuevo);
+                                    if (exito){
+                                        System.out.println("Nuevo partido registrado correctamente");
+                                    }else {
+                                        System.out.println("Error al registrar nuevo partido");
+                                    }
 
                                     break;
                                 case 8:
@@ -218,6 +229,14 @@ public class Main {
                     case 2:
                         //crear cuenta (usuario standard)
                         System.out.println("Vas a crear una cuenta nueva");
+                        //TODO añadir a proyecto común
+                        nuevoUsuario = validar.pedirValidarDatosUsuario();
+                        boolean exito = gestionUsuarios.insertarUsuario(nuevoUsuario);
+                        if(exito){
+                            System.out.println("Nuevo usuario registrado correctamente");
+                        }else {
+                            System.out.println("Error al registrar nuevo usuario");
+                        }
                         break;
                 }
 
