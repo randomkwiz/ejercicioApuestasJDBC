@@ -198,7 +198,7 @@ public class Main {
                                 	    Scanner sc = new Scanner(System.in);
                                 		System.out.println("Pulsa 0 para salir o el numero del partido ");
                                 		validar.MostrarListadoPartidosAApostar(listadoPartidosAApostar);
-                                		opcionCaso10=sc.nextInt();
+                                		opcionCaso10=sc.nextInt()-1;//ponerlo en un metodo
                                 	}while(opcionCaso10!=0 && !gestionPartidos.ComprobarExistenciaDelPartidoPorId(opcionCaso10, listadoPartidosAApostar));
                                 	
                                 	if(opcionCaso10!=0) 
