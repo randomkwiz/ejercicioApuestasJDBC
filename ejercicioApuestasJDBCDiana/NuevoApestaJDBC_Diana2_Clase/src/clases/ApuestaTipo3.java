@@ -40,12 +40,12 @@ public class ApuestaTipo3 extends Apuesta {
      * Signatura: public abstract void consultarResultadoApuesta(int id)
      * Comentario: muestra los resultados de una apuesta anterior del tipo3
      * Precondiciones: los datos de la apuesta deberán existir en la BBDD
-     * Entradas:
+     * Entradas: entero idApuesta
      * Salidas:
      * Postcondiciones:
      * */
     @Override
-    public void consultarResultadoApuesta(int id) {
+    public void consultarResultadoApuesta(int idApuesta) {
         ConexionJDBC objConexion = new ConexionJDBC();
         Connection conexion = null;
         PreparedStatement preparedStatement = null;
@@ -56,7 +56,7 @@ public class ApuestaTipo3 extends Apuesta {
         try{
             conexion = objConexion.getConnection();
             preparedStatement = conexion.prepareStatement(sentenciaSql);
-            preparedStatement.setInt(1, id);
+            preparedStatement.setInt(1, idApuesta);
             resultset = preparedStatement.executeQuery();
 
             while (resultset.next()){
