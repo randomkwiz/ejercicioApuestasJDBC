@@ -167,7 +167,7 @@ public class Main {
                                     break;
                                 case 6:
                                     //6: ver movimientos de la cuenta incluyendo apuestas realizadas y apuestas ganadas
-                                    System.out.println("Opcion 6. En construcción.");
+                                    gestionUsuarios.VerMovimientosCuentaUsuario(usuarioLogado.getId());
                                     break;
                                 case 7:
                                     //aqui empiezan las opciones de admin
