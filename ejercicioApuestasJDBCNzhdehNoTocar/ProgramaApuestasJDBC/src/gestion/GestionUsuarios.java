@@ -1,5 +1,6 @@
 package gestion;
 
+import clases.IngresoImpl;
 import clases.UsuarioImpl;
 import conexion.ConexionJDBC;
 
@@ -30,7 +31,7 @@ public class GestionUsuarios {
 
         String miSelect = "select * from Usuarios  where correo = ?\n" +
                 "        and\n" +
-                "                contraseÃ±a = ?";
+                "                contraseña = ?";
         try {
             //Preparo el statement
             preparedStatement = connection.prepareStatement(miSelect);
@@ -44,7 +45,7 @@ public class GestionUsuarios {
                 usuario.setId(resultSet.getInt("id"));
                 usuario.setCantidadActualDinero(resultSet.getDouble("saldo"));
                 usuario.setCorreo(resultSet.getString("correo"));
-                usuario.setPassword(resultSet.getString("contraseÃ±a"));
+                usuario.setPassword(resultSet.getString("contraseña"));
                 usuario.setAdmin(resultSet.getBoolean("isAdmin"));
             }
             exito = true;
@@ -104,4 +105,52 @@ public class GestionUsuarios {
 		}
 		return usuario;
 	}
+	
+	 /*
+		prototipo: public UsuarioImpl ObtenerUsuarioPorId(int idUsuario)  
+		comentarios: sirve para obtener un usuario seguin una id dada
+		precondiciones: id correcto
+		entradas: entero idUsuario
+		salidas: objeto usuario
+		entradas/salidas: no hay 
+		postcondiciones: AN devuelve un objeto usuario
+		*/
+		
+		public void VerMovimientosCuentaUsuario(int idUsuario) 
+		{
+			ConexionJDBC conexionJDBC = new ConexionJDBC();
+			Connection connection = conexionJDBC.getConnection();
+			PreparedStatement preparedStatement = null;
+			ResultSet resultSet = null;
+			IngresoImpl ingreso=null;
+			UsuarioImpl u=new UsuarioImpl();
+			u.setId(idUsuario);
+
+			String miSelect = "select * from Ingresos where id_usuario= ?";
+			try {
+				//Preparo el statement
+				preparedStatement = connection.prepareStatement(miSelect);
+				preparedStatement.setInt(1,idUsuario);
+				//Ejecuto
+				resultSet = preparedStatement.executeQuery();
+
+				while (resultSet.next()) 
+				{
+					ingreso = new IngresoImpl();
+					
+					ingreso.setId(resultSet.getInt("id"));
+					ingreso.setCantidad(resultSet.getDouble("cantidad"));
+					ingreso.setDescripcion(resultSet.getString("descripcion"));
+					ingreso.setUsuario(u);
+					
+					System.out.println(ingreso.getId()+", "+ingreso.getCantidad()+", "+ingreso.getDescripcion()+", "+ingreso.getUsuario().getId());
+				}
+
+
+				preparedStatement.close();
+				conexionJDBC.closeConnection(connection);
+			}catch (SQLException e){
+				e.getStackTrace();
+			}
+		}
 }

@@ -17,8 +17,7 @@ public class GestionPartidos
 	/*
 	prototipo: public ArrayList<PartidoImpl> VerPartidosDisponibles()
 	comentarios: este mÃ©todo nos muestra los partidos disponibles para apostar
-					se puede apostra si la fecha de la apuesta estÃ¡ entre dos 
-					dÃ­as antes de la fecha del partido y diez minutos antes del final del partido
+					se puede apostra si el periodo esta abierto para apostar
 	precondiciones: no hay
 	entradas: no hay
 	salidas: ArrayList<PartidoImpl> listadoPartidos
@@ -42,6 +41,80 @@ public class GestionPartidos
 			//Preparo el statement
 			preparedStatement = connection.prepareStatement(miSelect);
 			preparedStatement.setBoolean(1, true);
+			//Ejecuto
+			resultSet = preparedStatement.executeQuery();
+
+			while (resultSet.next()) 
+			{
+				partido = new PartidoImpl();
+				fechaInicio = new GregorianCalendar();
+				fechaFin = new GregorianCalendar();
+				
+				
+				partido.setId(resultSet.getInt("id"));
+				partido.setPeriodoApuestasAbierto(resultSet.getBoolean("isPeriodoApuestasAbierto"));
+				partido.setGolesLocal(resultSet.getInt("golLocal"));
+				partido.setGolesVisitante(resultSet.getInt("golVisitante"));
+				
+				if(resultSet.getDate("fechaInicio") != null)
+				{
+					fechaInicio.setTime(resultSet.getDate("fechaInicio"));
+				}
+				else
+				{
+					fechaFin = null;
+				}
+				partido.setFechaInicio(fechaInicio);
+				if (resultSet.getDate("fechaFin") != null) 
+				{
+					fechaFin.setTime(resultSet.getDate("fechaFin"));
+				} 
+				else 
+				{
+					fechaFin = null;
+				}
+				partido.setFechaFin(fechaFin);
+				partido.setNombreLocal(resultSet.getString("nombreLocal"));
+				partido.setNombreVisitante(resultSet.getString("nombreVisitante"));
+
+				listadoPartidos.add(partido);
+			}
+
+
+			preparedStatement.close();
+			conexionJDBC.closeConnection(connection);
+		}catch (SQLException e){
+			e.getStackTrace();
+		}
+		return listadoPartidos;
+	}
+	
+	/*
+	prototipo: public ArrayList<PartidoImpl> VerTodosLosPartidosDisponibles()
+	comentarios: este mÃ©todo nos muestra todos los partidos 
+	precondiciones: no hay
+	entradas: no hay
+	salidas: ArrayList<PartidoImpl> listadoPartidos
+	entradas/salidas: no hay 
+	postcondiciones: AN devuelve el array con todos los partidos 
+	*/
+	
+	public ArrayList<PartidoImpl> VerTodosLosPartidosDisponibles() 
+	{
+		ConexionJDBC conexionJDBC = new ConexionJDBC();
+		Connection connection = conexionJDBC.getConnection();
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		ArrayList<PartidoImpl> listadoPartidos = new ArrayList<>();
+		PartidoImpl partido;
+		GregorianCalendar fechaInicio;
+		GregorianCalendar fechaFin;
+
+		String miSelect = "select * from Partidos";
+		try {
+			//Preparo el statement
+			preparedStatement = connection.prepareStatement(miSelect);
+			//preparedStatement.setBoolean(1, true);
 			//Ejecuto
 			resultSet = preparedStatement.executeQuery();
 
@@ -126,7 +199,7 @@ public class GestionPartidos
 			while (resultSet.next()) 
 			{
 				golLocal=resultSet.getInt("golLocal");
-				golLocal=resultSet.getInt("golVisitante");
+				golVisitante=resultSet.getInt("golVisitante");
 				gol=resultSet.getInt("gol");
 				pujaTipo2=resultSet.getString("PujaTipo2");
 				pujaTipo3=resultSet.getString("PujaTipo3");
@@ -143,28 +216,53 @@ public class GestionPartidos
 	}
 	
 	/*
-	prototipo: public boolean ComprobarExistenciaPartidoPorID(int idPartido,ArrayList<PartidoImpl> partidos)
-	comentarios: este metodo comprueba si la existencia de un partido por su id
+	prototipo: public void DineroApostadoPorUnPosibleResultadoDeUnPartido(int idPartido)
+	comentarios: este metodo sirve para ver si un partido existe
 	precondiciones: array lleno
-	entradas: entero id de un partido, array de partidos
+	entradas: entero id de un partido, arrayList de partidos
 	salidas: boolean
-	entradas/salidas: no hay
-	postcondiciones: AN devuelve true si encuentra el partido y false si nno
+	entradas/salidas: no hay 
+	postcondiciones: AN devuelve true si existe y false si no
 	*/
 	
-	public boolean ComprobarExistenciaPartidoPorID(int idPartido,ArrayList<PartidoImpl> partidos)
+	public boolean ComprobarExistenciaDelPartidoPorId(int idPartido,ArrayList<PartidoImpl> partodo)
 	{
-		boolean encontrado=false;
+		boolean existe=false;
 		
-		for(int i=0;i<partidos.size() || encontrado==true;i++)
+		for(int i=0;i<partodo.size() && existe==false;i++)
 		{
-			if(partidos.get(i).getId()==idPartido) 
+			if(partodo.get(i).getId()==idPartido)
 			{
-				encontrado=true;
+				existe=true;
 			}
 		}
+		return existe;
+	}
+	/*
+	prototipo: public PartidoImpl ObtenerPartidoPorId(int idPartido,ArrayList<PartidoImpl> partodo)
+	comentarios: este metodo sirve para obtener un partido por su id
+	precondiciones: array lleno
+	entradas: entero id de un partido, arrayList de partidos
+	salidas: objeto partido
+	entradas/salidas: no hay 
+	postcondiciones: AN devuelve el partido cuyo id es el que se pasa por parametro
+	*/
+	
+	public PartidoImpl ObtenerPartidoPorId(int idPartido,ArrayList<PartidoImpl> partodo)
+	{
+		PartidoImpl p=new PartidoImpl();
+		boolean encontrado=false;
 		
-		return encontrado;
+		for(int i=0;i<partodo.size() && encontrado==false;i++)
+		{
+			if(partodo.get(i).getId()==idPartido)
+			{
+				p=partodo.get(i);
+				encontrado=true;
+				
+			}
+		}
+		return p;
 	}
 
 	/*

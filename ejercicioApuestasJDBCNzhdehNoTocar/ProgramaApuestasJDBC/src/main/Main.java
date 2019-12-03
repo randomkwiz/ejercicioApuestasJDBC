@@ -44,9 +44,11 @@ package main;
 
 import java.sql.CallableStatement;
 import java.util.ArrayList;
+import java.util.Scanner;
 
-import clases.*;
-import gestion.GestionApuestas;
+import clases.IngresoImpl;
+import clases.PartidoImpl;
+import clases.UsuarioImpl;
 import gestion.GestionPartidos;
 import gestion.GestionSaldo;
 import gestion.GestionUsuarios;
@@ -54,29 +56,17 @@ import validacion.Validar;
 
 public class Main {
     public static void main(String[] args) {
+    	Scanner sc=new Scanner (System.in);
         int opcionLoginOrCreateNewAccount ;
         Validar validar = new Validar();
         UsuarioImpl usuarioLogado;
         IngresoImpl movimientoSaldo;
         PartidoImpl partidoElegido = null;
-        int opcionMenu, opcionCaso10;
-        /*
-        int tipoApuesta = 0;
-        double cuotaApuesta = 0.0;
-        double cantidadDineroAApostar = 0.0;
-        ApuestaTipo1 apuestaTipo1 = null;
-        ApuestaTipo2 apuestaTipo2 = null;
-        ApuestaTipo3 apuestaTipo3 = null;
-        */
-        Apuesta apuesta = null;
-
-
-
+        int opcionMenu ,opcionCaso10=0;
         GestionUsuarios gestionUsuarios = new GestionUsuarios();
         GestionSaldo gestionSaldo = new GestionSaldo();
-        GestionPartidos gestionPartidos = new GestionPartidos();
-        GestionApuestas gestionApuestas = new GestionApuestas();
-	    ArrayList<PartidoImpl> listadoPartidosAApostar = new ArrayList<PartidoImpl>();
+        GestionPartidos gestionPartidos=new GestionPartidos();
+        ArrayList<PartidoImpl> listadoPartidosAApostar=new ArrayList<PartidoImpl>();
 
 
         do{
@@ -106,27 +96,17 @@ public class Main {
                             switch (opcionMenu) {
                                 case 1:
                                     //1: realizar apuesta
-                                    //System.out.println("Opcion 1. En construcción.");
-                                    String mensaje = "";
-                                    apuesta = validar.pedirValidarApuesta(usuarioLogado);
-
-                                    if(apuesta.getCuota() > 1.5){
-                                        mensaje = (gestionApuestas.realizarApuesta(apuesta)) ? "La apuesta se realizó correctamente" :
-                                                "Hubo un problema, inténtelo de nuevo más tarde";
-                                    }else{
-                                        mensaje = "La cuota sale inferior a 1.5€, por lo que no se puede realizar esta apuesta.";
-                                    }
-                                    System.out.println(mensaje);
+                                    System.out.println("Opcion 1. En construcción.");
                                     break;
                                 case 2:
                                     //2: ver los partidos disponibles para apostar
-                                    listadoPartidosAApostar=gestionPartidos.VerPartidosDisponibles();
-					                //MostrarListadoPartidosAApostar
+                                	listadoPartidosAApostar=gestionPartidos.VerPartidosDisponibles();
+                                	
+                                	//MostrarListadoPartidosAApostar
                                 	validar.MostrarListadoPartidosAApostar(listadoPartidosAApostar);
                                     break;
                                 case 3:
                                     //3: comprobar el resultado de una apuesta anterior
-                                    //TODO
                                     System.out.println("Opcion 3. En construcción.");
                                     break;
                                 case 4:
@@ -134,7 +114,7 @@ public class Main {
                                     //System.out.println("Opcion 4. En construcción.");
                                     System.out.println("Hacer un ingreso en cuenta");
                                     movimientoSaldo = new IngresoImpl();
-                                    movimientoSaldo.setCantidad(validar.pedirValidarCantidadDinero());
+                                    movimientoSaldo.setCantidad(validar.pedirValidarCantidadIngresoDinero());
                                     movimientoSaldo.setDescripcion(validar.pedirValidarDescripcionMovimientoDinero());
                                     if (validar.pedirValidarEstaSeguroDeseaRealizarMovimiento(movimientoSaldo)) {
                                         gestionSaldo.realizarIngresoEnCuentaUsuario(usuarioLogado, movimientoSaldo);
@@ -150,7 +130,7 @@ public class Main {
                                     //5: hacer una retirada de dinero
                                 	 System.out.println("Hacer una retirada de la cuenta");
                                      movimientoSaldo = new IngresoImpl();
-                                     movimientoSaldo.setCantidad(validar.pedirValidarCantidadDinero());
+                                     movimientoSaldo.setCantidad(validar.pedirValidarCantidadIngresoDinero());
                                      movimientoSaldo.setDescripcion(validar.pedirValidarDescripcionMovimientoDinero());
                                      if (validar.pedirValidarEstaSeguroDeseaRealizarMovimiento(movimientoSaldo)) {
                                          gestionSaldo.RetirarDineroDeLaCuentaUsuario(usuarioLogado, movimientoSaldo);
@@ -158,13 +138,14 @@ public class Main {
                                          gestionUsuarios.obtenerObjetoUsuarioCompleto(usuarioLogado);
                                          System.out.println("Su saldo ha sido modificado, ahora es de " + usuarioLogado.getCantidadActualDinero());
                                      } else {
-                                         System.out.println("No se ha realizado el ingreso.");
+                                         System.out.println("No se ha realizado la retirada.");
                                      }
-                                    //System.out.println("Opcion 5. En construccion.");
+                                    System.out.println("Opcion 5. En construcción.");
                                     break;
                                 case 6:
                                     //6: ver movimientos de la cuenta incluyendo apuestas realizadas y apuestas ganadas
-                                    System.out.println("Opcion 6. En construcción.");
+                                	gestionUsuarios.VerMovimientosCuentaUsuario(usuarioLogado.getId());
+                                    
                                     break;
                                 case 7:
                                     //aqui empiezan las opciones de admin
@@ -173,7 +154,9 @@ public class Main {
                                     break;
                                 case 8:
                                     //8: abrir un partido para que acepte apuestas
+
                                     System.out.println("Abrir un partido para que acepte apuestas.");
+
                                     partidoElegido = validar.pedirValidarPartidoDeUnaLista(gestionPartidos.obtenerListadoPartidos());
                                     if(partidoElegido != null){
                                         gestionPartidos.modificarAperturaPeriodoApuestasDePartido(partidoElegido,true);
@@ -189,12 +172,15 @@ public class Main {
                                     break;
                                 case 10:
                                     //10: consultar las apuestas de un partido, indicando la cantidad de dinero apostado a cada posible resultado
-                                	do 
-                                	{
-                                		System.out.println("Pulsa el numero que quieres consultar o 0 para salir");
-                                		
-                                	}while(opcionCaso10<0 || gestionPartidos.ComprobarExistenciaPartidoPorID(idPartido, partidos));
-                                    System.out.println("Opcion 10. En construcción.");
+                                	listadoPartidosAApostar=gestionPartidos.VerTodosLosPartidosDisponibles();
+                                	
+                                	//tengo que leer y validar el id del partido y con eso mostrar lo apostado y eso
+                                	//MostrarListadoPartidosAApostar
+                                	opcionCaso10=validar.PedirValidarIdPartido(listadoPartidosAApostar);
+                                	
+                                	gestionPartidos.DineroApostadoPorUnPosibleResultadoDeUnPartido(opcionCaso10);
+                                	
+                                    
                                     break;
                                 case 11:
                                     //11: pagar las apuestas ganadoras de un partido finalizado

@@ -5,238 +5,246 @@ import clases.ApuestaTipo1;
 import clases.ApuestaTipo2;
 import clases.ApuestaTipo3;
 import conexion.ConexionJDBC;
+import validacion.Validar;
 
-import java.lang.reflect.Type;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 public class GestionApuestas {
 
-    /*
-    * Signatura: public boolean realizarApuesta(Apuesta apuesta)
-    * Comentario: Este método llama al procedure de insertar apuesta de la BBDD y realiza
-    * la inserción de la apuesta recibida como parámetro.
-    * Precondiciones: La apuesta debe estar correctamente construida.
-    * Entradas: objeto apuesta
-    * Salidas: boolean que indicará si la operación se realizó con éxito
-    * Postcondiciones: Asociado al nombre se devolverá un boolean que será true si la operación finalizó con éxito
-    * o no. En caso afirmativo se insertará la apuesta indicada.
-    * */
-    public boolean realizarApuesta(Apuesta apuesta){
-        CallableStatement cstmt = null;
-        ResultSet rs = null;
-        ConexionJDBC conexionJDBC = new ConexionJDBC();
-        Connection connection ;
-        int results = 0;
-        boolean exito = false;
-        try {
-            connection = conexionJDBC.getConnection();
-            cstmt = connection.prepareCall(
-                    "{call insertarApuesta(?,?,?,?,?,?,?,?,?)}"
-                    );
-
-            cstmt.setDouble("cuota", apuesta.getCuota());
-            cstmt.setDouble("cantidad", apuesta.getCantidad());
-            cstmt.setString("tipo", String.valueOf(apuesta.getTipo()));
-            cstmt.setInt("IDUsuario", apuesta.getUsuario().getId());
-            cstmt.setInt("IDPartido", apuesta.getPartido().getId());
-
-            switch (apuesta.getTipo()){
-                case '1':
-                    apuesta = (ApuestaTipo1) apuesta;
-                    cstmt.setInt("golLocal", ((ApuestaTipo1) apuesta).getGolesLocal());
-                    cstmt.setInt("golVisitante", ((ApuestaTipo1) apuesta).getGolesVisitante());
-
-
-                    //Lo demas lo ponemos a null
-                    cstmt.setNull("gol",java.sql.Types.INTEGER );
-                    cstmt.setNull("puja", Types.CHAR );
-                    break;
-                case '2':
-                    apuesta = (ApuestaTipo2) apuesta;
-                    cstmt.setInt("gol", ((ApuestaTipo2) apuesta).getCantidadGoles());
-                    cstmt.setString("puja", String.valueOf(((ApuestaTipo2) apuesta).getEquipo()));
-
-
-                    //Lo demas lo ponemos a null
-                    cstmt.setNull("golLocal", Types.INTEGER);
-                    cstmt.setNull("golVisitante", Types.INTEGER);
-
-                    break;
-                case '3':
-                    apuesta = (ApuestaTipo3) apuesta;
-                    cstmt.setString("puja", String.valueOf(((ApuestaTipo3) apuesta).getEquipo()));
-
-                    //Lo demas lo ponemos a null
-                    cstmt.setNull("golLocal", Types.INTEGER);
-                    cstmt.setNull("golVisitante", Types.INTEGER);
-                    cstmt.setNull("gol", Types.INTEGER);
-                    break;
-            }
-
-            results = cstmt.executeUpdate();
-            if(results == 1){
-                exito = true;
-            }
-
-
-            cstmt.close();
-            conexionJDBC.closeConnection(connection);
-
-        } catch (Exception e) {
-            e.getStackTrace();
-        }
-        return exito;
-    }
+    //TODO revisar
 
     /*
-    * Signatura: public double calcularCantidadTotalApostadaEnApuestasIguales(Apuesta apuesta, int tipoApuesta)
-    * Comentario: calcula la cantidad total apostada en apuestas iguales a la recibida
-    * Precondiciones:
-    * Entradas:
-    * Salidas: double cantidad total apostada en apuestas iguales
-    * Postcondiciones: asociado al nombre devuelve la cantidad total apostada en apuestas iguales
-    * */
-    public double calcularCantidadTotalApostadaEnApuestasIguales(Apuesta apuesta, int tipoApuesta){
-        String miSelect = "";
-        ConexionJDBC conexionJDBC = new ConexionJDBC();
-        Connection connection ;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        double total = 0.0;
-
-        switch (tipoApuesta){
-            case 1:
-                apuesta = (ApuestaTipo1) apuesta;
-                miSelect = "\tSELECT SUM(cantidad) AS TOTAL\n" +
-                        "\tFROM Apuestas AS A\n" +
-                        "\tINNER JOIN Apuestas_tipo1 AS AT1\n" +
-                        "\tON A.id = AT1.id\n" +
-                        "\tWHERE AT1.golLocal = ?\n" +
-                        "\tAND\n" +
-                        "\tAT1.golVisitante = ?";
-                break;
-            case 2:
-                apuesta = (ApuestaTipo2) apuesta;
-                miSelect = "\tSELECT SUM(cantidad) AS TOTAL\n" +
-                        "\tFROM Apuestas AS A\n" +
-                        "\tINNER JOIN Apuestas_tipo2 AS AT2\n" +
-                        "\tON A.id = AT2.id\n" +
-                        "\tWHERE AT2.gol = ?\n" +
-                        "\tAND AT2.puja = ?";
-                break;
-            case 3:
-                apuesta = (ApuestaTipo3) apuesta;
-                miSelect = "\tSELECT SUM(cantidad) AS TOTAL\n" +
-                        "\tFROM Apuestas AS A\n" +
-                        "\tINNER JOIN Apuestas_tipo3 AS AT3\n" +
-                        "\tON A.id = AT3.id\n" +
-                        "\tWHERE AT3.puja = ?";
-                break;
-        }
-
-        try {
-            connection = conexionJDBC.getConnection();
-            //Preparo el statement
-
-            preparedStatement = connection.prepareStatement(miSelect);
-            if(apuesta instanceof ApuestaTipo1){
-                preparedStatement.setInt(1, ((ApuestaTipo1) apuesta).getGolesLocal());
-                preparedStatement.setInt(2, ((ApuestaTipo1) apuesta).getGolesVisitante());
-            }else if(apuesta instanceof ApuestaTipo2){
-                preparedStatement.setInt(1, ((ApuestaTipo2) apuesta).getCantidadGoles());
-                preparedStatement.setString(2, String.valueOf(((ApuestaTipo2) apuesta).getEquipo()));
-            }else if(apuesta instanceof  ApuestaTipo3){
-                preparedStatement.setString(1, String.valueOf(((ApuestaTipo3) apuesta).getEquipo()));
-            }
-
-            //Ejecuto
-            resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next())
-            {
-                total = resultSet.getDouble("TOTAL");
-            }
-            preparedStatement.close();
-            conexionJDBC.closeConnection(connection);
-        }catch (SQLException e){
-            e.getStackTrace();
-        }
-        return total;
-    }
-
-    /*
-     * Signatura: public double calcularCantidadTotalApostadaEnApuestasDeEseTipo(Apuesta apuesta, int tipoApuesta)
-     * Comentario: calcula la Cantidad Total Apostada En Apuestas De Ese Tipo
+     * Signatura: public void realizarApuestaTipo1
+     * Comentario: método que inserta datos en tabla
      * Precondiciones:
      * Entradas:
-     * Salidas: double cantidad total apostada en apuestas de ese tipo
-     * Postcondiciones: asociado al nombre devuelve la cantidad total apostada en apuestas de ese tipo
-     * */
-    public double calcularCantidadTotalApostadaEnApuestasDeEseTipo(Apuesta apuesta, int tipoApuesta){
-        ConexionJDBC conexionJDBC = new ConexionJDBC();
-        Connection connection;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        double total = 0.0;
+     * Salidas:
+     * Estrada/Salidas:
+     * Postcondiciones:
+    public void menuTiposApuestas(){ //debe ir en validaciones
+        Scanner sc = new Scanner(System.in);
+        int opcion = -1;
 
-        String miSelect = "select sum(?) as 'cantidad'\n" +
-                "from Apuestas\n" +
-                "where tipo = ?";
-        try {
-            connection = conexionJDBC.getConnection();
-            //Preparo el statement
-            preparedStatement = connection.prepareStatement(miSelect);
-            preparedStatement.setDouble(1,apuesta.getCantidad());
-            preparedStatement.setInt(2,tipoApuesta);
-            //Ejecuto
-            resultSet = preparedStatement.executeQuery();
+        int opcionTipoApuesta = pedirValidarMenuTiposApuestas();
+            //TODO: falta método para pedir los datos a insertar al usuario, que incluirán
+              //  todos los datos correspondientes a la elección del usuario
+        Validar objValidar = new Validar();
+        //PedirValidarTipoApuesta
 
-            while (resultSet.next())
-            {
-                total = resultSet.getDouble("cantidad");
-            }
-            preparedStatement.close();
-            conexionJDBC.closeConnection(connection);
-        }catch (SQLException e){
-            e.getStackTrace();
+        objValidar.pedirValidarTipoApuesta();
+        //PedirValidarCantidadApuesta
+        //CalcularCuota
+        switch (opcionTipoApuesta){
+            case 1:
+                //Tipo1
+                realizarApuestaNormal(apuesta);
+                realizarApuestaTipo1(tipo1);
+                break;
+            case 2:
+                //Tipo2
+                realizarApuestaNormal(apuesta);
+                realizarApuestaTipo2(tipo2);
+                break;
+            case 3:
+                //Tipo3
+                realizarApuestaNormal(apuesta);
+                realizarApuestaTipo3(tipo3);
+                break;
         }
-        return total;
+    }
+*/
+    //TODO: Error en menú, revisar
+
+    public int pedirValidarMenuTiposApuestas(){
+        Scanner sc = new Scanner(System.in);
+        int opcion = -1;
+
+        do{
+            pintarMenuTiposApuestas();
+            opcion = sc.nextInt();
+        } while (opcion < 0 || opcion > 4);
+
+        return opcion;
     }
 
     /*
-    * Signatura: public double calcularCuotaApuesta(Apuesta apuesta, int tipoApuesta)
-    * Comentario: calcula la cuota correspondiente a una Apuesta
-    * Precondiciones: la cantidad debe ser positiva
-    * Entradas: double cantidad de dinero apostada
-    * Salidas: double cuota
-    * Postcondiciones: asociado al nombre se devuelve la cuota correspondiente.
-    * */
-    public double calcularCuotaApuesta(Apuesta apuesta, int tipoApuesta){
-        double cuota = 0.0;
-        //TODO testea estos metodos
-        double cantidadTotalApostadaEnApuestasIguales = 0.0;
-        double cantidadTotalApostadaEnApuestasDeEseTipo = 0.0;
-
-        if(apuesta.getCantidad() < 40){
-            switch (tipoApuesta){
-                case 1:
-                    cuota = 4;
-                    break;
-                case 2:
-                    cuota = 3;
-                    break;
-                case 3:
-                    cuota = 1.5;
-                    break;
-            }
-        }else{
-            cantidadTotalApostadaEnApuestasIguales = calcularCantidadTotalApostadaEnApuestasIguales(apuesta, tipoApuesta);
-            cantidadTotalApostadaEnApuestasDeEseTipo = calcularCantidadTotalApostadaEnApuestasDeEseTipo(apuesta, tipoApuesta);
-
-            cuota = ((cantidadTotalApostadaEnApuestasDeEseTipo/cantidadTotalApostadaEnApuestasIguales)-1)*0.8;
-        }
-
-        return cuota;
+     * Signatura: public void pintarMenuTiposApuestas
+     * Comentario: método que inserta datos en tabla
+     * Precondiciones: No hay
+     * Entradas: No hay
+     * Salidas: No hay
+     * Estrada/Salidas: No hay
+     * Postcondiciones: No hay*/
+    public void pintarMenuTiposApuestas(){
+        System.out.println("Elija un tipo de apuesta:" +
+                "\n1- Apuesta Tipo 1: por goles equipo local y goles Equipo Visitante" +
+                "\n2- Apuesta Tipo 2: por Cantidad de goles y nombre de Equipo" +
+                "\n3- Apuesta Tipo 3: por Nombre de Equipo");
     }
 
+    /*
+     * Signatura: public void realizarApuestaTipo1
+     * Comentario: método que inserta datos en tabla para realizar apuestas
+     * Precondiciones:
+     * Entradas:
+     * Salidas:
+     * Estrada/Salidas:
+     * Postcondiciones:*/
+    public void realizarApuestaNormal(Apuesta apuesta){
+        ConexionJDBC objConexion = new ConexionJDBC();
+        Connection conexion = null;
+        PreparedStatement preparedStatement;
+        ResultSet resultset;
+        //String sentenciaSql = "INSERT INTO Apuestas VALUES(2.3, 10, 2, '2019-01-11 12:00', 2, 3)";
+        String sentenciaSql = "INSERT INTO Apuestas VALUES(?, ?, ?, ?, ?, ?)";
+        try{
+            conexion = objConexion.getConnection();
+            if(!conexion.isClosed()){
+                preparedStatement = conexion.prepareStatement(sentenciaSql);
+                preparedStatement.setInt(1, apuesta.getId());
+                preparedStatement.setDouble(2, apuesta.getCuota());
+                preparedStatement.setInt(3, apuesta.getCantidad());
+            //    preparedStatement.setDate(4, apuesta.getFechaHora());
+                preparedStatement.setInt(5, apuesta.getUsuario().getId()); //usuario implementado
+                preparedStatement.setInt(6, apuesta.getPartido().getId()); //usuario implementado
+            }
+        }catch(SQLException e){
+            e.printStackTrace();
+        }finally {
+            //Cerrar conexión
+            boolean conexionCerrada = objConexion.closeConnection(conexion);
+
+            if(conexionCerrada){
+                System.out.println("Conexión cerrada");
+            }else{
+                System.out.println("Fallo al cerrar la conexión");
+            }
+        }
+
+    }
+
+    public void realizarApuestaTipo1(ApuestaTipo1 apuestaTipo1){
+        //Instanciación objetos para operaciones con Base de Datos
+        ConexionJDBC objConexion = new ConexionJDBC();
+        Connection conexion = null;
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
+
+        String sentenciaSql = "INSERT INTO Apuestas_tipo1 VALUES (?, ?, ?, ?)";
+
+        try{
+            //Preparación Statement
+            conexion =  objConexion.getConnection();
+            if(!conexion.isClosed()){
+                preparedStatement = conexion.prepareStatement(sentenciaSql);
+                preparedStatement.setInt(1, apuestaTipo1.getId()); //TODO: ver cómo consigo el id del usuario, según el usuario logueado
+                preparedStatement.setDouble(2,  apuestaTipo1.getApuestasMaximas());
+                preparedStatement.setInt(3, apuestaTipo1.getGolesLocal());
+                preparedStatement.setInt(4, apuestaTipo1.getGolesVisitante());
+            }else{
+                //Indica que la conexión está cerrada
+                System.out.println("La conexión está cerrada");
+            }
+
+        }catch (SQLException ex){
+            ex.printStackTrace();
+        }finally {
+            //Cerrar conexión
+            boolean conexionCerrada = objConexion.closeConnection(conexion);
+
+            if(conexionCerrada){
+                System.out.println("Conexión cerrada");
+            }else{
+                System.out.println("Fallo al cerrar la conexión");
+            }
+        }
+    }
+    /*
+     * Signatura: public void realizarApuestaTipo2
+     * Comentario: método que inserta datos en tabla
+     * Precondiciones:
+     * Entradas:
+     * Salidas:
+     * Estrada/Salidas:
+     * Postcondiciones:*/
+    public void realizarApuestaTipo2(ApuestaTipo2 apuestaTipo2){
+        ConexionJDBC objConexion = new ConexionJDBC();
+        Connection conexion = null;
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
+
+        String sentenciaSql = "INSERT INTO Apuestas_tipo1 VALUES (?, ?, ?, ?)";
+        try{
+            //Preparación Statement
+            conexion =  objConexion.getConnection();
+            if(!conexion.isClosed()){
+                preparedStatement = conexion.prepareStatement(sentenciaSql);
+                preparedStatement.setInt(1, apuestaTipo2.getId());
+                preparedStatement.setDouble(2,  apuestaTipo2.getApuestasMaximas());
+                preparedStatement.setInt(3, apuestaTipo2.getCantidadGoles());
+                preparedStatement.setInt(4, apuestaTipo2.getEquipo()); //No entiendo por qué no da error si Equipos es un char
+            }else{
+                //Indica que la conexión está cerrada
+                System.out.println("La conexión está cerrada");
+            }
+
+        }catch (SQLException ex){
+            ex.printStackTrace();
+        }finally {
+            //Cerrar conexión
+            boolean conexionCerrada = objConexion.closeConnection(conexion);
+
+            if(conexionCerrada){
+                System.out.println("Conexión cerrada");
+            }else{
+                System.out.println("Fallo al cerrar la conexión");
+            }
+        }
+    }
+    /*
+     * Signatura: public void realizarApuestaTipo3
+     * Comentario: método que inserta datos en tabla
+     * Precondiciones:
+     * Entradas:
+     * Salidas:
+     * Estrada/Salidas:
+     * Postcondiciones:*/
+    public void realizarApuestaTipo3(ApuestaTipo3 apuestaTipo3){
+        ConexionJDBC objConexion = new ConexionJDBC();
+        Connection conexion = null;
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
+
+        String sentenciaSql = "INSERT INTO Apuestas_tipo1 VALUES (?, ?, ?)";
+        try{
+            //Preparación Statement
+            conexion =  objConexion.getConnection();
+            if(!conexion.isClosed()){
+                preparedStatement = conexion.prepareStatement(sentenciaSql);
+                preparedStatement.setInt(1, apuestaTipo3.getId());
+                preparedStatement.setDouble(2,  apuestaTipo3.getApuestasMaximas());
+                preparedStatement.setInt(3, apuestaTipo3.getEquipo()); //No entiendo por qué no da error si Equipos es un char
+            }else{
+                //Indica que la conexión está cerrada
+                System.out.println("La conexión está cerrada");
+            }
+
+        }catch (SQLException ex){
+            System.out.println(ex.getMessage());
+        }finally {
+            //Cerrar conexión
+            boolean conexionCerrada = objConexion.closeConnection(conexion);
+
+            if(conexionCerrada){
+                System.out.println("Conexión cerrada");
+            }else{
+                System.out.println("Fallo al cerrar la conexión");
+            }
+        }
+    }
 }
