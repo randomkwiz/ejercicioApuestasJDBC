@@ -406,4 +406,67 @@ public class GestionPartidos
 	}
 
 
+	/*
+	 * Signatura: public PartidoImpl obtenerPartidoPorFechaApuesta(GregorianCalendar fechaApuestaGregCal)
+	 * Comentario: obtiene un partido según una fecha de apuesta
+	 * Precondiciones: la fecha de apuesta estará validada
+	 * Entradas:
+	 * Salidas: Objeto PartidoImpl
+	 * Postcondiciones: Asociado al nombre se devolverá un objeto partido según la fecha pasada por parámetro
+	 * */
+	public PartidoImpl obtenerPartidoPorFechaApuesta(GregorianCalendar fechaApuestaGregCal){ //necesario para obtener apuesta por fecha, la fecha se insertará en el método de obtener apuestas según fecha
+		Utilidad objUtil = new Utilidad();
+		ConexionJDBC objConexion = new ConexionJDBC();
+		Connection conexion = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultset = null;
+		PartidoImpl partido = new PartidoImpl();
+
+		GregorianCalendar fechaInicio = new GregorianCalendar();
+		GregorianCalendar fechaFin = new GregorianCalendar();
+
+		String fechaApuesta = objUtil.formatearFecha(fechaApuestaGregCal);
+
+		//Sentecia que obtiene los datos del partido según la fecha de la apuesta, se tiene en cuenta que la fecha de la apuesta esté entre fecha inicio y fecha final del partido
+		String sentenciaSql = "SELECT p.id, p.isPeriodoApuestasAbierto, p.golLocal, p.golVisitante, p.fechaInicio, p.fechaFin, p.nombreLocal, p.nombreVisitante " +
+				"FROM Partidos AS p INNER JOIN Apuestas As a ON a.id_partido = p.id " +
+				"WHERE fechaHora BETWEEN (SELECT fechaInicio FROM Partidos WHERE id = a.id_partido) " +
+				"AND (SELECT fechaFin FROM Partidos WHERE id = a.id_partido) " +
+				"AND a.fechaHora = ?\n";
+
+		try{
+			conexion = objConexion.getConnection();
+			preparedStatement = conexion.prepareStatement(sentenciaSql);
+			preparedStatement.setString(1, fechaApuesta);
+			resultset = preparedStatement.executeQuery();
+
+			while (resultset.next()){
+				partido.setId(resultset.getInt("id"));
+				partido.setPeriodoApuestasAbierto(resultset.getBoolean("isPeriodoApuestasAbierto"));
+				partido.setGolesLocal(resultset.getInt("golLocal"));
+				partido.setGolesVisitante(resultset.getInt("golVisitante"));
+				//Fechas //TODO no tengo claro que sea así
+				fechaInicio.setTime(resultset.getDate("fechaInicio"));
+				partido.setFechaInicio(fechaInicio); //TODO revisar
+
+				fechaFin.setTime(resultset.getDate("fechaFin"));
+				partido.setFechaFin(fechaFin);
+
+				partido.setNombreLocal(resultset.getString("nombreLocal"));
+				partido.setNombreVisitante(resultset.getString("nombreVisitante"));
+			}
+
+		}catch (SQLException e){
+			e.printStackTrace();
+		}finally {
+			try {
+				resultset.close();
+				preparedStatement.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			objConexion.closeConnection(conexion);
+		}
+		return partido;
+	}
 }

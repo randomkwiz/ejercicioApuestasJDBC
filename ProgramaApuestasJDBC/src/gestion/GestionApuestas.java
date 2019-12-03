@@ -1,15 +1,219 @@
 package gestion;
 
-import clases.Apuesta;
-import clases.ApuestaTipo1;
-import clases.ApuestaTipo2;
-import clases.ApuestaTipo3;
+import clases.*;
 import conexion.ConexionJDBC;
+import validacion.Validar;
 
-import java.lang.reflect.Type;
 import java.sql.*;
+import java.util.ArrayList;
 
 public class GestionApuestas {
+
+    /*Los métodos que antes estaban override en Apuestas*/
+
+
+    /*
+     * Signatura: public void consultarResultadoApuestaTipo1(int idApuesta)
+     * Comentario: muestra los resultados de una apuesta anterior del tipo1
+     * Precondiciones: los datos de la apuesta deberán existir en la BBDD. El idApuesta lo habrá consultado el usuario
+     *                 previamente para saber qué Apuesta concreta debe consultar.
+     * Entradas: entero idApuesta
+     * Salidas:
+     * Postcondiciones:
+     * */
+
+    public void consultarResultadoApuestaTipo1(int idApuesta) {
+        ConexionJDBC objConexion = new ConexionJDBC();
+        Connection conexion = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultset = null;
+        ApuestaTipo1 apuestaTipo1 = new ApuestaTipo1();
+        String sentenciaSql = "SELECT * FROM Apuestas_tipo1 WHERE id = ?";
+
+        try{
+            conexion = objConexion.getConnection();
+            preparedStatement = conexion.prepareStatement(sentenciaSql);
+            preparedStatement.setInt(1, idApuesta);
+            resultset = preparedStatement.executeQuery();
+
+            while (resultset.next()){
+                apuestaTipo1.setId(resultset.getInt("id"));
+                apuestaTipo1.setApuestasMaximas(resultset.getInt("apuestasMáximas"));
+                apuestaTipo1.setGolesLocal(resultset.getInt("golLocal"));
+                apuestaTipo1.setGolesVisitante(resultset.getInt("golVisitante"));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                resultset.close();
+                preparedStatement.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            objConexion.closeConnection(conexion);
+        }
+        //TODO ver si esto podemos sacarlo fuera
+        System.out.println("Id: " + apuestaTipo1.getId() + " Apuestas Máximas: " + apuestaTipo1.getApuestasMaximas() + " Goles Local: " + apuestaTipo1.getGolesLocal() + " Goles Visitante: " + apuestaTipo1.getGolesVisitante());
+    }
+
+    /*
+     * Signatura: public void consultarResultadoApuestaTipo2(int idApuesta)
+     * Comentario: los datos de la apuesta deberán existir en la BBDD. El idApuesta lo habrá consultado el usuario
+     *             previamente para saber qué Apuesta concreta debe consultar.
+     * Precondiciones: los datos de la apuesta deberán existir en la BBDD
+     * Entradas: entero idApuesta
+     * Salidas:
+     * Postcondiciones:
+     * */
+
+    public void consultarResultadoApuestaTipo2(int idApuesta) {
+        ConexionJDBC objConexion = new ConexionJDBC();
+        Connection conexion = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultset = null;
+        ApuestaTipo2 apuestaTipo2 = new ApuestaTipo2();
+        String sentenciaSql = "SELECT * FROM Apuestas_tipo2 WHERE id = ?";
+
+        try{
+            conexion = objConexion.getConnection();
+            preparedStatement = conexion.prepareStatement(sentenciaSql);
+            preparedStatement.setInt(1, idApuesta);
+            resultset = preparedStatement.executeQuery();
+
+            while (resultset.next()){
+                apuestaTipo2.setId(resultset.getInt("id"));
+                apuestaTipo2.setApuestasMaximas(resultset.getInt("apuestasMáximas"));
+                apuestaTipo2.setCantidadGoles(resultset.getInt("gol"));
+                apuestaTipo2.setEquipo(resultset.getString("puja").charAt(0));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                resultset.close();
+                preparedStatement.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            objConexion.closeConnection(conexion);
+        }
+        //TODO ver si esto podemos sacarlo fuera
+        System.out.println("Id: " + apuestaTipo2.getId() + " Apuestas Máximas: " + apuestaTipo2.getApuestasMaximas() + " Goles : " + apuestaTipo2.getCantidadGoles() + " Puja: " + apuestaTipo2.getEquipo());
+
+    }
+
+    /*
+     * Signatura: public void consultarResultadoApuestaTipo3(int idApuesta)
+     * Comentario: muestra los resultados de una apuesta anterior del tipo3
+     * Precondiciones: los datos de la apuesta deberán existir en la BBDD. El idApuesta lo habrá consultado el usuario
+     *                 previamente para saber qué Apuesta concreta debe consultar.
+     * Entradas: entero idApuesta
+     * Salidas:
+     * Postcondiciones:
+     * */
+    public void consultarResultadoApuestaTipo3(int idApuesta) {
+        ConexionJDBC objConexion = new ConexionJDBC();
+        Connection conexion = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultset = null;
+        ApuestaTipo3 apuestaTipo3 = new ApuestaTipo3();
+        String sentenciaSql = "SELECT * FROM Apuestas_tipo3 WHERE id = ?";
+
+        try{
+            conexion = objConexion.getConnection();
+            preparedStatement = conexion.prepareStatement(sentenciaSql);
+            preparedStatement.setInt(1, idApuesta);
+            resultset = preparedStatement.executeQuery();
+
+            while (resultset.next()){
+                apuestaTipo3.setId(resultset.getInt("id"));
+                apuestaTipo3.setApuestasMaximas(resultset.getInt("apuestasMáximas"));
+                apuestaTipo3.setEquipo(resultset.getString("puja").charAt(0));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                resultset.close();
+                preparedStatement.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            objConexion.closeConnection(conexion);
+        }
+        //TODO ver si esto se puede sacar fuera
+        System.out.println("Id: " + apuestaTipo3.getId() + " Apuestas Máximas: " + apuestaTipo3.getApuestasMaximas() + " Puja: " + apuestaTipo3.getEquipo());
+    }
+
+
+
+    /*
+     * Signatura: public void verResultadosApuesta(UsuarioImpl usuarioApuesta, Apuesta tipoApuesta)
+     * Comentario: muestra los resultados de una apuesta anterior
+     * Precondiciones: los datos de la apuesta deberán existir en la BBDD
+     * Entradas:
+     * Salidas: ArrayList de apuesta
+     * Postcondiciones:
+     * */
+    public void verResultadosApuesta(UsuarioImpl usuarioApuesta) {
+        Validar objValidar = new Validar();
+
+        ConexionJDBC objConexion = new ConexionJDBC();
+        Connection conexion = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        String sentenciaSql = "SELECT * FROM Apuestas WHERE id = ?";
+        int id = objValidar.pedirValidarIdApuesta(); //Id para realizar la consulta
+
+        Apuesta apuesta = null;
+
+        //Obtengo lista apuestas
+        ArrayList<Apuesta> listaApuestas = objValidar.validarListaApuestasPorFecha(usuarioApuesta);
+        //Muestro lista apuestas
+        objValidar.mostrarListaApuestasPorFecha(listaApuestas);
+
+        try {
+            conexion = objConexion.getConnection();
+            preparedStatement = conexion.prepareStatement(sentenciaSql);
+            preparedStatement.setInt(1, id);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                apuesta.setId(resultSet.getInt("id"));
+                apuesta.setCuota(resultSet.getInt("cuota"));
+                apuesta.setCantidad(resultSet.getInt("cantidad"));
+                apuesta.setTipo(resultSet.getString("tipo").charAt(0));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        switch (apuesta.getTipo()) {
+            case 1:
+                //ApuestaTipo1 tipo1 = new ApuestaTipo1();
+                consultarResultadoApuestaTipo1(apuesta.getId());
+                break;
+            case 2:
+                //ApuestaTipo2 tipo2 = new ApuestaTipo2();
+                consultarResultadoApuestaTipo2(apuesta.getId());
+                break;
+            case 3:
+                //ApuestaTipo3 tipo3 = new ApuestaTipo3();
+                consultarResultadoApuestaTipo3(apuesta.getId());
+                break;
+        }
+
+
+    }
+
+
+
+
 
     /*
     * Signatura: public boolean realizarApuesta(Apuesta apuesta)

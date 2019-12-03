@@ -70,7 +70,8 @@ public class Main {
         ApuestaTipo3 apuestaTipo3 = null;
         */
         Apuesta apuesta = null;
-
+        UsuarioImpl nuevoUsuario = null;
+        PartidoImpl partidoNuevo = null;
 
 
         GestionUsuarios gestionUsuarios = new GestionUsuarios();
@@ -127,8 +128,9 @@ public class Main {
                                     break;
                                 case 3:
                                     //3: comprobar el resultado de una apuesta anterior
-                                    //TODO
-                                    System.out.println("Opcion 3. En construcción.");
+                                    //System.out.println("Opcion 3. En construcción.");
+                                    System.out.println("Comprobar resultado de una apuesta");
+                                    gestionApuestas.verResultadosApuesta(usuarioLogado);
                                     break;
                                 case 4:
                                     //4: hacer un ingreso en cuenta
@@ -170,7 +172,18 @@ public class Main {
                                 case 7:
                                     //aqui empiezan las opciones de admin
                                     //7: crear un nuevo partido
-                                    System.out.println("Opcion 7. En construcción.");
+                                    //System.out.println("Opcion 7. En construcción.");
+
+                                    System.out.println("Registrar nuevo partido");
+                                    partidoNuevo = validar.pedirValidarDatosPartido();
+                                    boolean exito = gestionPartidos.insertarPartido(partidoNuevo);
+                                    if (exito){
+                                        System.out.println("Nuevo partido registrado correctamente");
+                                    }else {
+                                        System.out.println("Error al registrar nuevo partido");
+                                    }
+
+
                                     break;
                                 case 8:
                                     //8: abrir un partido para que acepte apuestas
@@ -217,6 +230,13 @@ public class Main {
                     case 2:
                         //crear cuenta (usuario standard)
                         System.out.println("Vas a crear una cuenta nueva");
+                        nuevoUsuario = validar.pedirValidarDatosUsuario();
+                        boolean exito = gestionUsuarios.insertarUsuario(nuevoUsuario);
+                        if(exito){
+                            System.out.println("Nuevo usuario registrado correctamente");
+                        }else {
+                            System.out.println("Error al registrar nuevo usuario");
+                        }
                         break;
                 }
 

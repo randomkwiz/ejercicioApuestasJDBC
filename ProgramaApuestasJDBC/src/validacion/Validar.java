@@ -16,6 +16,36 @@
     public class Validar {
 
         /*
+         * Signatura: public UsuarioImpl pedirValidarDatosUsuario()
+         * Comentario: crea un objeto usuario
+         * Precondiciones:
+         * Entradas:
+         * Salidas: Objeto UsuarioImpl
+         * Entrada/Salida:
+         * Postcondiciones: Asicado al nombre devuelve un objeto UsuarioImpl con los datos validados
+         * */
+        public UsuarioImpl pedirValidarDatosUsuario(){
+
+            UsuarioImpl nuevoUsuario = new UsuarioImpl();
+
+            double cantidadActualDinero = pedirValidarCantidadDinero();
+            String correo = pedirValidarCorreo();
+            String password = pedirValidarPassword();
+            boolean isAdmin = pedirValidarIsAdministrador();
+
+            nuevoUsuario.setCantidadActualDinero(cantidadActualDinero);
+            nuevoUsuario.setCorreo(correo);
+            nuevoUsuario.setPassword(password);
+            nuevoUsuario.setAdmin(isAdmin);
+
+            return nuevoUsuario;
+        }
+
+
+
+
+
+        /*
          * Signatura: public String pedirValidarMenuDeseaSalir()
          * Comentario: Este método pinta un mensaje que pregunta al usuario si desea salir del programa
          * Precondiciones: No hay
@@ -840,5 +870,213 @@
             }while (opcionAdmin < 1 || opcionAdmin > 2);
             return isAdmin;
         }
+
+
+        /* Signatura:  public String pedirValidarNombrePartido()
+         * Comentario: se pide el nombre del partido y se valida
+         * Precondiciones:
+         * Entradas:
+         * Salidas: cadena nombreEquipo
+         * Postcondiciones: Asociado al nombre se devuelve un String con el nombre del equipo validado, introducido por el usuario.
+         *                  No será mayor a 20 caracteres ya que es lo máximo que admite la BBDD.
+         * */
+        public String pedirValidarNombreEquipo(){
+            Scanner sc = new Scanner(System.in);
+            String nombreEquipo;
+            do{
+                System.out.println("Introduzca el nombre del Equipo");
+                nombreEquipo = sc.nextLine();
+                if(nombreEquipo.length() > 20){
+                    System.out.println("Error, el nombre del equipo no puede superar los 20 caracteres.");
+                }
+            }while (nombreEquipo.length() > 20);
+            return nombreEquipo;
+        }
+
+
+        /* Signatura:  public PartidoImpl pedirValidarDatosPartido()
+         * Comentario: se piden los datos del partido y se validan
+         * Precondiciones:
+         * Entradas:
+         * Salidas: Objeto partidoNuevo
+         * Postcondiciones: Asociado al nombre se devuelve un objeto partido con los datos validados.
+         * */
+        public PartidoImpl pedirValidarDatosPartido(){
+            PartidoImpl partidoNuevo = new PartidoImpl();
+
+            //Variables datos
+            int golLocal, golVisitante;
+            GregorianCalendar fechaComun, fechaInicio, fechaFin;
+            String nombreLocal, nombreVisitante;
+            boolean fechasCorrectas = false;
+            boolean periodoApuestasIsAbierto = false;
+
+            //Validación fechas Inicio y Fin y que el orden sea correcto
+            do{
+                System.out.println("Introduzca tiempo inicio Partido");
+                fechaInicio = pedirValidarFechaHora();
+                System.out.println("Introduzca tiempo final partido");
+                fechaFin = pedirValidarFechaHora();
+
+                //fechasCorrectas = validarFechaFinPosteriorFechaInicio(fechaInicio, fechaFin);
+
+                fechasCorrectas = fechaInicio.before(fechaFin);
+
+                if(!fechasCorrectas){
+                    System.out.println("Fechas incorrectas, vuelva a introducirlas");
+                }
+            }while (!fechasCorrectas);
+
+            //Pedir datos equipo local
+            System.out.println("Introduzca los datos del equipo Local");
+            nombreLocal = pedirValidarNombreEquipo();
+            golLocal = pedirValidarNumeroGoles();
+            //Pedir datos equipo visitante
+            System.out.println("Introduzca los datos del equipo Visitante");
+            nombreVisitante = pedirValidarNombreEquipo();
+            golVisitante = pedirValidarNumeroGoles();
+
+            //TODO Mirar esto
+            //periodoApuestasIsAbierto = pedirValidarIsPeriodoApuestasAbierto();
+
+            periodoApuestasIsAbierto = true;
+
+            //Paso los datos validados al objeto partido
+            partidoNuevo.setPeriodoApuestasAbierto(periodoApuestasIsAbierto);
+            partidoNuevo.setGolesLocal(golLocal);
+            partidoNuevo.setGolesVisitante(golVisitante);
+            partidoNuevo.setFechaInicio(fechaInicio);
+            partidoNuevo.setFechaFin(fechaFin);
+            partidoNuevo.setNombreLocal(nombreLocal);
+            partidoNuevo.setNombreVisitante(nombreVisitante);
+
+            return partidoNuevo;
+        }
+
+        /* Signatura:  public String pedirValidarFechaParaFormatoConversion(GregorianCalendar fechaApuesta)
+         * Comentario: se convierte una fecha al formato: dia/mes/año
+         * Precondiciones: los datos de la fechaApuesta deben estar validados
+         * Entradas: Objeto GregorianCalendar fechaApuesta
+         * Salidas: cadena fechaFormatoConversion
+         * Postcondiciones: Asociado al nombre se devuelve un objeto fechaFormatoConversion en el formato dia/mes/año
+         * */
+        public String pedirValidarFechaParaFormatoConversion(GregorianCalendar fechaApuesta){ //Para consulta de apuestas según fecha
+            String fechaFormatoConversion;
+
+            System.out.println("Introduzca fecha");
+//            GregorianCalendar fechaNormalSinHora = pedirValidarFechaSinHora();
+            //Datos fecha
+            int dia = fechaApuesta.get(Calendar.DAY_OF_MONTH);
+            int mes = fechaApuesta.get(Calendar.MONTH);
+            int anio = fechaApuesta.get(Calendar.YEAR);
+
+            fechaFormatoConversion = mes + "/" + dia + "/" + anio;   // mes/dia/año, así es como funciona en la consulta
+
+            return fechaFormatoConversion;
+
+        }
+
+        /* Signatura:   public int pedirValidarIdApuesta()
+         * Comentario: se pide y valida el id de la apuesta
+         * Precondiciones:
+         * Entradas:
+         * Salidas: entero idApuesta
+         * Postcondiciones: Asociado al nombre se devuelve un int con el id de la apuesta
+         * */
+        public int pedirValidarIdApuesta(){
+            Scanner sc = new Scanner(System.in);
+            int idApuesta;
+            do{
+                System.out.println("Introduzca el id de la apuesta");
+                idApuesta = sc.nextInt();
+                if (idApuesta < 0){
+                    System.out.println("Error al introducir el id de la apuesta");
+                }
+            }while (idApuesta < 0);
+            return idApuesta;
+        }
+
+        /*
+         * Signatura: public ArrayList<Apuesta> obtenerListaApuestasPorFecha(UsuarioImpl usuarioApuesta)
+         * Comentario: obtiene un listado de apuestas según la fecha
+         * Precondiciones:
+         * Entradas:
+         * Salidas: ArrayList de apuesta
+         * Postcondiciones: asociado al nombre se devuelve la lista de apuestas según la fecha instroudcida por el usuario
+         * */
+        public ArrayList<Apuesta> validarListaApuestasPorFecha(UsuarioImpl usuarioApuesta){  //Usuario que realiza la consulta, no estoy segura de si haría falta
+            //Atributos conexion
+            ConexionJDBC objConexion = new ConexionJDBC();
+            Connection conexion = null;
+            PreparedStatement preparedStatement = null;
+            ResultSet resultSet = null;
+
+            Validar objValidar = new Validar();
+            Apuesta apuesta = null;
+            PartidoImpl partido;
+            GestionPartidos gestionPartidos = new GestionPartidos();
+            ArrayList<Apuesta> listaApuestasPorFecha = new ArrayList<>();
+
+            //Fecha original
+            GregorianCalendar fechaApuesta = objValidar.pedirValidarFechaHora();
+            //Fecha formateada para consulta: mes/dia/año
+            String fechaFormatoConversion = objValidar.pedirValidarFechaParaFormatoConversion(fechaApuesta); //Convierto la fecha al formato necesario para la sentencia Sql
+
+            String sentenciaSql = "SELECT * FROM  Apuestas WHERE Convert(VARCHAR(10),fechaHora,101) =  Convert(Varchar(10), ?,101) and id_usuario = ?";
+
+
+            try{
+                conexion = objConexion.getConnection();
+                preparedStatement = conexion.prepareStatement(sentenciaSql);
+                preparedStatement.setString(1, fechaFormatoConversion);
+                preparedStatement.setInt(2, usuarioApuesta.getId());
+                resultSet = preparedStatement.executeQuery();
+
+                //Partido según fecha apuesta
+                partido = gestionPartidos.obtenerPartidoPorFechaApuesta(fechaApuesta);
+
+
+                while (resultSet.next()){
+                    apuesta.setId(resultSet.getInt("id"));
+                    apuesta.setCuota(resultSet.getInt("cuota"));
+                    apuesta.setCantidad(resultSet.getDouble("cantidad"));
+                    apuesta.setTipo(resultSet.getString("tipo").charAt(0)); //Para tipo char
+//              //Fecha //TODO revisar
+                    fechaApuesta.setTime(resultSet.getDate("fechaHora"));
+                    apuesta.setFechaHora(fechaApuesta); //TODO creo que no hace falta
+                    apuesta.setUsuario(usuarioApuesta); //TODO creo que no hace falta
+                    apuesta.setPartido(partido);
+
+                    listaApuestasPorFecha.add(apuesta);
+                }
+            }catch (SQLException e){
+                e.printStackTrace();
+            }finally {
+                try {
+                    resultSet.close();
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                objConexion.closeConnection(conexion);
+            }
+            return listaApuestasPorFecha;
+        }
+
+        /*
+         * Signatura:  public void mostrarListaApuestasPorFecha(ArrayList<Apuesta> listaApuestas)
+         * Comentario: muestra un listado de apuestas según la fecha
+         * Precondiciones:
+         * Entradas: ArrayList de Apuestas: listaApuestas
+         * Salidas:
+         * Postcondiciones:
+         * */
+        public void mostrarListaApuestasPorFecha(ArrayList<Apuesta> listaApuestas){ //Recibe usuario logeado
+            //ArrayList<Apuesta> listaApuestas = obtenerListaApuestasPorFecha(usuarioApuesta);
+            for (int i = 0; i < listaApuestas.size(); i++){
+                System.out.println("Id: " + listaApuestas.get(i).getId() + " Cuota: " + listaApuestas.get(i).getCuota() + " Cantidad: " + " Tipo: " + listaApuestas.get(i).getTipo() + " Fecha y Hora: " + listaApuestas.get(i).getFechaHora().getTime());
+            }
+        }
+
 
     }

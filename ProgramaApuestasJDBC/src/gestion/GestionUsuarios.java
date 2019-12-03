@@ -151,29 +151,5 @@ public class GestionUsuarios {
         return exito;
     }
 
-    /*
-     * Signatura: public UsuarioImpl crearObjetoUsuario()
-     * Comentario: Método que crea un objeto usuario para insertar en la BBDD.
-     * Precondiciones:
-     * Entradas:
-     * Salidas: Objeto nuevoUsuario
-     * Entrada/Salida:
-     * Postcondiciones: Devuelve un objeto UsuarioImpl con los datos validados.
-     * */
-    public UsuarioImpl crearObjetoUsuario(){
-        Validar objValidar = new Validar();
-        UsuarioImpl nuevoUsuario = new UsuarioImpl();
 
-        double cantidadActualDinero = objValidar.pedirValidarCantidadDinero();
-        String correo = objValidar.pedirValidarCorreo();
-        String password = objValidar.pedirValidarPassword();
-        boolean isAdmin = objValidar.pedirValidarIsAdministrador();
-
-        nuevoUsuario.setCantidadActualDinero(cantidadActualDinero);
-        nuevoUsuario.setCorreo(correo);
-        nuevoUsuario.setPassword(password);
-        nuevoUsuario.setAdmin(isAdmin);
-
-        return nuevoUsuario;
-    }
 }
