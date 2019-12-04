@@ -116,4 +116,14 @@ public class PartidoImpl implements Partido {
     public void setPeriodoApuestasAbierto(boolean periodoApuestasAbierto) {
         isPeriodoApuestasAbierto = periodoApuestasAbierto;
     }
+
+	@Override
+	public String toString() {
+		return "PartidoImpl [id=" + id + ", golesLocal=" + golesLocal + ", golesVisitante=" + golesVisitante
+				+ ", fechaInicio=" + fechaInicio + ", fechaFin=" + fechaFin + ", nombreLocal=" + nombreLocal
+				+ ", nombreVisitante=" + nombreVisitante + ", isPeriodoApuestasAbierto=" + isPeriodoApuestasAbierto
+				+ "]";
+	}
+    
+    
 }

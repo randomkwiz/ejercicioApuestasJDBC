@@ -172,9 +172,8 @@ public class Main {
                                     break;
                                 case 10:
                                     //10: consultar las apuestas de un partido, indicando la cantidad de dinero apostado a cada posible resultado
-                                	listadoPartidosAApostar=gestionPartidos.VerTodosLosPartidosDisponibles();
+                                	listadoPartidosAApostar=gestionPartidos.obtenerListadoPartidosAnteriorAHoy();
                                 	
-                                	//tengo que leer y validar el id del partido y con eso mostrar lo apostado y eso
                                 	//MostrarListadoPartidosAApostar
                                 	opcionCaso10=validar.PedirValidarIdPartido(listadoPartidosAApostar);
                                 	

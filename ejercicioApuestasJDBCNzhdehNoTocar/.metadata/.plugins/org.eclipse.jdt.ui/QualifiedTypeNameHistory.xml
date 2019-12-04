@@ -2,12 +2,13 @@
 <qualifiedTypeNameHistroy>
 <fullyQualifiedTypeName name="java.sql.CallableStatement"/>
 <fullyQualifiedTypeName name="conexion.ConexionJDBC"/>
-<fullyQualifiedTypeName name="gestion.GestionPartidos"/>
 <fullyQualifiedTypeName name="java.util.Date"/>
 <fullyQualifiedTypeName name="java.util.GregorianCalendar"/>
+<fullyQualifiedTypeName name="gestion.GestionUsuarios"/>
 <fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="java.util.Scanner"/>
+<fullyQualifiedTypeName name="gestion.GestionPartidos"/>
+<fullyQualifiedTypeName name="clases.PartidoImpl"/>
 <fullyQualifiedTypeName name="clases.IngresoImpl"/>
 <fullyQualifiedTypeName name="clases.UsuarioImpl"/>
-<fullyQualifiedTypeName name="gestion.GestionUsuarios"/>
-<fullyQualifiedTypeName name="clases.PartidoImpl"/>
 </qualifiedTypeNameHistroy>

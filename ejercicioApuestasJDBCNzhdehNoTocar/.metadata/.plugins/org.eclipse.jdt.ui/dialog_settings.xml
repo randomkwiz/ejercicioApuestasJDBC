@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
-	<item key="org.eclipse.jdt.ui.lastextjar" value="C:\Users\nyeghiazaryan\Downloads\Microsoft JDBC Driver 6.0 for SQL Server\sqljdbc_6.0\enu\jre8"/>
+	<item key="org.eclipse.jdt.ui.lastextjar" value="C:\Users\nyeghiazaryan\Downloads\sqljdbc_7.4\esn"/>
 	<section name="org.eclipse.jdt.internal.ui.packageview.PackageExplorerPart">
 		<item key="group_libraries" value="true"/>
 		<item key="layout" value="2"/>

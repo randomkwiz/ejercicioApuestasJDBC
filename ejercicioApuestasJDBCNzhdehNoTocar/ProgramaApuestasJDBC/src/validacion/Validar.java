@@ -525,15 +525,22 @@ import utilidad.Utilidad;
         	Scanner sc=new Scanner(System.in);
         	GestionPartidos gestionPartidos=new GestionPartidos();
         	PartidoImpl p=null;
-        	int opcionCaso10;
+        	int opcionCaso10=0;
+        	boolean encontrado=false;
         	
         	do 
         	{
         		System.out.println("Introduce el numero del partido ");
-        		MostrarListadoPartidosAApostar(listadoPartidosAApostar);
+        		mostrarPartidosComoUnMenu(listadoPartidosAApostar);
         		opcionCaso10=sc.nextInt();
-        		p=gestionPartidos.ObtenerPartidoPorId(opcionCaso10, listadoPartidosAApostar);
-        		opcionCaso10=p.getId();
+        		for(int i=0;i<listadoPartidosAApostar.size() && encontrado==false;i++)
+        		{
+        			if(listadoPartidosAApostar.get(i).getId()==opcionCaso10) 
+        			{
+        				opcionCaso10=listadoPartidosAApostar.get(i).getId();
+        				encontrado=true;
+        			}
+        		}
         	}while(!gestionPartidos.ComprobarExistenciaDelPartidoPorId(opcionCaso10, listadoPartidosAApostar));
         	
         	return opcionCaso10;
