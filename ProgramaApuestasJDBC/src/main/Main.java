@@ -202,22 +202,13 @@ public class Main {
                                     }
                                     break;
                                 case 10:
-                                    //10: consultar las apuestas de un partido, indicando la cantidad de dinero apostado a cada posible resultado
-                                    listadoPartidosAApostar=gestionPartidos.VerPartidosDisponibles();
+                                     //10: consultar las apuestas de un partido, indicando la cantidad de dinero apostado a cada posible resultado
+                                	listadoPartidosAApostar=gestionPartidos.obtenerListadoPartidosAnteriorAHoy();
                                 	
                                 	//MostrarListadoPartidosAApostar
-                                	do 
-                                	{
-                                	    Scanner sc = new Scanner(System.in);
-                                		System.out.println("Pulsa 0 para salir o el numero del partido ");
-                                		validar.MostrarListadoPartidosAApostar(listadoPartidosAApostar);
-                                		opcionCaso10=sc.nextInt()-1;//ponerlo en un metodo
-                                	}while(opcionCaso10!=0 && !gestionPartidos.ComprobarExistenciaDelPartidoPorId(opcionCaso10, listadoPartidosAApostar));
+                                	opcionCaso10=validar.PedirValidarIdPartido(listadoPartidosAApostar);
                                 	
-                                	if(opcionCaso10!=0) 
-                                	{
-                                		gestionPartidos.DineroApostadoPorUnPosibleResultadoDeUnPartido(opcionCaso10);
-                                	}
+                                	gestionPartidos.DineroApostadoPorUnPosibleResultadoDeUnPartido(opcionCaso10);
                                     break;
                                 case 11:
                                     //11: pagar las apuestas ganadoras de un partido finalizado
