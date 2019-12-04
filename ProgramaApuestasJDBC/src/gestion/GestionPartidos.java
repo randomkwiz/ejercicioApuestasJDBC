@@ -172,6 +172,72 @@ public class GestionPartidos
 	}
 
 	/*
+	 * Signatura: public ArrayList<PartidoImpl> obtenerListadoPartidosAnteriorAHoy()
+	 * Comentario: Este mÃ©todo consulta a la BBDD y devuelve el listado de todos los partidos que existan
+	 * 			cuya fecha de fin sea anterior o igual a la actual
+	 * Precondiciones:
+	 * Entradas:
+	 * Salidas: ArrayList de Partidos
+	 * Postcondiciones: Asociado al nombre se devolverÃ¡ un arraylist con todos los partidos existentes
+	 * 					cuya fecha de fin sea anterior o igual a la fecha actual en
+	 * 					la BBDD. Si no hay partidos, se devolverÃ¡ un arraylist vacÃ­o.
+	 * */
+	public ArrayList<PartidoImpl> obtenerListadoPartidosAnteriorAHoy(){
+		ConexionJDBC conexionJDBC = new ConexionJDBC();
+		Connection connection = conexionJDBC.getConnection();
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		ArrayList<PartidoImpl> listadoPartidos = new ArrayList<>();
+		PartidoImpl partido;
+		GregorianCalendar fechaInicio;
+		GregorianCalendar fechaFin;
+
+		String miSelect = "select * from Partidos\n" +
+				"where fechaFin <= CURRENT_TIMESTAMP";
+		try {
+			//Preparo el statement
+			preparedStatement = connection.prepareStatement(miSelect);
+			//Ejecuto
+			resultSet = preparedStatement.executeQuery();
+
+			while (resultSet.next()) {
+				partido = new PartidoImpl();
+				fechaInicio = new GregorianCalendar();
+				fechaFin = new GregorianCalendar();
+				//Le pongo los datos al objeto partido
+				partido.setId(resultSet.getInt("id"));
+				partido.setPeriodoApuestasAbierto(resultSet.getBoolean("isPeriodoApuestasAbierto"));
+				partido.setGolesLocal(resultSet.getInt("golLocal"));
+				partido.setGolesVisitante(resultSet.getInt("golVisitante"));
+				if(resultSet.getDate("fechaInicio") != null){
+					fechaInicio.setTime(resultSet.getDate("fechaInicio"));
+				}else{
+					fechaFin = null;
+				}
+				partido.setFechaInicio(fechaInicio);
+				if (resultSet.getDate("fechaFin") != null) {
+					fechaFin.setTime(resultSet.getDate("fechaFin"));
+				} else {
+					fechaFin = null;
+				}
+				partido.setFechaFin(fechaFin);
+				partido.setNombreLocal(resultSet.getString("nombreLocal"));
+				partido.setNombreVisitante(resultSet.getString("nombreVisitante"));
+
+				//aÃ±ado el partido al arraylist
+				listadoPartidos.add(partido);
+			}
+
+
+			preparedStatement.close();
+			conexionJDBC.closeConnection(connection);
+		}catch (SQLException e){
+			e.getStackTrace();
+		}
+		return listadoPartidos;
+	}
+
+	/*
 	* Signatura: public boolean modificarAperturaPeriodoApuestasDePartido(PartidoImpl partido, boolean isAbierto)
 	* Comentario: Este método modifica si el partido tiene el período de apuestas abierto o cerrado
 	* Precondiciones:

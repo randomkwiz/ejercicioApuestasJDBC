@@ -1078,5 +1078,40 @@
             }
         }
 
+	/*
+    	prototipo: public int PedirValidarIdPartido(ArrayList<PartidoImpl> listadoPartidosAApostar) 
+    	comentarios: se lee y se valida el id de los partidos que estan en uja lista, 
+    					o sea se ve si el partido existe por su id
+    	precondiciones: array lleno
+    	entradas: un array de partidos 
+    	salidas: entero opcion que elige el usuario que coincide con el id del partido
+    	entradas/salidas: no hay 
+    	postcondiciones: AN devuelve un numero entero positivo mayor que cero
+    	*/
+        public int PedirValidarIdPartido(ArrayList<PartidoImpl> listadoPartidosAApostar)
+        {
+        	Scanner sc=new Scanner(System.in);
+        	GestionPartidos gestionPartidos=new GestionPartidos();
+        	PartidoImpl p=null;
+        	int opcionCaso10=0;
+        	boolean encontrado=false;
+        	
+        	do 
+        	{
+        		System.out.println("Introduce el numero del partido ");
+        		mostrarPartidosComoUnMenu(listadoPartidosAApostar);
+        		opcionCaso10=sc.nextInt();
+        		for(int i=0;i<listadoPartidosAApostar.size() && encontrado==false;i++)
+        		{
+        			if(listadoPartidosAApostar.get(i).getId()==opcionCaso10) 
+        			{
+        				opcionCaso10=listadoPartidosAApostar.get(i).getId();
+        				encontrado=true;
+        			}
+        		}
+        	}while(!gestionPartidos.ComprobarExistenciaDelPartidoPorId(opcionCaso10, listadoPartidosAApostar));
+        	
+        	return opcionCaso10;
+        }
 
     }
