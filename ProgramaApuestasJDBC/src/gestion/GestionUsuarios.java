@@ -1,5 +1,6 @@
 package gestion;
 
+import clases.IngresoImpl;
 import clases.UsuarioImpl;
 import conexion.ConexionJDBC;
 import validacion.Validar;
