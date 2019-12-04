@@ -12,7 +12,7 @@ import java.util.GregorianCalendar;
 import java.util.Scanner;
 
 import clases.PartidoImpl;
-//import com.sun.org.apache.bcel.internal.generic.GOTO;
+
 import conexion.ConexionJDBC;
 import utilidad.Utilidad;
 import validacion.Validar;
@@ -93,6 +93,82 @@ public class GestionPartidos
 			e.getStackTrace();
 		}
 		return listadoPartidos;
+	}
+	
+	/*
+	prototipo: public void DineroApostadoPorUnPosibleResultadoDeUnPartido(int idPartido)
+	comentarios: este metodo calcula el total del dinero apostado por cada resultado de un partido
+	precondiciones: el id tiene que existir
+	entradas: entero id de un partido
+	salidas: no hay
+	entradas/salidas: no hay 
+	postcondiciones: solo pintara en pantalla el dinero apostado por cada resultado mde un partido
+	*/
+	
+	public void DineroApostadoPorUnPosibleResultadoDeUnPartido(int idPartido)
+	{
+		ConexionJDBC conexionJDBC = new ConexionJDBC();
+		Connection connection = conexionJDBC.getConnection();
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		int golLocal=0,golVisitante=0,gol=0;
+		String pujaTipo2=" ",pujaTipo3=" ";
+		double cantidadApostada=0.;
+
+		String miSelect = "select AT1.golLocal,AT1.golVisitante,AT2.gol,AT2.puja as PujaTipo2,AT3.puja as PujaTipo3,SUM(A.cantidad) as CantidatTotal from Apuestas as A\r\n" + 
+				"	left join Apuestas_tipo1 as AT1 on A.id=AT1.id\r\n" + 
+				"	left join Apuestas_tipo2 as AT2 on A.id=AT2.id\r\n" + 
+				"	left join Apuestas_tipo3 as AT3 on A.id=AT3.id\r\n" + 
+				"	where A.id_partido=?\r\n" + 
+				"	group by AT1.golLocal,AT1.golVisitante,AT2.gol,AT2.puja,AT3.puja";
+		try {
+			//Preparo el statement
+			preparedStatement = connection.prepareStatement(miSelect);
+			preparedStatement.setBoolean(1, true);
+			//Ejecuto
+			resultSet = preparedStatement.executeQuery();
+
+			while (resultSet.next()) 
+			{
+				golLocal=resultSet.getInt("golLocal");
+				golVisitante=resultSet.getInt("golVisitante");
+				gol=resultSet.getInt("gol");
+				pujaTipo2=resultSet.getString("PujaTipo2");
+				pujaTipo3=resultSet.getString("PujaTipo3");
+				cantidadApostada=resultSet.getDouble("CantidatTotal");
+				
+				System.out.println(golLocal+", "+golVisitante+", "+gol+", "+pujaTipo2+", "+pujaTipo3+", "+cantidadApostada);
+			}
+			preparedStatement.close();
+			conexionJDBC.closeConnection(connection);
+		}catch (SQLException e)
+		{
+			e.getStackTrace();
+		}
+	}
+	
+	/*
+	prototipo: public void DineroApostadoPorUnPosibleResultadoDeUnPartido(int idPartido)
+	comentarios: este metodo sirve para ver si un partido existe
+	precondiciones: array lleno
+	entradas: entero id de un partido, arrayList de partidos
+	salidas: boolean
+	entradas/salidas: no hay 
+	postcondiciones: AN devuelve true si existe y false si no
+	*/
+	
+	public boolean ComprobarExistenciaDelPartidoPorId(int idPartido,ArrayList<PartidoImpl> partodo)
+	{
+		boolean existe=false;
+		
+		for(int i=0;i<partodo.size() && existe==false;i++)
+		{
+			if(partodo.get(i).getId()==idPartido)
+			{
+				existe=true;
+			}
+		}
+		return existe;
 	}
 
 	/*
@@ -221,7 +297,7 @@ public class GestionPartidos
 	 * 					Se considerará éxito si el número de filas afectadas es igual a 1.
 	 * */
 	
-	//TODO:faltan modificar algunas cosillas, no me funciona bien
+	//TODO:faltan modificar algunas cosillas, no funciona bien
 	public boolean insertarPartido(PartidoImpl partidoNuevo){
 		Utilidad objUtilidad = new Utilidad();
 		//Variables inserción en base de datos
@@ -269,72 +345,66 @@ public class GestionPartidos
 		}
 		return exito;
 	}
+	//TODO Esto hay que modularlo.
+	public PartidoImpl crearObjetoPartido(){
+		Scanner sc = new Scanner(System.in);
+		Validar objValidar = new Validar();
+		PartidoImpl partidoNuevo = new PartidoImpl();
 
-//	//TODO no añadir a proyecto común, esto ha sido modificado
-//	//TODO Esto hay que modularlo.
-//	public PartidoImpl crearObjetoPartido(){
-//		//TODO: (Diana) hacer validar datos objetos Partido, y luego hacer la creacion del partido
-//		Scanner sc = new Scanner(System.in);
-//		Validar objValidar = new Validar();
-//		PartidoImpl partidoNuevo = new PartidoImpl();
-//
-//		//Variables datos
-//		int golLocal, golVisitante;
-//		GregorianCalendar fechaComun, fechaInicio, fechaFin;
-//		String nombreLocal, nombreVisitante;
-//		boolean fechasCorrectas = false;
-//		boolean periodoApuestasIsAbierto = false;
-//
-//
-//		System.out.println("Introduzca los Goles de equipo Local"); //TODO No se lee ni escribe en un módulo a no ser que ese sea su cometido
-//		golLocal = objValidar.pedirValidarNumeroGoles();
-//
-//		System.out.println("Introduzca los Goles de equipo Visitante");
-//		golVisitante = objValidar.pedirValidarNumeroGoles();
-//
-//
-//		//fechaComun = objValidar.pedirValidarFechaHora(); // Pido la fecha sólo con día, mes y año del partido, que será común al inicio y al final
-//		//Paso la fecha común a la de inicio y final, para más tarde introducirles la hora
-//		//fechaInicio = new GregorianCalendar(fechaComun.get(Calendar.YEAR),fechaComun.get(Calendar.MONTH),fechaComun.get(Calendar.DAY_OF_MONTH),0,0);
-//		//fechaFin = new GregorianCalendar(fechaComun.get(Calendar.YEAR),fechaComun.get(Calendar.MONTH),fechaComun.get(Calendar.DAY_OF_MONTH),0,0);
-//
-//        /*Pido introducir tiempo de inicio y final de partido y compruebo que final vaya después de inicio,
-//        se repite la operación hasta que el usuario lo introduzca correctamente*/
-//
-//        //TODO puede modularse haciendo que una vez introducidos los datos de partido de haga esta validación
-//		do{
-//			System.out.println("Introduzca tiempo inicio Partido");
-//			//fechaInicio = objValidar.introducirTiempoPartido(fechaInicio);
-//			fechaInicio = objValidar.pedirValidarFechaHora();
-//			System.out.println("Introduzca tiempo final partido");
-//			//fechaFin = objValidar.introducirTiempoPartido(fechaFin);
-//			fechaFin = objValidar.pedirValidarFechaHora();
-//			fechasCorrectas = objValidar.validarFechaFinPosteriorFechaInicio(fechaInicio, fechaFin);
-//			if(!fechasCorrectas){
-//				System.out.println("Fechas incorrectas, vuelva a introducirlas");
-//			}
-//		}while (!fechasCorrectas);
-//
-//		System.out.println("Introduzca Nombre del equipo Local");
-//		nombreLocal = sc.nextLine();
-//		System.out.println("Introduzca Nombre del Equipo Visitante");
-//		nombreVisitante = sc.nextLine();
-//
-//		periodoApuestasIsAbierto = objValidar.pedirValidarIsPeriodoApuestasAbierto();
-//
-//		//Creación de objeto partido pasándole los datos obtenidos por teclado
-//		partidoNuevo.setPeriodoApuestasAbierto(periodoApuestasIsAbierto);
-//		partidoNuevo.setGolesLocal(golLocal);
-//		partidoNuevo.setGolesVisitante(golVisitante);
-//		partidoNuevo.setFechaInicio(fechaInicio);
-//		partidoNuevo.setFechaFin(fechaFin);
-//		partidoNuevo.setNombreLocal(nombreLocal);
-//		partidoNuevo.setNombreVisitante(nombreVisitante);
-//
-//		return partidoNuevo;
-//	}
+		//Variables datos
+		int golLocal, golVisitante;
+		GregorianCalendar fechaComun, fechaInicio, fechaFin;
+		String nombreLocal, nombreVisitante;
+		boolean fechasCorrectas = false;
+		boolean periodoApuestasIsAbierto = false;
 
-	//TODO: añadir a proyecto común 01/12/2019
+
+		System.out.println("Introduzca los Goles de equipo Local"); //TODO No se lee ni escribe en un módulo a no ser que ese sea su cometido
+		golLocal = objValidar.pedirValidarNumeroGoles();
+
+		System.out.println("Introduzca los Goles de equipo Visitante");
+		golVisitante = objValidar.pedirValidarNumeroGoles();
+
+		fechaComun = objValidar.pedirValidarFechaHora(); // Pido la fecha sólo con día, mes y año del partido, que será común al inicio y al final
+		//Paso la fecha común a la de inicio y final, para más tarde introducirles la hora
+		fechaInicio = new GregorianCalendar(fechaComun.get(Calendar.YEAR),fechaComun.get(Calendar.MONTH),fechaComun.get(Calendar.DAY_OF_MONTH),0,0);
+		fechaFin = new GregorianCalendar(fechaComun.get(Calendar.YEAR),fechaComun.get(Calendar.MONTH),fechaComun.get(Calendar.DAY_OF_MONTH),0,0);
+
+        /*Pido introducir tiempo de inicio y final de partido y compruebo que final vaya después de inicio,
+        se repite la operación hasta que el usuario lo introduzca correctamente*/
+		do{
+			System.out.println("Introduzca tiempo inicio Partido");
+			fechaInicio = objValidar.introducirTiempoPartido(fechaInicio);
+
+			System.out.println("Introduzca tiempo final partido");
+			fechaFin = objValidar.introducirTiempoPartido(fechaFin);
+
+			fechasCorrectas = fechaFin.after(fechaInicio);
+		}while (!fechasCorrectas);
+
+		//TODO No se lee ni escribe en un módulo a no ser que ese sea su cometido
+		System.out.println("Introduzca Nombre del equipo Local");
+		nombreLocal = sc.nextLine();
+		System.out.println("Introduzca Nombre del Equipo Visitante");
+		nombreVisitante = sc.nextLine();
+
+		//periodoApuestasIsAbierto = objValidar.pedirValidarIsPeriodoApuestasAbierto();
+
+		//Para probar una cosa
+		periodoApuestasIsAbierto = true;
+
+		//Creación de objeto partido pasándole los datos obtenidos por teclado
+		partidoNuevo.setPeriodoApuestasAbierto(periodoApuestasIsAbierto);
+		partidoNuevo.setGolesLocal(golLocal);
+		partidoNuevo.setGolesVisitante(golVisitante);
+		partidoNuevo.setFechaInicio(fechaInicio);
+		partidoNuevo.setFechaFin(fechaFin);
+		partidoNuevo.setNombreLocal(nombreLocal);
+		partidoNuevo.setNombreVisitante(nombreVisitante);
+
+		return partidoNuevo;
+	}
+
 
 	/*
 	 * Signatura: public PartidoImpl obtenerPartidoPorFechaApuesta(GregorianCalendar fechaApuestaGregCal)
@@ -399,6 +469,4 @@ public class GestionPartidos
 		}
 		return partido;
 	}
-
-
 }

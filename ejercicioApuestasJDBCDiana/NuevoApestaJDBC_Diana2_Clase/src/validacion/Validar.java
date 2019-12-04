@@ -1,12 +1,9 @@
     package validacion;
 
-    import clases.Apuesta;
-    import clases.IngresoImpl;
-    import clases.PartidoImpl;
-    import clases.UsuarioImpl;
+    import clases.*;
     import conexion.ConexionJDBC;
+    import gestion.GestionApuestas;
     import gestion.GestionPartidos;
-    import interfaces.Partido;
     import utilidad.Utilidad;
 
     import java.io.Console;
@@ -17,6 +14,36 @@
     import java.util.*;
 
     public class Validar {
+
+        /*
+         * Signatura: public UsuarioImpl pedirValidarDatosUsuario()
+         * Comentario: crea un objeto usuario
+         * Precondiciones:
+         * Entradas:
+         * Salidas: Objeto UsuarioImpl
+         * Entrada/Salida:
+         * Postcondiciones: Asicado al nombre devuelve un objeto UsuarioImpl con los datos validados
+         * */
+        public UsuarioImpl pedirValidarDatosUsuario(){
+
+            UsuarioImpl nuevoUsuario = new UsuarioImpl();
+
+            double cantidadActualDinero = pedirValidarCantidadDinero();
+            String correo = pedirValidarCorreo();
+            String password = pedirValidarPassword();
+            boolean isAdmin = pedirValidarIsAdministrador();
+
+            nuevoUsuario.setCantidadActualDinero(cantidadActualDinero);
+            nuevoUsuario.setCorreo(correo);
+            nuevoUsuario.setPassword(password);
+            nuevoUsuario.setAdmin(isAdmin);
+
+            return nuevoUsuario;
+        }
+
+
+
+
 
         /*
          * Signatura: public String pedirValidarMenuDeseaSalir()
@@ -129,7 +156,7 @@
          * */
         public boolean isValidUser(String correo, String password) {
             ConexionJDBC conexionJDBC = new ConexionJDBC();
-            Connection connection = conexionJDBC.getConnection();
+            Connection connection ;
             PreparedStatement preparedStatement;
             ResultSet resultSet;
             boolean exito = false;
@@ -138,6 +165,7 @@
                     "        and\n" +
                     "                contraseña = ?";
             try {
+                connection = conexionJDBC.getConnection();
                 //Preparo el statement
                 if (!connection.isClosed()) {
                     preparedStatement = connection.prepareStatement(miSelect);
@@ -221,33 +249,6 @@
             System.out.println("9. Cerrar un partido para que no se pueda apostar");
             System.out.println("10. Consultar las apuestas de un partido");
             System.out.println("11. Pagar las apuestas ganadoras de un partido finalizado");
-        }
-
-        //TODO cambiar en común
-        /*
-         * Signatura: public UsuarioImpl pedirValidarDatosUsuario()
-         * Comentario: crea un objeto usuario
-         * Precondiciones:
-         * Entradas:
-         * Salidas: Objeto UsuarioImpl
-         * Entrada/Salida:
-         * Postcondiciones: Asicado al nombre devuelve un objeto UsuarioImpl con los datos validados
-         * */
-        public UsuarioImpl pedirValidarDatosUsuario(){
-            Validar objValidar = new Validar();
-            UsuarioImpl nuevoUsuario = new UsuarioImpl();
-
-            double cantidadActualDinero = objValidar.pedirValidarCantidadDinero();
-            String correo = objValidar.pedirValidarCorreo();
-            String password = objValidar.pedirValidarPassword();
-            boolean isAdmin = objValidar.pedirValidarIsAdministrador();
-
-            nuevoUsuario.setCantidadActualDinero(cantidadActualDinero);
-            nuevoUsuario.setCorreo(correo);
-            nuevoUsuario.setPassword(password);
-            nuevoUsuario.setAdmin(isAdmin);
-
-            return nuevoUsuario;
         }
 
         /*
@@ -444,6 +445,7 @@
                     "\n3- Apuesta Tipo 3: por Nombre de Equipo");
         }
 
+        /*
         //PedirValidarCantidadApuesta
         public int pedirValidarCantidadApuesta(){
             Scanner sc = new Scanner(System.in);
@@ -461,7 +463,7 @@
 
             return cantidadApuesta;
         }
-
+*/
         /*
         * Signatura: public GregorianCalendar pedirValidarFechaHora()
         * Comentario: pide y valida una fecha y hora
@@ -498,44 +500,16 @@
             return fecha;
         }
 
-        //TODO modificado por Diana el 30/11/2019, si es válido, añadir a proyecto común
-        //TODO comprobar en test que funciona bien
+        //Validaciones datos fecha
+
         /*
-         * Signatura: public GregorianCalendar pedirValidarFechaSinHora()
-         * Comentario: pide y valida una fecha
+         * Signatura: public int pedirValidarDia()
+         * Comentario: pide y valida un día
          * Precondiciones:
          * Entradas:
-         * Salidas: objeto GregorianCalendar
-         * Postcondiciones: Asociado al nombre devuelve un objeto GregorianCalendar con la fecha validada
-         * que haya introducido el usuario.
+         * Salidas: entero dia
+         * Postcondiciones: Asociado al nombre devuelve un entero con el dia validado introducido por el usuario
          * */
-        public GregorianCalendar pedirValidarFechaSinHora(){
-            GregorianCalendar fecha = null;
-            GregorianCalendar fechaReal ;
-            int dia, mes, anio, hora, minutos;
-            do{
-                dia = pedirValidarDia();
-                mes = pedirValidarMes()-1; //porque calendar va de 0 a 11
-                anio = pedirValidarAnio();
-//                hora = pedirValidarHora();
-//                minutos = pedirValidarMinutos();
-                fechaReal = new GregorianCalendar(anio, mes, dia, 0, 0);
-
-                if(fechaReal.get(Calendar.DAY_OF_MONTH) == dia
-                        && fechaReal.get(Calendar.MONTH) == mes
-                        && fechaReal.get(Calendar.YEAR) == anio
-                        //Nota: Calendar.HOUR devuelve hora formato 12 H, Calendar.HOUR_OF_DAY es formato 24 h
-                        /*&& fechaReal.get(Calendar.HOUR_OF_DAY) == hora
-                        && fechaReal.get(Calendar.MINUTE) == minutos*/
-                ){
-                    fecha = new GregorianCalendar(anio, mes, dia, 0, 0);
-                }
-            }while (fecha == null);
-
-            return fecha;
-        }
-
-        //Validaciones datos fecha
         public int pedirValidarDia(){
             Scanner sc = new Scanner(System.in);
             int dia;
@@ -552,7 +526,14 @@
             }
             return dia;
         }
-
+        /*
+         * Signatura: public  int pedirValidarMes()
+         * Comentario: pide y valida un mes
+         * Precondiciones:
+         * Entradas:
+         * Salidas: entero mes
+         * Postcondiciones: Asociado al nombre devuelve un entero con el mes validado introducido por el usuario
+         * */
         public  int pedirValidarMes(){
             Scanner sc = new Scanner(System.in);
             int mes = 0;
@@ -570,7 +551,14 @@
             return mes;
         }
 
-
+        /*
+         * Signatura:  public int pedirValidarAnio()
+         * Comentario: pide y valida un año
+         * Precondiciones:
+         * Entradas:
+         * Salidas: entero anio
+         * Postcondiciones: Asociado al nombre devuelve un entero con el año validado introducido por el usuario
+         * */
         public int pedirValidarAnio(){
             Scanner sc = new Scanner(System.in);
             int anio = 0;
@@ -588,6 +576,15 @@
 
             return anio;
         }
+
+        /*
+         * Signatura:  public int pedirValidarHora()
+         * Comentario: pide y valida una hora
+         * Precondiciones:
+         * Entradas:
+         * Salidas: entero hora
+         * Postcondiciones: Asociado al nombre devuelve un entero con la hora validada introducida por el usuario
+         * */
         public int pedirValidarHora(){
             Scanner sc = new Scanner(System.in);
             int hora = 0;
@@ -606,6 +603,14 @@
             return hora;
         }
 
+        /*
+         * Signatura:  public int pedirValidarMinutos()
+         * Comentario: pide y valida minutos
+         * Precondiciones:
+         * Entradas:
+         * Salidas: entero minutos
+         * Postcondiciones: Asociado al nombre devuelve un entero con los minutos validados introducidos por el usuario
+         * */
         public int pedirValidarMinutos(){
             Scanner sc = new Scanner(System.in);
             int minutos = 0;
@@ -625,12 +630,21 @@
         }
 
         //Nuevas validaciones 25/11/2019
+
+        /*
+         * Signatura:  public int pedirValidarNumeroGoles()
+         * Comentario: pide y valida el número de goles
+         * Precondiciones:
+         * Entradas:
+         * Salidas: entero numeroGoles
+         * Postcondiciones: Asociado al nombre devuelve un entero con el número de goles validados introducidos por el usuario
+         * */
         public int pedirValidarNumeroGoles(){
             Scanner sc = new Scanner(System.in);
             int numeroGoles = 0;
             try{
                 do{
-                    System.out.println("Introduzca el número de goles");
+                    System.out.println("Introduce el numero de goles: ");
                     numeroGoles = sc.nextInt();
                     if(numeroGoles<0){
                         System.out.println("No puede introducir un número negativo, vuelva a introducir el número de goles");
@@ -643,49 +657,150 @@
             return numeroGoles;
         }
 
-        /*
+
         public GregorianCalendar introducirTiempoPartido(GregorianCalendar tiempoPartido){
             tiempoPartido.set(Calendar.HOUR_OF_DAY, pedirValidarHora());
             tiempoPartido.set(Calendar.MINUTE, pedirValidarMinutos());
             return tiempoPartido;
         }
-*/
-        //TODO comprobar en proyecto común y considerar si poner o no, según necesidad
-        public boolean validarFechaFinPosteriorFechaInicio(GregorianCalendar fechaInicio, GregorianCalendar fechaFin){
-            boolean exito = false;
-            if (fechaFin.after(fechaInicio)) {
-                exito = true;
-            }
-            return exito;
-        }
 
-        public boolean pedirValidarIsPeriodoApuestasAbierto(){
+
+//        public boolean validarFechaFinPosteriorFechaInicio(GregorianCalendar fechaInicio, GregorianCalendar fechaFin){
+//            boolean exito = false;
+//            if (fechaFin.after(fechaInicio)) {
+//                exito = true;
+//            }
+//            return exito;
+//        }
+
+        /*Pide y valida un equipo que sera
+         '1' o '2'
+        * */
+        public char pedirValidarEquipoPuja(){
             Scanner sc = new Scanner(System.in);
-            int respueta;
-            boolean isAbierto = false;
-            System.out.println("Establecer si el período de apuestas está abierto: " +
-                    "\n1: Si" +
-                    "\n2: No");
-            respueta = sc.nextInt();
-
-            if(respueta == 1){
-                isAbierto = true;
+            char puja = ' ';
+            try{
+                do{
+                    System.out.println("Introduce el equipo: ");
+                    System.out.println("1. Local");
+                    System.out.println("2. Visitante");
+                    puja = sc.nextLine().charAt(0);
+                    if(puja != '1' && puja != '2'){
+                        System.out.println("Introduce 1 o 2");
+                    }
+                }while (puja != '1' && puja != '2');
+            } catch (InputMismatchException e){
+                puja = pedirValidarEquipoPuja();
             }
-            return isAbierto;
+
+            return puja;
+        }
+        /*Pide y valida un resultado
+         '1' o '2' o 'x'
+        * */
+        public char pedirValidarResultadoPuja(){
+            Scanner sc = new Scanner(System.in);
+            char puja = ' ';
+            try{
+                do{
+                    System.out.println("Introduce el equipo por el que apuestas: ");
+                    System.out.println("1. Local");
+                    System.out.println("2. Visitante");
+                    System.out.println("X. Empate");
+                    puja = sc.nextLine().charAt(0);
+                    puja = Character.toLowerCase(puja);
+                    if(puja != '1' && puja != '2' && puja != 'x'){
+                        System.out.println("Introduce 1, x ó 2");
+                    }
+                }while (puja != '1' && puja != '2' && puja != 'x');
+            } catch (InputMismatchException e){
+                puja = pedirValidarResultadoPuja();
+            }
+
+            return puja;
         }
 
-        //Nuevas validaciones 28/11/2019
+
+        /*
+        * Signatura: public Apuesta pedirValidarApuesta()
+        * Comentario: pide los datos y construye un objeto apuesta
+        * Precondiciones:
+        * Entradas: objeto usuario que realiza la apuesta
+        * Salidas: objeto Apuesta
+        * Postcondiciones: asociado al nombre se devolverá un objeto apuesta
+        * */
+        public Apuesta pedirValidarApuesta(UsuarioImpl usuario){
+            PartidoImpl partidoElegido;
+            int tipoApuesta;
+            GestionPartidos gestionPartidos = new GestionPartidos();
+            GestionApuestas gestionApuestas = new GestionApuestas();
+            double cantidadDineroAApostar = 0.0;
+            Apuesta apuesta = null;
+            double cuotaApuesta = 0.0;
 
 
+            //PedirValidar el partido al que quiere apostar
+            partidoElegido = pedirValidarPartidoDeUnaLista
+                    (gestionPartidos.VerPartidosDisponibles());
+            //PedirValidar tipo apuesta
+            tipoApuesta = pedirValidarTipoApuesta();
+            //PedirValidar la cantidad de dinero
+            cantidadDineroAApostar = pedirValidarCantidadDinero();
+            //Calcular la cuota (se calcula con una formula)
+
+
+            //segun el tipo de apuesta
+            //pedir los datos necesarios para cada tipo
+            switch (tipoApuesta){
+                case 1:
+                    apuesta = new ApuestaTipo1();
+                    apuesta = (ApuestaTipo1) apuesta;
+
+                    apuesta.setTipo('1');
+                    //PedirValidar Goles Locales y goles Visitante
+                    System.out.println("GOLES EQUIPO LOCAL: ");
+                    ((ApuestaTipo1) apuesta).setGolesLocal(pedirValidarNumeroGoles());
+
+                    System.out.println("GOLES EQUIPO VISITANTE: ");
+                    ((ApuestaTipo1) apuesta).setGolesVisitante(pedirValidarNumeroGoles());
+                    break;
+                case 2:
+                    apuesta = new ApuestaTipo2();
+                    apuesta = (ApuestaTipo2) apuesta;
+                    apuesta.setTipo('2');
+                    //PedirValidar cantidad de goles y equipo
+                    ((ApuestaTipo2) apuesta).setCantidadGoles(pedirValidarNumeroGoles());
+                    ((ApuestaTipo2) apuesta).setEquipo(pedirValidarEquipoPuja());
+                    break;
+                case 3:
+                    apuesta = new ApuestaTipo3();
+                    apuesta = (ApuestaTipo3) apuesta;
+                    apuesta.setTipo('3');
+                    //Pedir validar equipo
+                    ((ApuestaTipo3) apuesta).setEquipo(pedirValidarResultadoPuja());
+
+                    break;
+            }
+            if(apuesta != null){
+                apuesta.setUsuario(usuario);
+                apuesta.setPartido(partidoElegido);
+                apuesta.setCantidad(cantidadDineroAApostar);
+                cuotaApuesta = gestionApuestas.calcularCuotaApuesta(apuesta, tipoApuesta);
+                apuesta.setCuota(cuotaApuesta);
+            }
+            return apuesta;
+        }
+
+        //29/11/2019
 
         /* Signatura:public String pedirValidarCorreo()
          * Comentario:
-         *   Método que pide al usuario un correo y valida que éste no supere los 30 caracteres
-         *   ya que la BBDD sólo admite hasta 30.
+         *   Método que pide al usuario un correo y lo valida
          * Precondiciones:
          * Entradas:
-         * Salidas: String correo, es el correo del usuario.
-         * Postcondiciones:
+         * Salidas: Cadena correo
+         * Postcondiciones: Asociado al nombre devuelve un String correo validado introducido por el usuario.
+         *                  El correo no superará los 30 caracteres ya que la BBDD sólo admite hasta 30.
          * */
         public String pedirValidarCorreo(){
             Scanner sc = new Scanner(System.in);
@@ -701,16 +816,15 @@
             return correo;
         }
 
-
-
         /* Signatura:public String pedirValidarPassword()
          * Comentario:
-         *   Método que pide al usuario una contraseña y valida que ésta no supere los 25 caracteres
+         *   Método que pide al usuario una contraseña y la valida que ésta no supere los 25 caracteres
          *   ya que la BBDD sólo admite hasta 25.
          * Precondiciones:
          * Entradas:
-         * Salidas: String password, es la contraseña del usuario.
-         * Postcondiciones:
+         * Salidas: Cadena password
+         * Postcondiciones: Asociado al nombre devuelve un String password validado introducido por el usuario.
+         *                  La contraseña no superará los 25 caracteres ya que la BBDD sólo admite hasta 25.
          * */
         public String pedirValidarPassword(){
             Scanner sc = new Scanner(System.in);
@@ -727,14 +841,13 @@
         }
 
 
-
         /* Signatura: public boolean pedirValidarIsAdministrador()
          * Comentario:
          *   Método que muestra un menú preguntado si se desea registrar como Administrador o usuario estándar, y valida
          *   que el dato introducido sea correcto.
          * Precondiciones:
          * Entradas:
-         * Salidas: boolean idAdmin, indica si es administrador o usuario estándar.
+         * Salidas: boolean idAdmin
          * Postcondiciones: Asociado al nombre se devuelve un boolean que indica si es Administrador (true) o usuario estándar (false).
          * */
         public boolean pedirValidarIsAdministrador(){
@@ -758,10 +871,6 @@
             return isAdmin;
         }
 
-        //modificación 30/11/2019
-
-        //validar datos objeto Partido
-        //TODO añadir a proyecto común
 
         /* Signatura:  public String pedirValidarNombrePartido()
          * Comentario: se pide el nombre del partido y se valida
@@ -784,7 +893,6 @@
             return nombreEquipo;
         }
 
-        //TODO añadir a proyecto en común
 
         /* Signatura:  public PartidoImpl pedirValidarDatosPartido()
          * Comentario: se piden los datos del partido y se validan
@@ -810,7 +918,10 @@
                 System.out.println("Introduzca tiempo final partido");
                 fechaFin = pedirValidarFechaHora();
 
-                fechasCorrectas = validarFechaFinPosteriorFechaInicio(fechaInicio, fechaFin);
+                //fechasCorrectas = validarFechaFinPosteriorFechaInicio(fechaInicio, fechaFin);
+
+                fechasCorrectas = fechaInicio.before(fechaFin);
+
                 if(!fechasCorrectas){
                     System.out.println("Fechas incorrectas, vuelva a introducirlas");
                 }
@@ -825,7 +936,10 @@
             nombreVisitante = pedirValidarNombreEquipo();
             golVisitante = pedirValidarNumeroGoles();
 
-            periodoApuestasIsAbierto = pedirValidarIsPeriodoApuestasAbierto();
+            //TODO Mirar esto
+            //periodoApuestasIsAbierto = pedirValidarIsPeriodoApuestasAbierto();
+
+            periodoApuestasIsAbierto = true;
 
             //Paso los datos validados al objeto partido
             partidoNuevo.setPeriodoApuestasAbierto(periodoApuestasIsAbierto);
@@ -838,40 +952,6 @@
 
             return partidoNuevo;
         }
-
-        /*---------------------------------------------------*/
-
-        /*Si decido introducir sólo una fecha y más tarde las horas y se validen las fechas con esas horas añadidas,
-        añadir esto a pedirValidarDatosPartido(): */
-
-        //fechaComun = objValidar.pedirValidarFechaHora(); // Pido la fecha sólo con día, mes y año del partido, que será común al inicio y al final
-        //Paso la fecha común a la de inicio y final, para más tarde introducirles la hora
-        //fechaInicio = new GregorianCalendar(fechaComun.get(Calendar.YEAR),fechaComun.get(Calendar.MONTH),fechaComun.get(Calendar.DAY_OF_MONTH),0,0);
-        //fechaFin = new GregorianCalendar(fechaComun.get(Calendar.YEAR),fechaComun.get(Calendar.MONTH),fechaComun.get(Calendar.DAY_OF_MONTH),0,0);
-
-        /*Pido introducir tiempo de inicio y final de partido y compruebo que final vaya después de inicio,
-        se repite la operación hasta que el usuario lo introduzca correctamente*/
-
-//        //TODO puede modularse haciendo que una vez introducidos los datos de partido de haga esta validación
-//		do{
-//            System.out.println("Introduzca tiempo inicio Partido");
-//            //fechaInicio = objValidar.introducirTiempoPartido(fechaInicio);
-//            fechaInicio = objValidar.pedirValidarFechaHora();
-//            System.out.println("Introduzca tiempo final partido");
-//            //fechaFin = objValidar.introducirTiempoPartido(fechaFin);
-//            fechaFin = objValidar.pedirValidarFechaHora();
-//            fechasCorrectas = objValidar.validarFechaFinPosteriorFechaInicio(fechaInicio, fechaFin);
-//            if(!fechasCorrectas){
-//                System.out.println("Fechas incorrectas, vuelva a introducirlas");
-//            }
-//        }while (!fechasCorrectas);
-
-        /*--------------------------------------------------*/
-
-        //fecha para formato conversión
-        //TODO comprobar que funciona y hacer interfaz
-
-        //TODO añadir a común
 
         /* Signatura:  public String pedirValidarFechaParaFormatoConversion(GregorianCalendar fechaApuesta)
          * Comentario: se convierte una fecha al formato: dia/mes/año
@@ -896,8 +976,6 @@
 
         }
 
-        //TODO añadir a común
-
         /* Signatura:   public int pedirValidarIdApuesta()
          * Comentario: se pide y valida el id de la apuesta
          * Precondiciones:
@@ -917,8 +995,6 @@
             }while (idApuesta < 0);
             return idApuesta;
         }
-
-        //TODO añadir a proyecto común
 
         /*
          * Signatura: public ArrayList<Apuesta> obtenerListaApuestasPorFecha(UsuarioImpl usuarioApuesta)

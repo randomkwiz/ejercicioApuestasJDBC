@@ -49,19 +49,6 @@ public abstract class Apuesta {
 		this.partido = new PartidoImpl();
 	}
 
-	//TODO añadir a proyecto común
-
-	/*
-	 * Signatura: public abstract void consultarResultadoApuesta(int id)
-	 * Comentario: muestra los resultados de una apuesta anterior
-	 * Precondiciones: los datos de la apuesta deberán existir en la BBDD. El idApuesta lo habrá consultado el usuario
-	 *                 previamente para saber qué Apuesta concreta debe consultar.
-	 * Entradas: entero idApuesta
-	 * Salidas:
-	 * Postcondiciones:
-	 * */
-	public abstract void consultarResultadoApuesta(int idApuesta);
-
 	//getter y setters
 	public int getId() {
 		return id;
@@ -106,5 +93,7 @@ public abstract class Apuesta {
 		this.partido = partido;
 	}
 	
-	
+
+
+
 }

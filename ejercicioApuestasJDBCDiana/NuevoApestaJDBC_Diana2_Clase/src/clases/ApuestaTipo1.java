@@ -13,12 +13,6 @@
  * getters y setters
  * */
 package clases;
-import conexion.ConexionJDBC;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.GregorianCalendar;
 
 public class ApuestaTipo1 extends Apuesta{
@@ -40,58 +34,10 @@ public class ApuestaTipo1 extends Apuesta{
         this.golesVisitante = 0;
     }
 
-
     public ApuestaTipo1(double apuestasMaximas, int golesLocal, int golesVisitante) {
         this.apuestasMaximas = apuestasMaximas;
         this.golesLocal = golesLocal;
         this.golesVisitante = golesVisitante;
-    }
-
-    //TODO añadir a común
-
-    /*
-     * Signatura: public abstract void consultarResultadoApuesta(int id)
-     * Comentario: muestra los resultados de una apuesta anterior del tipo1
-     * Precondiciones: los datos de la apuesta deberán existir en la BBDD. El idApuesta lo habrá consultado el usuario
-     *                 previamente para saber qué Apuesta concreta debe consultar.
-     * Entradas: entero idApuesta
-     * Salidas:
-     * Postcondiciones:
-     * */
-    @Override
-    public void consultarResultadoApuesta(int idApuesta) {
-        ConexionJDBC objConexion = new ConexionJDBC();
-        Connection conexion = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultset = null;
-        ApuestaTipo1 apuestaTipo1 = new ApuestaTipo1();
-        String sentenciaSql = "SELECT * FROM Apuestas_tipo1 WHERE id = ?";
-
-        try{
-            conexion = objConexion.getConnection();
-            preparedStatement = conexion.prepareStatement(sentenciaSql);
-            preparedStatement.setInt(1, idApuesta);
-            resultset = preparedStatement.executeQuery();
-
-            while (resultset.next()){
-                apuestaTipo1.setId(resultset.getInt("id"));
-                apuestaTipo1.setApuestasMaximas(resultset.getInt("apuestasMáximas"));
-                apuestaTipo1.setGolesLocal(resultset.getInt("golLocal"));
-                apuestaTipo1.setGolesVisitante(resultset.getInt("golVisitante"));
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }finally {
-            try {
-                resultset.close();
-                preparedStatement.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            objConexion.closeConnection(conexion);
-        }
-        System.out.println("Id: " + apuestaTipo1.getId() + " Apuestas Máximas: " + apuestaTipo1.getApuestasMaximas() + " Goles Local: " + apuestaTipo1.getGolesLocal() + " Goles Visitante: " + apuestaTipo1.getGolesVisitante());
     }
 
     //Getters y setters
@@ -118,5 +64,9 @@ public class ApuestaTipo1 extends Apuesta{
     public void setGolesVisitante(int golesVisitante) {
         this.golesVisitante = golesVisitante;
     }
+
+
+
+
 
 }

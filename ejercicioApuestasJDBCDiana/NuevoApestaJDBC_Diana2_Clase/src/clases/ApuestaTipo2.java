@@ -13,12 +13,6 @@
  * getters y setters
  * */
 package clases;
-import conexion.ConexionJDBC;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.GregorianCalendar;
 
 public class ApuestaTipo2 extends Apuesta{
@@ -39,53 +33,6 @@ public class ApuestaTipo2 extends Apuesta{
         this.cantidadGoles = 0;
         this.equipo = ' ';
     }
-
-    /*
-     * Signatura: public abstract void consultarResultadoApuesta(int id)
-     * Comentario: los datos de la apuesta deberán existir en la BBDD. El idApuesta lo habrá consultado el usuario
-     *             previamente para saber qué Apuesta concreta debe consultar.
-     * Precondiciones: los datos de la apuesta deberán existir en la BBDD
-     * Entradas: entero idApuesta
-     * Salidas:
-     * Postcondiciones:
-     * */
-    @Override
-    public void consultarResultadoApuesta(int idApuesta) {
-        ConexionJDBC objConexion = new ConexionJDBC();
-        Connection conexion = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultset = null;
-        ApuestaTipo2 apuestaTipo2 = new ApuestaTipo2();
-        String sentenciaSql = "SELECT * FROM Apuestas_tipo2 WHERE id = ?";
-
-        try{
-            conexion = objConexion.getConnection();
-            preparedStatement = conexion.prepareStatement(sentenciaSql);
-            preparedStatement.setInt(1, idApuesta);
-            resultset = preparedStatement.executeQuery();
-
-            while (resultset.next()){
-                apuestaTipo2.setId(resultset.getInt("id"));
-                apuestaTipo2.setApuestasMaximas(resultset.getInt("apuestasMáximas"));
-                apuestaTipo2.setCantidadGoles(resultset.getInt("gol"));
-                apuestaTipo2.setEquipo(resultset.getString("puja").charAt(0));
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }finally {
-            try {
-                resultset.close();
-                preparedStatement.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            objConexion.closeConnection(conexion);
-        }
-        System.out.println("Id: " + apuestaTipo2.getId() + " Apuestas Máximas: " + apuestaTipo2.getApuestasMaximas() + " Goles : " + apuestaTipo2.getCantidadGoles() + " Puja: " + apuestaTipo2.getEquipo());
-
-    }
-
 
     //Getters y setters
     public double getApuestasMaximas() {

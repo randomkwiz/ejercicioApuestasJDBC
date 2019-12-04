@@ -1,5 +1,6 @@
 package gestion;
 
+import clases.IngresoImpl;
 import clases.UsuarioImpl;
 import conexion.ConexionJDBC;
 import validacion.Validar;
@@ -8,7 +9,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Scanner;
 
 public class GestionUsuarios {
 
@@ -109,20 +109,18 @@ public class GestionUsuarios {
 
     /*
      * Signatura: public UsuarioImpl insertarUsuario(UsuarioImpl nuevoUsuario)
-     * Comentario: inserta nuevo usuario en la BBDD
-     * Precondiciones: los datos del nuevo usuario estarán validados
-     * Entradas: Objeto UsuarioImpl nuevoUsuario
-     * Salidas: Boolean exito
+     * Comentario: Método que inserta un nuevo usuario en la BBDD pasado por parámetro.
+     * Precondiciones: Los datos del objeto nuevoUsuario estarán validados
+     * Entradas: Objeto nuevoUsuario
+     * Salidas: boolean exito
      * Entrada/Salida:
-     * Postcondiciones: inserta nuevo usuario en la BBDD. Asociado al nombre devuelve un boolean que indica si la
-     *                  operación se realizó con éxito(true) o no (false)
+     * Postcondiciones: Asociado al nombre devuelve un boolean que indica si el usario se insertó correctament (true) o no (false).
      * */
     public boolean insertarUsuario(UsuarioImpl nuevoUsuario){
         ConexionJDBC objConexionJDBC = new ConexionJDBC();
         Connection conexion = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
-        //UsuarioImpl usuario = new UsuarioImpl();
         String sentenciaSql = "INSERT INTO Usuarios VALUES (?, ?, ?, ?)";
         int filasAfectadas = 0;
         boolean exito = false;
@@ -154,7 +152,52 @@ public class GestionUsuarios {
         return exito;
     }
 
+	/*
+		prototipo: public UsuarioImpl ObtenerUsuarioPorId(int idUsuario)  
+		comentarios: sirve para obtener un usuario seguin una id dada
+		precondiciones: id correcto
+		entradas: entero idUsuario
+		salidas: objeto usuario
+		entradas/salidas: no hay 
+		postcondiciones: AN devuelve un objeto usuario
+		*/
+		
+		public void VerMovimientosCuentaUsuario(int idUsuario) 
+		{
+			ConexionJDBC conexionJDBC = new ConexionJDBC();
+			Connection connection = conexionJDBC.getConnection();
+			PreparedStatement preparedStatement = null;
+			ResultSet resultSet = null;
+			IngresoImpl ingreso=null;
+			UsuarioImpl u=new UsuarioImpl();
+			u.setId(idUsuario);
+
+			String miSelect = "select * from Ingresos where id_usuario= ?";
+			try {
+				//Preparo el statement
+				preparedStatement = connection.prepareStatement(miSelect);
+				preparedStatement.setInt(1,idUsuario);
+				//Ejecuto
+				resultSet = preparedStatement.executeQuery();
+
+				while (resultSet.next()) 
+				{
+					ingreso = new IngresoImpl();
+					
+					ingreso.setId(resultSet.getInt("id"));
+					ingreso.setCantidad(resultSet.getDouble("cantidad"));
+					ingreso.setDescripcion(resultSet.getString("descripcion"));
+					ingreso.setUsuario(u);
+					
+					System.out.println(ingreso.getId()+", "+ingreso.getCantidad()+", "+ingreso.getDescripcion()+", "+ingreso.getUsuario().getId());
+				}
 
 
+				preparedStatement.close();
+				conexionJDBC.closeConnection(connection);
+			}catch (SQLException e){
+				e.getStackTrace();
+			}
+		}
 
 }
