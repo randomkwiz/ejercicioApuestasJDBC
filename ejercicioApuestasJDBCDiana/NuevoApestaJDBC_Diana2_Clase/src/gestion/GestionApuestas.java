@@ -11,7 +11,7 @@ public class GestionApuestas {
 
     /*Los métodos que antes estaban override en Apuestas*/
 
-
+    //TODO modificar en común 08/12/2019
     /*
      * Signatura: public void consultarResultadoApuestaTipo1(int idApuesta)
      * Comentario: muestra los resultados de una apuesta anterior del tipo1
@@ -21,7 +21,6 @@ public class GestionApuestas {
      * Salidas:
      * Postcondiciones:
      * */
-
     public void consultarResultadoApuestaTipo1(int idApuesta) {
         ConexionJDBC objConexion = new ConexionJDBC();
         Connection conexion = null;
@@ -38,7 +37,7 @@ public class GestionApuestas {
 
             while (resultset.next()){
                 apuestaTipo1.setId(resultset.getInt("id"));
-                apuestaTipo1.setApuestasMaximas(resultset.getInt("apuestasMáximas"));
+               // apuestaTipo1.setApuestasMaximas(resultset.getInt("apuestasMáximas"));
                 apuestaTipo1.setGolesLocal(resultset.getInt("golLocal"));
                 apuestaTipo1.setGolesVisitante(resultset.getInt("golVisitante"));
             }
@@ -55,9 +54,10 @@ public class GestionApuestas {
             objConexion.closeConnection(conexion);
         }
         //TODO ver si esto podemos sacarlo fuera
-        System.out.println("Id: " + apuestaTipo1.getId() + " Apuestas Máximas: " + apuestaTipo1.getApuestasMaximas() + " Goles Local: " + apuestaTipo1.getGolesLocal() + " Goles Visitante: " + apuestaTipo1.getGolesVisitante());
+        System.out.println("Id: " + apuestaTipo1.getId() + " Goles Local: " + apuestaTipo1.getGolesLocal() + " Goles Visitante: " + apuestaTipo1.getGolesVisitante());
     }
 
+    //TODO modificar en común 08/12/2019
     /*
      * Signatura: public void consultarResultadoApuestaTipo2(int idApuesta)
      * Comentario: los datos de la apuesta deberán existir en la BBDD. El idApuesta lo habrá consultado el usuario
@@ -67,7 +67,6 @@ public class GestionApuestas {
      * Salidas:
      * Postcondiciones:
      * */
-
     public void consultarResultadoApuestaTipo2(int idApuesta) {
         ConexionJDBC objConexion = new ConexionJDBC();
         Connection conexion = null;
@@ -84,7 +83,7 @@ public class GestionApuestas {
 
             while (resultset.next()){
                 apuestaTipo2.setId(resultset.getInt("id"));
-                apuestaTipo2.setApuestasMaximas(resultset.getInt("apuestasMáximas"));
+                //apuestaTipo2.setApuestasMaximas(resultset.getInt("apuestasMáximas"));
                 apuestaTipo2.setCantidadGoles(resultset.getInt("gol"));
                 apuestaTipo2.setEquipo(resultset.getString("puja").charAt(0));
             }
@@ -101,10 +100,11 @@ public class GestionApuestas {
             objConexion.closeConnection(conexion);
         }
         //TODO ver si esto podemos sacarlo fuera
-        System.out.println("Id: " + apuestaTipo2.getId() + " Apuestas Máximas: " + apuestaTipo2.getApuestasMaximas() + " Goles : " + apuestaTipo2.getCantidadGoles() + " Puja: " + apuestaTipo2.getEquipo());
+        System.out.println("Id: " + apuestaTipo2.getId() + " Goles : " + apuestaTipo2.getCantidadGoles() + " Puja: " + apuestaTipo2.getEquipo());
 
     }
 
+    //TODO modificar en común 08/12/2019
     /*
      * Signatura: public void consultarResultadoApuestaTipo3(int idApuesta)
      * Comentario: muestra los resultados de una apuesta anterior del tipo3
@@ -130,7 +130,7 @@ public class GestionApuestas {
 
             while (resultset.next()){
                 apuestaTipo3.setId(resultset.getInt("id"));
-                apuestaTipo3.setApuestasMaximas(resultset.getInt("apuestasMáximas"));
+                //apuestaTipo3.setApuestasMaximas(resultset.getInt("apuestasMáximas"));
                 apuestaTipo3.setEquipo(resultset.getString("puja").charAt(0));
             }
 
@@ -146,11 +146,11 @@ public class GestionApuestas {
             objConexion.closeConnection(conexion);
         }
         //TODO ver si esto se puede sacar fuera
-        System.out.println("Id: " + apuestaTipo3.getId() + " Apuestas Máximas: " + apuestaTipo3.getApuestasMaximas() + " Puja: " + apuestaTipo3.getEquipo());
+        System.out.println("Id: " + apuestaTipo3.getId() + " Puja: " + apuestaTipo3.getEquipo());
     }
 
 
-    //TODO cambiar en común 04/12/2019
+    //TODO el método está casi igual, lo único es el orden de estas lineas: modificar en común (copiar método entero)
     /*
      * Signatura: public void verResultadosApuesta(UsuarioImpl usuarioApuesta, Apuesta tipoApuesta)
      * Comentario: muestra los resultados de una apuesta anterior
@@ -159,24 +159,24 @@ public class GestionApuestas {
      * Salidas: ArrayList de apuesta
      * Postcondiciones:
      * */
-    public void verResultadosApuesta(UsuarioImpl usuarioApuesta, ArrayList<Apuesta> listaApuestas) {
+    public void verResultadosApuesta(UsuarioImpl usuarioApuesta) {
         Validar objValidar = new Validar();
 
         ConexionJDBC objConexion = new ConexionJDBC();
         Connection conexion = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
-        String sentenciaSql = "SELECT * FROM Apuestas WHERE id = ?";
 
         Apuesta apuesta = null;
 
-        //TODO cambiar para facilidad en tests
-//        //Obtengo lista apuestas
-//        ArrayList<Apuesta> listaApuestas = objValidar.validarListaApuestasPorFecha(usuarioApuesta);
+        //Obtengo lista apuestas
+        ArrayList<Apuesta> listaApuestas = objValidar.validarListaApuestasPorFecha(usuarioApuesta);
         //Muestro lista apuestas
         objValidar.mostrarListaApuestasPorFecha(listaApuestas);
 
-        int id = objValidar.pedirValidarIdApuesta(); //Id para realizar la consulta //TODO cambiar en común
+
+        int id = objValidar.pedirValidarIdApuesta(); //Id para realizar la consulta
+        String sentenciaSql = "SELECT * FROM Apuestas WHERE id = ?";
 
         try {
             conexion = objConexion.getConnection();
@@ -195,6 +195,7 @@ public class GestionApuestas {
             e.printStackTrace();
         }
 
+        //De la apuesta creada según el tipo de la apuesta que se consulta y el id, obtiene el resultado de la apuesta deseada
         switch (apuesta.getTipo()) {
             case 1:
                 //ApuestaTipo1 tipo1 = new ApuestaTipo1();

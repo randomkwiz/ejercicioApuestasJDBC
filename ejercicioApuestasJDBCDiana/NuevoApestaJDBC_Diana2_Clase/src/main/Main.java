@@ -126,12 +126,11 @@ public class Main {
 					                //MostrarListadoPartidosAApostar
                                 	validar.MostrarListadoPartidosAApostar(listadoPartidosAApostar);
                                     break;
-                                case 3: //TODO modificar en común
+                                case 3:
                                     //3: comprobar el resultado de una apuesta anterior
                                     //System.out.println("Opcion 3. En construcción.");
                                     System.out.println("Comprobar resultado de una apuesta");
-                                    ArrayList<Apuesta> listaApuestas = validar.validarListaApuestasPorFecha(usuarioLogado);
-                                    gestionApuestas.verResultadosApuesta(usuarioLogado, listaApuestas);
+                                    gestionApuestas.verResultadosApuesta(usuarioLogado);
                                     break;
                                 case 4:
                                     //4: hacer un ingreso en cuenta
@@ -176,7 +175,7 @@ public class Main {
                                     //System.out.println("Opcion 7. En construcción.");
 
                                     System.out.println("Registrar nuevo partido");
-                                    partidoNuevo = validar.pedirValidarDatosPartido();
+                                    partidoNuevo = validar.pedirValidarDatosPartido(); //TODO modificar en común
                                     boolean exito = gestionPartidos.insertarPartido(partidoNuevo);
                                     if (exito){
                                         System.out.println("Nuevo partido registrado correctamente");
@@ -203,22 +202,13 @@ public class Main {
                                     }
                                     break;
                                 case 10:
-                                    //10: consultar las apuestas de un partido, indicando la cantidad de dinero apostado a cada posible resultado
-                                    listadoPartidosAApostar=gestionPartidos.VerPartidosDisponibles();
+                                     //10: consultar las apuestas de un partido, indicando la cantidad de dinero apostado a cada posible resultado
+                                	listadoPartidosAApostar=gestionPartidos.obtenerListadoPartidosAnteriorAHoy();
                                 	
                                 	//MostrarListadoPartidosAApostar
-                                	do 
-                                	{
-                                	    Scanner sc = new Scanner(System.in);
-                                		System.out.println("Pulsa 0 para salir o el numero del partido ");
-                                		validar.MostrarListadoPartidosAApostar(listadoPartidosAApostar);
-                                		opcionCaso10=sc.nextInt()-1;//ponerlo en un metodo
-                                	}while(opcionCaso10!=0 && !gestionPartidos.ComprobarExistenciaDelPartidoPorId(opcionCaso10, listadoPartidosAApostar));
+                                	opcionCaso10=validar.PedirValidarIdPartido(listadoPartidosAApostar);
                                 	
-                                	if(opcionCaso10!=0) 
-                                	{
-                                		gestionPartidos.DineroApostadoPorUnPosibleResultadoDeUnPartido(opcionCaso10);
-                                	}
+                                	gestionPartidos.DineroApostadoPorUnPosibleResultadoDeUnPartido(opcionCaso10);
                                     break;
                                 case 11:
                                     //11: pagar las apuestas ganadoras de un partido finalizado

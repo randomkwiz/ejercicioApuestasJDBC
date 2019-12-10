@@ -28,10 +28,10 @@
 
             UsuarioImpl nuevoUsuario = new UsuarioImpl();
 
-            double cantidadActualDinero = pedirValidarCantidadDinero();
             String correo = pedirValidarCorreo();
             String password = pedirValidarPassword();
             boolean isAdmin = pedirValidarIsAdministrador();
+            double cantidadActualDinero = pedirValidarCantidadDinero(); //TODO 1: poner debajo de validarPassword, modificar en común
 
             nuevoUsuario.setCantidadActualDinero(cantidadActualDinero);
             nuevoUsuario.setCorreo(correo);
@@ -266,8 +266,7 @@
             double cantidad = 0.0;
             try {
                 do {
-
-                    System.out.println("Introduzca la cantidad : ");
+                    System.out.println("Introduzca la cantidad de dinero: "); //TODO modificar en común
                     cantidad = sc.nextDouble();
 
                 } while (cantidad <= 0.0);
@@ -936,10 +935,10 @@
             nombreVisitante = pedirValidarNombreEquipo();
             golVisitante = pedirValidarNumeroGoles();
 
-            //TODO Mirar esto
-            //periodoApuestasIsAbierto = pedirValidarIsPeriodoApuestasAbierto();
+            //TODO Mirar esto (en común está comentado y puesto a true)
+            periodoApuestasIsAbierto = pedirValidarIsPeriodoApuestasAbierto();
 
-            periodoApuestasIsAbierto = true;
+            //periodoApuestasIsAbierto = true;
 
             //Paso los datos validados al objeto partido
             partidoNuevo.setPeriodoApuestasAbierto(periodoApuestasIsAbierto);
@@ -963,14 +962,15 @@
         public String pedirValidarFechaParaFormatoConversion(GregorianCalendar fechaApuesta){ //Para consulta de apuestas según fecha
             String fechaFormatoConversion;
 
-            System.out.println("Introduzca fecha");
+//            System.out.println("Introduzca fecha");
 //            GregorianCalendar fechaNormalSinHora = pedirValidarFechaSinHora();
             //Datos fecha
             int dia = fechaApuesta.get(Calendar.DAY_OF_MONTH);
             int mes = fechaApuesta.get(Calendar.MONTH);
             int anio = fechaApuesta.get(Calendar.YEAR);
 
-            fechaFormatoConversion = mes + "/" + dia + "/" + anio;   // mes/dia/año, así es como funciona en la consulta
+//            fechaFormatoConversion = mes + "/" + dia + "/" + anio;   // mes/dia/año, así es como funciona en la consulta
+            fechaFormatoConversion = anio + "/" + mes + "/" + dia;   // mes/dia/año, así es como funciona en la consulta
 
             return fechaFormatoConversion;
 
@@ -1016,13 +1016,14 @@
             PartidoImpl partido;
             GestionPartidos gestionPartidos = new GestionPartidos();
             ArrayList<Apuesta> listaApuestasPorFecha = new ArrayList<>();
-
+            System.out.println("Introduzca la fecha para consultar las apuestas de dicha fecha");
             //Fecha original
             GregorianCalendar fechaApuesta = objValidar.pedirValidarFechaHora();
             //Fecha formateada para consulta: mes/dia/año
             String fechaFormatoConversion = objValidar.pedirValidarFechaParaFormatoConversion(fechaApuesta); //Convierto la fecha al formato necesario para la sentencia Sql
-
-            String sentenciaSql = "SELECT * FROM  Apuestas WHERE Convert(VARCHAR(10),fechaHora,101) =  Convert(Varchar(10), ?,101) and id_usuario = ?";
+            //TODO revisar consulta de clase revisada con Leo
+            String sentenciaSql = "SELECT * FROM  Apuestas WHERE Convert(VARCHAR(10),fechaHora,101) =  ? and id_usuario = ?"; //Hecha con Leo
+//            String sentenciaSql = "SELECT * FROM  Apuestas WHERE Convert(VARCHAR(10),fechaHora,101) =  Convert(Varchar(10), ?,101) and id_usuario = ?";
 
 
             try{
@@ -1078,5 +1079,66 @@
             }
         }
 
+	/*
+    	prototipo: public int PedirValidarIdPartido(ArrayList<PartidoImpl> listadoPartidosAApostar) 
+    	comentarios: se lee y se valida el id de los partidos que estan en uja lista, 
+    					o sea se ve si el partido existe por su id
+    	precondiciones: array lleno
+    	entradas: un array de partidos 
+    	salidas: entero opcion que elige el usuario que coincide con el id del partido
+    	entradas/salidas: no hay 
+    	postcondiciones: AN devuelve un numero entero positivo mayor que cero
+    	*/
+        public int PedirValidarIdPartido(ArrayList<PartidoImpl> listadoPartidosAApostar)
+        {
+        	Scanner sc=new Scanner(System.in);
+        	GestionPartidos gestionPartidos=new GestionPartidos();
+        	PartidoImpl p=null;
+        	int opcionCaso10=0;
+        	boolean encontrado=false;
+        	
+        	do 
+        	{
+        		System.out.println("Introduce el numero del partido ");
+        		mostrarPartidosComoUnMenu(listadoPartidosAApostar);
+        		opcionCaso10=sc.nextInt();
+        		for(int i=0;i<listadoPartidosAApostar.size() && encontrado==false;i++)
+        		{
+        			if(listadoPartidosAApostar.get(i).getId()==opcionCaso10) 
+        			{
+        				opcionCaso10=listadoPartidosAApostar.get(i).getId();
+        				encontrado=true;
+        			}
+        		}
+        	}while(!gestionPartidos.ComprobarExistenciaDelPartidoPorId(opcionCaso10, listadoPartidosAApostar));
+        	
+        	return opcionCaso10;
+        }
+
+        //Nuevas modificaciones 08/12/2019
+        //TODO comprobar y añadir a común
+
+        /*
+         * Signatura:  public boolean pedirValidarIsPeriodoApuestasAbierto()
+         * Comentario: valida si el periodo de apuestas está abierto
+         * Precondiciones:
+         * Entradas:
+         * Salidas: boolean isAbierto
+         * Postcondiciones: Asociado al nombre, devuelve un boolean que indica si el periodo de apuestas está abierto (true) o cerrado (false)
+         * */
+        public boolean pedirValidarIsPeriodoApuestasAbierto(){
+            Scanner sc = new Scanner(System.in);
+            int respueta;
+            boolean isAbierto = false;
+            System.out.println("Establecer si el período de apuestas está abierto: " +
+                    "\n1: Si" +
+                    "\n2: No");
+            respueta = sc.nextInt();
+
+            if(respueta == 1){
+                isAbierto = true;
+            }
+            return isAbierto;
+        }
 
     }

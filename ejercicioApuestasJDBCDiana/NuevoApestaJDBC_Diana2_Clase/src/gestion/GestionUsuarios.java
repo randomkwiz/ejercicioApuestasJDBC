@@ -192,7 +192,6 @@ public class GestionUsuarios {
 					System.out.println(ingreso.getId()+", "+ingreso.getCantidad()+", "+ingreso.getDescripcion()+", "+ingreso.getUsuario().getId());
 				}
 
-
 				preparedStatement.close();
 				conexionJDBC.closeConnection(connection);
 			}catch (SQLException e){

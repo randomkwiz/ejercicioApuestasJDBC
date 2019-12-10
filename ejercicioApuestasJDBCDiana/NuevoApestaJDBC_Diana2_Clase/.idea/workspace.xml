@@ -13,13 +13,14 @@
   </component>
   <component name="ProjectId" id="1UHa0P9cBnoyWxlq9zVAc7jozbg" />
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$USER_HOME$/Downloads/Microsoft JDBC Driver 7.4 for SQL Server/sqljdbc_7.4/esn/mssql-jdbc-7.4.1.jre8.jar!/" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\ejercicioApuestasJDBC\ejercicioApuestasJDBCDiana\NuevoApestaJDBC_Diana2_Clase" />
       <recent name="D:\ejercicioApuestasJDBC\ejercicioApuestasJDBCDiana\NuevoApestaJDBC_Diana2_Clase\src" />
     </key>
   </component>
@@ -103,19 +104,24 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/conexion/ConexionJDBC.java</url>
-          <line>24</line>
-          <option name="timeStamp" value="5" />
+          <url>file://$PROJECT_DIR$/src/gestion/GestionUsuarios.java</url>
+          <line>119</line>
+          <option name="timeStamp" value="3" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/Main.java</url>
-          <line>128</line>
-          <option name="timeStamp" value="8" />
+          <line>132</line>
+          <option name="timeStamp" value="4" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/tests/TestsApuestas.java</url>
-          <line>32</line>
-          <option name="timeStamp" value="9" />
+          <url>file://$PROJECT_DIR$/src/validacion/Validar.java</url>
+          <line>1020</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/validacion/Validar.java</url>
+          <line>1039</line>
+          <option name="timeStamp" value="8" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

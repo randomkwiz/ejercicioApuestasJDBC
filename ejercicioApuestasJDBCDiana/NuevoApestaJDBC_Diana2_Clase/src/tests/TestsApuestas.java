@@ -8,7 +8,6 @@ import gestion.GestionApuestas;
 import utilidad.Utilidad;
 import validacion.Validar;
 
-import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
 public class TestsApuestas {
@@ -27,12 +26,6 @@ public class TestsApuestas {
 */
 
         //gestionApuestas.
-
-        //Pruebas Diana:
-
-        ArrayList<Apuesta> listaApuestasPorfecha = validar.validarListaApuestasPorFecha(usuario);
-        gestionApuestas.verResultadosApuesta(usuario, listaApuestasPorfecha);
-
 
 
     }
