@@ -130,7 +130,7 @@ public class GestionApuestas {
 
             while (resultset.next()){
                 apuestaTipo3.setId(resultset.getInt("id"));
-                //apuestaTipo3.setApuestasMaximas(resultset.getInt("apuestasMáximas"));
+                apuestaTipo3.setApuestasMaximas(resultset.getInt("apuestasMáximas"));
                 apuestaTipo3.setEquipo(resultset.getString("puja").charAt(0));
             }
 
@@ -146,7 +146,7 @@ public class GestionApuestas {
             objConexion.closeConnection(conexion);
         }
         //TODO ver si esto se puede sacar fuera
-        System.out.println("Id: " + apuestaTipo3.getId() + " Puja: " + apuestaTipo3.getEquipo());
+        System.out.println("Id: " + apuestaTipo3.getId() + " Apuestas Máximas: " + apuestaTipo3.getApuestasMaximas() + " Puja: " + apuestaTipo3.getEquipo());
     }
 
 

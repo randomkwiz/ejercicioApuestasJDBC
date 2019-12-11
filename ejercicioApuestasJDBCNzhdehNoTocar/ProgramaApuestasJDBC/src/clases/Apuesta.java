@@ -23,13 +23,13 @@ public abstract class Apuesta {
 	
 	private int id;
 	private double cuota;
-	private int cantidad;//la cantidad que apuesta el usuario
+	private double cantidad;//la cantidad que apuesta el usuario
 	private char tipo;
 	GregorianCalendar fechaHora;
 	private UsuarioImpl usuario;
 	private PartidoImpl partido;
 
-	public Apuesta(int id, double cuota, int cantidad, char tipo, GregorianCalendar fechaHora, UsuarioImpl usuario, PartidoImpl partido) {
+	public Apuesta(int id, double cuota, double cantidad, char tipo, GregorianCalendar fechaHora, UsuarioImpl usuario, PartidoImpl partido) {
 		this.id = id;
 		this.cuota = cuota;
 		this.cantidad = cantidad;
@@ -42,7 +42,7 @@ public abstract class Apuesta {
 	public Apuesta() {
 		this.id = 0;
 		this.cuota = 0.0;
-		this.cantidad = 0;
+		this.cantidad = 0.0;
 		this.tipo = ' ';
 		this.fechaHora = new GregorianCalendar(1990,1,1);
 		this.usuario = new UsuarioImpl();
@@ -62,10 +62,10 @@ public abstract class Apuesta {
 	public void setCuota(double cuota) {
 		this.cuota = cuota;
 	}
-	public int getCantidad() {
+	public double getCantidad() {
 		return cantidad;
 	}
-	public void setCantidad(int cantidad) {
+	public void setCantidad(double cantidad) {
 		this.cantidad = cantidad;
 	}
 	public char getTipo() {
@@ -93,5 +93,7 @@ public abstract class Apuesta {
 		this.partido = partido;
 	}
 	
-	
+
+
+
 }
