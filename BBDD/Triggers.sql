@@ -287,6 +287,11 @@ CREATE or alter PROCEDURE insertarApuesta
 AS
 BEGIN
 
+	declare @temp bit
+	set @temp = dbo.COMPROBARMAXIMO(@IDPartido, @tipo)
+
+	if(@temp = 1)
+	begin
 
 	INSERT Apuestas (cuota, cantidad, tipo, fechaHora, id_usuario, id_partido)
 	VALUES (@cuota, @cantidad, @tipo, CURRENT_TIMESTAMP, @IDUsuario, @IDPartido)
@@ -309,8 +314,93 @@ BEGIN
 		VALUES (@@IDENTITY , @puja)
 	END
 
+	end
+
+	else
+	begin
+		ROLLBACK
+
+	end
 END
 GO
+
+
+
+
+/*Comprueba que no se supere el maximo
+Funcion AÑADIDA
+*/
+
+CREATE OR ALTER FUNCTION COMPROBARMAXIMO(@IDPARTIDO SMALLINT, @TIPO CHAR(1))
+	RETURNS BIT AS
+	BEGIN
+	DECLARE @RET BIT = 0
+
+
+
+
+		IF(@TIPO = '1')
+			BEGIN 
+
+				IF( (SELECT SUM(cantidad * cuota) 
+					FROM Apuestas
+					WHERE id_partido = @IDPARTIDO
+					and
+					tipo = '1'
+					) <
+					(SELECT maximoApuestaTipo1
+					FROM Partidos
+					WHERE ID = @IDPARTIDO) 
+				)
+						BEGIN
+						SET @RET = 1
+						END
+			END
+		
+
+		IF(@TIPO = '2')
+			BEGIN 
+
+				IF( (SELECT SUM(cantidad * cuota) 
+					FROM Apuestas
+					WHERE id_partido = @IDPARTIDO
+					and
+					tipo = '2'
+					) <
+					(SELECT maximoApuestaTipo2
+					FROM Partidos
+					WHERE ID = @IDPARTIDO) 
+				)
+						BEGIN
+						SET @RET = 1
+						END
+			END
+		
+
+		IF(@TIPO = '3')
+			BEGIN 
+
+				IF( (SELECT SUM(cantidad * cuota) 
+						FROM Apuestas
+						WHERE id_partido = @IDPARTIDO
+						and
+						tipo = '3'
+						) <
+					(SELECT maximoApuestaTipo3
+					FROM Partidos
+					WHERE ID = @IDPARTIDO) 
+				)
+						BEGIN
+						SET @RET = 1
+						END
+			END
+		
+
+
+		RETURN @RET
+	END
+	GO
+
 
 --PRUEBAS 
 -- modificarSaldo
