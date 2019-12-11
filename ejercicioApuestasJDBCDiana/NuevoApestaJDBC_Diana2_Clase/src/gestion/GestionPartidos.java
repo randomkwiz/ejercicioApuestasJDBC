@@ -384,10 +384,10 @@ public class GestionPartidos
 				preparedStatement.setInt(3, partidoNuevo.getGolesVisitante());
 				//preparedStatement.setDate(4, (java.sql.Date) partidoNuevo.getFechaInicio().getTime()); //TODO: revisar
 				//preparedStatement.setDate(5, (java.sql.Date) partidoNuevo.getFechaFin().getTime()); //TODO: revisar
-//				preparedStatement.setString(4, objUtilidad.formatearFecha(partidoNuevo.getFechaInicio())); //TODO revisar formato a insertar
-//				preparedStatement.setString(5, objUtilidad.formatearFecha(partidoNuevo.getFechaFin())); //TODO revisar formato a insertar
-				preparedStatement.setString(4, objUtilidad.formatearFecha(partidoNuevo.getFechaInicio()) + " " + partidoNuevo.getFechaInicio().get(Calendar.HOUR_OF_DAY) + ":" + partidoNuevo.getFechaInicio().get(Calendar.MINUTE)); //TODO ver si funciona
-				preparedStatement.setString(5, objUtilidad.formatearFecha(partidoNuevo.getFechaFin()) + " " + partidoNuevo.getFechaFin().get(Calendar.HOUR_OF_DAY) + ":" + partidoNuevo.getFechaFin().get(Calendar.MINUTE)); //TODO ver si funciona
+				preparedStatement.setString(4, objUtilidad.formatearFecha(partidoNuevo.getFechaInicio())); //TODO revisar formato a insertar
+				preparedStatement.setString(5, objUtilidad.formatearFecha(partidoNuevo.getFechaFin())); //TODO revisar formato a insertar
+//				preparedStatement.setString(4, objUtilidad.formatearFecha(partidoNuevo.getFechaInicio()) + " " + partidoNuevo.getFechaInicio().get(Calendar.HOUR_OF_DAY) + ":" + partidoNuevo.getFechaInicio().get(Calendar.MINUTE)); //TODO ver si funciona
+//				preparedStatement.setString(5, objUtilidad.formatearFecha(partidoNuevo.getFechaFin()) + " " + partidoNuevo.getFechaFin().get(Calendar.HOUR_OF_DAY) + ":" + partidoNuevo.getFechaFin().get(Calendar.MINUTE)); //TODO ver si funciona
 
 				preparedStatement.setString(6, partidoNuevo.getNombreLocal());
 				preparedStatement.setString(7, partidoNuevo.getNombreVisitante());

@@ -36,7 +36,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.Main">
+  <component name="RunManager" selected="Application.TestsPartidos">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true">
       <option name="MAIN_CLASS_NAME" value="main.Main" />
       <module name="NuevoApestaJDBC_Diana2" />
@@ -63,12 +63,27 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="TestsPartidos" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="tests.TestsPartidos" />
+      <module name="NuevoApestaJDBC_Diana2" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="tests.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <list>
       <item itemvalue="Application.Main" />
       <item itemvalue="Application.TestsApuestas" />
+      <item itemvalue="Application.TestsPartidos" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.TestsPartidos" />
         <item itemvalue="Application.Main" />
         <item itemvalue="Application.TestsApuestas" />
       </list>
@@ -115,13 +130,23 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/validacion/Validar.java</url>
-          <line>1020</line>
+          <line>1021</line>
           <option name="timeStamp" value="5" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/validacion/Validar.java</url>
-          <line>1039</line>
+          <line>1040</line>
           <option name="timeStamp" value="8" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/validacion/Validar.java</url>
+          <line>1029</line>
+          <option name="timeStamp" value="11" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/gestion/GestionPartidos.java</url>
+          <line>378</line>
+          <option name="timeStamp" value="12" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

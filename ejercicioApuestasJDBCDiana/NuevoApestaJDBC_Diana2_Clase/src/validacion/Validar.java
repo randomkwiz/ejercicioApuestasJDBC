@@ -200,7 +200,7 @@
                 do {
                     pintarMenuUsuario();
                     opcion = sc.nextInt();
-                } while (opcion < 0 || opcion > 6);
+                } while (opcion < 0 || opcion > 7); //TODO modificar en común
             } catch (InputMismatchException e) {
                 System.out.println("Introduce un formato valido");
                 opcion = pedirValidarMenuUsuarioEstandar();
@@ -238,6 +238,7 @@
             System.out.println("4. Hacer un ingreso en la cuenta");
             System.out.println("5. Hacer una retirada de dinero");
             System.out.println("6. Ver movimientos de la cuenta");
+            System.out.println("7. Registrar nuevo partido"); //TODO añadir a común
         }
 
         /*
@@ -969,8 +970,8 @@
             int mes = fechaApuesta.get(Calendar.MONTH);
             int anio = fechaApuesta.get(Calendar.YEAR);
 
-//            fechaFormatoConversion = mes + "/" + dia + "/" + anio;   // mes/dia/año, así es como funciona en la consulta
-            fechaFormatoConversion = anio + "/" + mes + "/" + dia;   // mes/dia/año, así es como funciona en la consulta
+            fechaFormatoConversion = mes + "/" + dia + "/" + anio;   // mes/dia/año, así es como funciona en la consulta
+//            fechaFormatoConversion = anio + "/" + mes + "/" + dia;   // mes/dia/año, así es como funciona en la consulta
 
             return fechaFormatoConversion;
 
@@ -1047,8 +1048,11 @@
                     apuesta.setFechaHora(fechaApuesta); //TODO creo que no hace falta
                     apuesta.setUsuario(usuarioApuesta); //TODO creo que no hace falta
                     apuesta.setPartido(partido);
-
-                    listaApuestasPorFecha.add(apuesta);
+                    if(apuesta!=null){
+                        listaApuestasPorFecha.add(apuesta);
+                    }else{
+                        System.out.println("No hay datos");
+                    }
                 }
             }catch (SQLException e){
                 e.printStackTrace();

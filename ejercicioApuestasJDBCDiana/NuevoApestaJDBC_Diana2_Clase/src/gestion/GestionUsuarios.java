@@ -120,7 +120,6 @@ public class GestionUsuarios {
         ConexionJDBC objConexionJDBC = new ConexionJDBC();
         Connection conexion = null;
         PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
         String sentenciaSql = "INSERT INTO Usuarios VALUES (?, ?, ?, ?)";
         int filasAfectadas = 0;
         boolean exito = false;
@@ -142,7 +141,6 @@ public class GestionUsuarios {
             e.printStackTrace();
         }finally {
             try {
-                resultSet.close();
                 preparedStatement.close();
             } catch (SQLException e) {
                 e.printStackTrace();
