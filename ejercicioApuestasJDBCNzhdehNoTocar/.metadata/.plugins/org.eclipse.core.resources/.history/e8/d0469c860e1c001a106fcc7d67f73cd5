@@ -122,9 +122,9 @@
             try {
                 do {
 
-                    System.out.println("Introduce tu correo electronico: ");
+                    System.out.println("Introduce tu correo electr√≥nico: ");
                     correo = sc.nextLine();
-                    System.out.println("Introduce tu contraseÒa: ");
+                    System.out.println("Introduce tu contrase√±a: ");
                     if (console == null) {
                         password = sc.nextLine();
                     } else {
@@ -163,7 +163,7 @@
 
             String miSelect = "select * from Usuarios  where correo = ?\n" +
                     "        and\n" +
-                    "                contraseÒa = ?";
+                    "                contrase√±a = ?";
             try {
                 connection = conexionJDBC.getConnection();
                 //Preparo el statement

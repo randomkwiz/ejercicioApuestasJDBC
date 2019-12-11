@@ -146,7 +146,7 @@ public class GestionApuestas {
             objConexion.closeConnection(conexion);
         }
         //TODO ver si esto se puede sacar fuera
-        System.out.println("Id: " + apuestaTipo3.getId() + " Puja: " + apuestaTipo3.getEquipo());
+        System.out.println("Id: " + apuestaTipo3.getId() + " Apuestas Máximas: " + apuestaTipo3.getApuestasMaximas() + " Puja: " + apuestaTipo3.getEquipo());
     }
 
 
