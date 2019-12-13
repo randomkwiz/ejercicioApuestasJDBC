@@ -11,7 +11,6 @@ public class GestionApuestas {
 
     /*Los métodos que antes estaban override en Apuestas*/
 
-    //TODO modificar en común 08/12/2019
     /*
      * Signatura: public void consultarResultadoApuestaTipo1(int idApuesta)
      * Comentario: muestra los resultados de una apuesta anterior del tipo1
@@ -57,7 +56,6 @@ public class GestionApuestas {
         System.out.println("Id: " + apuestaTipo1.getId() + " Goles Local: " + apuestaTipo1.getGolesLocal() + " Goles Visitante: " + apuestaTipo1.getGolesVisitante());
     }
 
-    //TODO modificar en común 08/12/2019
     /*
      * Signatura: public void consultarResultadoApuestaTipo2(int idApuesta)
      * Comentario: los datos de la apuesta deberán existir en la BBDD. El idApuesta lo habrá consultado el usuario
@@ -104,7 +102,6 @@ public class GestionApuestas {
 
     }
 
-    //TODO modificar en común 08/12/2019
     /*
      * Signatura: public void consultarResultadoApuestaTipo3(int idApuesta)
      * Comentario: muestra los resultados de una apuesta anterior del tipo3

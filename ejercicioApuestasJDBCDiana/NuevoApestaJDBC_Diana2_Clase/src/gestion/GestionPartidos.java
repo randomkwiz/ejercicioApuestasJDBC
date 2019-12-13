@@ -363,7 +363,7 @@ public class GestionPartidos
 	 * 					Se considerará éxito si el número de filas afectadas es igual a 1.
 	 * */
 
-	public boolean insertarPartido(PartidoImpl partidoNuevo){ //TODO modificar en común
+	public boolean insertarPartido(PartidoImpl partidoNuevo){ //TODO modificar en común 12/12/2019
 		Utilidad objUtilidad = new Utilidad();
 		//Variables inserción en base de datos
 		ConexionJDBC objConexion = new ConexionJDBC();
@@ -400,9 +400,7 @@ public class GestionPartidos
 
 				if(preparedStatement.executeUpdate() == 1){
 					exito = true;
-				}/*else{
-					System.out.println("Error al intentar insertar el partido"); //TODO ya está en main, modificar en común
-				}*/
+				}
 			}
 
 		}catch (SQLException e){

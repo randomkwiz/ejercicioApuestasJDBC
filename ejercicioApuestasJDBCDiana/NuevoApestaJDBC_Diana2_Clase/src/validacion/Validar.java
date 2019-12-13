@@ -956,10 +956,10 @@
             do{
                 System.out.println("Introduzca tiempo inicio Partido");
 //                fechaInicio = pedirValidarFechaHora();
-                introducirTiempoPartido(fechaInicio);
+                introducirHoraYMinutos(fechaInicio);
                 System.out.println("Introduzca tiempo final partido");
 //                fechaFin = pedirValidarFechaHora();
-                introducirTiempoPartido(fechaFin);
+                introducirHoraYMinutos(fechaFin);
                 fechasCorrectas = fechaInicio.before(fechaFin);
 
                 if(!fechasCorrectas){
@@ -977,7 +977,7 @@
             golVisitante = pedirValidarNumeroGoles();
 
             //TODO Mirar esto (en común está comentado y puesto a true)
-//            periodoApuestasIsAbierto = pedirValidarIsPeriodoApuestasAbierto();
+            periodoApuestasIsAbierto = pedirValidarIsPeriodoApuestasAbierto();
 //            periodoApuestasIsAbierto = true;
 
             //TODO nuevo 12/12/2019
@@ -1007,12 +1007,20 @@
             return partidoNuevo;
         }
 
-        //TODO esto es solo para copipaste
-        //Lo necesito para introducir solo hora y minutos en tiempo partido al crear objeto
-        public GregorianCalendar introducirTiempoPartido(GregorianCalendar tiempoPartido){
-            tiempoPartido.set(Calendar.HOUR_OF_DAY, pedirValidarHora());
-            tiempoPartido.set(Calendar.MINUTE, pedirValidarMinutos());
-            return tiempoPartido;
+        //TODO nuevo 12/12/2019
+
+        /* Signatura:    public GregorianCalendar introducirHoraYMinutos(GregorianCalendar tiempoHoraYMinutos)
+         * Comentario: se añade a una fecha hora y minutos
+         * Precondiciones: la fecha de deberá estar correctamente validada
+         * Entradas: Objeto GregorianCalendar fecha
+         * Salidas: Objeto GregorianCalendar fecha
+         * Entradas/Salida: el objeto contenía datos sólo de día, mes y año y se devolverá con hora y minutos
+         * Postcondiciones: Asociado al nombre se devuelve un objeto GregorianCalendar fecha con los datos de fecha, ahora con hora y minutos añadidos
+         * */
+        public GregorianCalendar introducirHoraYMinutos(GregorianCalendar fecha){       //Lo necesito para introducir solo hora y minutos en tiempo partido al crear objeto
+            fecha.set(Calendar.HOUR_OF_DAY, pedirValidarHora());
+            fecha.set(Calendar.MINUTE, pedirValidarMinutos());
+            return fecha;
         }
 
         //
@@ -1239,7 +1247,6 @@
 
         //Nuevas modificaciones 08/12/2019
         //TODO comprobar y añadir a común
-
         /*
          * Signatura:  public boolean pedirValidarIsPeriodoApuestasAbierto()
          * Comentario: valida si el periodo de apuestas está abierto

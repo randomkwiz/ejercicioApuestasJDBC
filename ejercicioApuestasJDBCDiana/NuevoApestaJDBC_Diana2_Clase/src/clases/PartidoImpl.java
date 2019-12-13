@@ -140,9 +140,8 @@ public class PartidoImpl implements Partido {
     public void setPeriodoApuestasAbierto(boolean periodoApuestasAbierto) {
         isPeriodoApuestasAbierto = periodoApuestasAbierto;
     }
+
     //TODO Getters y Setters añadidos por Diana
-
-
     public Double getApuestasMaximasTipo1() {
         return apuestasMaximasTipo1;
     }
