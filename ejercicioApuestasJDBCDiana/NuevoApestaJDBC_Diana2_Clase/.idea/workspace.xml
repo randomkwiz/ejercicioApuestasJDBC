@@ -13,7 +13,7 @@
   </component>
   <component name="ProjectId" id="1UHa0P9cBnoyWxlq9zVAc7jozbg" />
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../../../DAM/Drivers_SQL_SERVER/sqljdbc_7.4/esn/mssql-jdbc-7.4.1.jre8.jar!/" />
     <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -36,7 +36,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.TestsPartidos">
+  <component name="RunManager" selected="Application.Main">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true">
       <option name="MAIN_CLASS_NAME" value="main.Main" />
       <module name="NuevoApestaJDBC_Diana2" />
@@ -83,8 +83,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.TestsPartidos" />
         <item itemvalue="Application.Main" />
+        <item itemvalue="Application.TestsPartidos" />
         <item itemvalue="Application.TestsApuestas" />
       </list>
     </recent_temporary>
@@ -129,24 +129,9 @@
           <option name="timeStamp" value="4" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/validacion/Validar.java</url>
-          <line>1021</line>
-          <option name="timeStamp" value="5" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/validacion/Validar.java</url>
-          <line>1040</line>
-          <option name="timeStamp" value="8" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/validacion/Validar.java</url>
-          <line>1029</line>
-          <option name="timeStamp" value="11" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/gestion/GestionPartidos.java</url>
-          <line>378</line>
-          <option name="timeStamp" value="12" />
+          <line>400</line>
+          <option name="timeStamp" value="16" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

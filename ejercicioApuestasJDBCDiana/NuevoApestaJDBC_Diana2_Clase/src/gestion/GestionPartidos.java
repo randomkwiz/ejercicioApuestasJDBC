@@ -362,8 +362,7 @@ public class GestionPartidos
 	 * Postcondiciones: Asociado al nombre se devolverá un buleano que indicará si la operación se realizó con éxito (true) o no (false).
 	 * 					Se considerará éxito si el número de filas afectadas es igual a 1.
 	 * */
-	
-	//TODO:faltan modificar algunas cosillas, no funciona bien
+
 	public boolean insertarPartido(PartidoImpl partidoNuevo){ //TODO modificar en común
 		Utilidad objUtilidad = new Utilidad();
 		//Variables inserción en base de datos
@@ -371,7 +370,8 @@ public class GestionPartidos
 		Connection conexion = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultset;
-		String sentenciaSql = "INSERT INTO Partidos VALUES(?, ?, ?, ?, ?, ?, ?)";
+//		String sentenciaSql = "INSERT INTO Partidos VALUES(?, ?, ?, ?, ?, ?, ?)"; //Antigua
+		String sentenciaSql = "INSERT INTO Partidos VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"; //Modificada
 		boolean exito = false;
 
 
@@ -391,12 +391,17 @@ public class GestionPartidos
 
 				preparedStatement.setString(6, partidoNuevo.getNombreLocal());
 				preparedStatement.setString(7, partidoNuevo.getNombreVisitante());
+				//TODO falta la inserción de  máximo apuestas tipo1 tipo2 y tipo3
+				preparedStatement.setDouble(8, partidoNuevo.getApuestasMaximasTipo1());
+				preparedStatement.setDouble(9, partidoNuevo.getApuestasMaximasTipo2());
+				preparedStatement.setDouble(10, partidoNuevo.getApuestasMaximasTipo3());
 
+//				filasAfectadas = preparedStatement.executeUpdate();
 
 				if(preparedStatement.executeUpdate() == 1){
 					exito = true;
 				}/*else{
-					System.out.println("Error al intentar insertar el partido"); //TODO ya está en main, modiciar en común
+					System.out.println("Error al intentar insertar el partido"); //TODO ya está en main, modificar en común
 				}*/
 			}
 
@@ -414,66 +419,6 @@ public class GestionPartidos
 		}
 		return exito;
 	}
-
-	//TODO Esto hay que quitarlo, ya tengo en Validar, el método validarDatosPartido() que crea un nuevo partido para insertar
-//	public PartidoImpl crearObjetoPartido(){
-//		Scanner sc = new Scanner(System.in);
-//		Validar objValidar = new Validar();
-//		PartidoImpl partidoNuevo = new PartidoImpl();
-//
-//		//Variables datos
-//		int golLocal, golVisitante;
-//		GregorianCalendar fechaComun, fechaInicio, fechaFin;
-//		String nombreLocal, nombreVisitante;
-//		boolean fechasCorrectas = false;
-//		boolean periodoApuestasIsAbierto = false;
-//
-//
-//		System.out.println("Introduzca los Goles de equipo Local"); //TODO No se lee ni escribe en un módulo a no ser que ese sea su cometido
-//		golLocal = objValidar.pedirValidarNumeroGoles();
-//
-//		System.out.println("Introduzca los Goles de equipo Visitante");
-//		golVisitante = objValidar.pedirValidarNumeroGoles();
-//
-//		fechaComun = objValidar.pedirValidarFechaHora(); // Pido la fecha sólo con día, mes y año del partido, que será común al inicio y al final
-//		//Paso la fecha común a la de inicio y final, para más tarde introducirles la hora
-//		fechaInicio = new GregorianCalendar(fechaComun.get(Calendar.YEAR),fechaComun.get(Calendar.MONTH),fechaComun.get(Calendar.DAY_OF_MONTH),0,0);
-//		fechaFin = new GregorianCalendar(fechaComun.get(Calendar.YEAR),fechaComun.get(Calendar.MONTH),fechaComun.get(Calendar.DAY_OF_MONTH),0,0);
-//
-//        /*Pido introducir tiempo de inicio y final de partido y compruebo que final vaya después de inicio,
-//        se repite la operación hasta que el usuario lo introduzca correctamente*/
-//		do{
-//			System.out.println("Introduzca tiempo inicio Partido");
-//			fechaInicio = objValidar.introducirTiempoPartido(fechaInicio);
-//
-//			System.out.println("Introduzca tiempo final partido");
-//			fechaFin = objValidar.introducirTiempoPartido(fechaFin);
-//
-//			fechasCorrectas = fechaFin.after(fechaInicio);
-//		}while (!fechasCorrectas);
-//
-//		//TODO No se lee ni escribe en un módulo a no ser que ese sea su cometido
-//		System.out.println("Introduzca Nombre del equipo Local");
-//		nombreLocal = sc.nextLine();
-//		System.out.println("Introduzca Nombre del Equipo Visitante");
-//		nombreVisitante = sc.nextLine();
-//
-//		//periodoApuestasIsAbierto = objValidar.pedirValidarIsPeriodoApuestasAbierto();
-//
-//		//Para probar una cosa
-//		periodoApuestasIsAbierto = true;
-//
-//		//Creación de objeto partido pasándole los datos obtenidos por teclado
-//		partidoNuevo.setPeriodoApuestasAbierto(periodoApuestasIsAbierto);
-//		partidoNuevo.setGolesLocal(golLocal);
-//		partidoNuevo.setGolesVisitante(golVisitante);
-//		partidoNuevo.setFechaInicio(fechaInicio);
-//		partidoNuevo.setFechaFin(fechaFin);
-//		partidoNuevo.setNombreLocal(nombreLocal);
-//		partidoNuevo.setNombreVisitante(nombreVisitante);
-//
-//		return partidoNuevo;
-//	}
 
 
 	/*

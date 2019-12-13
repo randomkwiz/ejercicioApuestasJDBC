@@ -200,7 +200,7 @@
                 do {
                     pintarMenuUsuario();
                     opcion = sc.nextInt();
-                } while (opcion < 0 || opcion > 7); //TODO modificar en común
+                } while (opcion < 0 || opcion > 6); //TODO modificar en común
             } catch (InputMismatchException e) {
                 System.out.println("Introduce un formato valido");
                 opcion = pedirValidarMenuUsuarioEstandar();
@@ -238,7 +238,6 @@
             System.out.println("4. Hacer un ingreso en la cuenta");
             System.out.println("5. Hacer una retirada de dinero");
             System.out.println("6. Ver movimientos de la cuenta");
-            System.out.println("7. Registrar nuevo partido"); //TODO añadir a común
         }
 
         /*
@@ -499,6 +498,43 @@
 
             return fecha;
         }
+        //TODO fecha Sin Hora para inserción nuevo partido 12/12/2019
+        /*
+         * Signatura: public GregorianCalendar pedirValidarFechaSinHora()
+         * Comentario: pide y valida una fecha (día, mes y año)
+         * Precondiciones:
+         * Entradas:
+         * Salidas: objeto GregorianCalendar
+         * Postcondiciones: Asociado al nombre devuelve un objeto GregorianCalendar con la fecha validada que haya introducido el usuario.
+         * */
+        public GregorianCalendar pedirValidarFechaSinHora(){
+            GregorianCalendar fecha = null;
+            GregorianCalendar fechaReal ;
+            int dia, mes, anio, hora, minutos;
+            do{
+                dia = pedirValidarDia();
+                mes = pedirValidarMes()-1; //porque calendar va de 0 a 11
+                anio = pedirValidarAnio();
+//                hora = pedirValidarHora();
+//                minutos = pedirValidarMinutos();
+//                fechaReal = new GregorianCalendar(anio, mes, dia, hora, minutos);
+                fechaReal = new GregorianCalendar(anio, mes, dia);
+
+                if(fechaReal.get(Calendar.DAY_OF_MONTH) == dia
+                        && fechaReal.get(Calendar.MONTH) == mes
+                        && fechaReal.get(Calendar.YEAR) == anio
+                        //Nota: Calendar.HOUR devuelve hora formato 12 H, Calendar.HOUR_OF_DAY es formato 24 h
+//                        && fechaReal.get(Calendar.HOUR_OF_DAY) == hora
+//                        && fechaReal.get(Calendar.MINUTE) == minutos
+                ){
+//                    fecha = new GregorianCalendar(anio, mes, dia, hora, minutos);
+                    fecha = new GregorianCalendar(anio, mes, dia);
+                }
+            }while (fecha == null);
+
+
+            return fecha;
+        }
 
         //Validaciones datos fecha
 
@@ -655,13 +691,6 @@
             }
 
             return numeroGoles;
-        }
-
-
-        public GregorianCalendar introducirTiempoPartido(GregorianCalendar tiempoPartido){
-            tiempoPartido.set(Calendar.HOUR_OF_DAY, pedirValidarHora());
-            tiempoPartido.set(Calendar.MINUTE, pedirValidarMinutos());
-            return tiempoPartido;
         }
 
 
@@ -910,16 +939,27 @@
             String nombreLocal, nombreVisitante;
             boolean fechasCorrectas = false;
             boolean periodoApuestasIsAbierto = false;
+            //TODO nuevo 12/12/2019
+            Double apuestasMaximasTipo1;
+            Double apuestasMaximasTipo2;
+            Double apuestasMaximasTipo3;
 
             //Validación fechas Inicio y Fin y que el orden sea correcto
+            System.out.println("Introduzca fecha del partido");
+            //Fecha partido (dia, mes, año) que será común a tiempo inicio y fin
+            fechaComun = pedirValidarFechaSinHora();
+            //Instancio fechas inicio y fin con datos de fecha común, sin hora (para añadírsela más adelante)
+            fechaInicio = new GregorianCalendar(fechaComun.get(Calendar.YEAR),fechaComun.get(Calendar.MONTH),fechaComun.get(Calendar.DAY_OF_MONTH),0,0);
+            fechaFin = new GregorianCalendar(fechaComun.get(Calendar.YEAR),fechaComun.get(Calendar.MONTH),fechaComun.get(Calendar.DAY_OF_MONTH),0,0);
+
+            //Añado el tiempo inicio y fin del partido
             do{
                 System.out.println("Introduzca tiempo inicio Partido");
-                fechaInicio = pedirValidarFechaHora();
+//                fechaInicio = pedirValidarFechaHora();
+                introducirTiempoPartido(fechaInicio);
                 System.out.println("Introduzca tiempo final partido");
-                fechaFin = pedirValidarFechaHora();
-
-                //fechasCorrectas = validarFechaFinPosteriorFechaInicio(fechaInicio, fechaFin);
-
+//                fechaFin = pedirValidarFechaHora();
+                introducirTiempoPartido(fechaFin);
                 fechasCorrectas = fechaInicio.before(fechaFin);
 
                 if(!fechasCorrectas){
@@ -937,7 +977,17 @@
             golVisitante = pedirValidarNumeroGoles();
 
             //TODO Mirar esto (en común está comentado y puesto a true)
-            periodoApuestasIsAbierto = pedirValidarIsPeriodoApuestasAbierto();
+//            periodoApuestasIsAbierto = pedirValidarIsPeriodoApuestasAbierto();
+//            periodoApuestasIsAbierto = true;
+
+            //TODO nuevo 12/12/2019
+            System.out.println("Introduzca cantidad máxima de apuestas tipo1");
+            apuestasMaximasTipo1 = pedirValidarMaximoApuestas();
+            System.out.println("Introduzca cantidad máxima de apuestas tipo2");
+            apuestasMaximasTipo2 = pedirValidarMaximoApuestas();
+            System.out.println("Introduzca cantidad máxima de apuestas tipo3");
+            apuestasMaximasTipo3 = pedirValidarMaximoApuestas();
+
 
             //periodoApuestasIsAbierto = true;
 
@@ -949,9 +999,77 @@
             partidoNuevo.setFechaFin(fechaFin);
             partidoNuevo.setNombreLocal(nombreLocal);
             partidoNuevo.setNombreVisitante(nombreVisitante);
+            //TODO nuevo 12/12/2019
+            partidoNuevo.setApuestasMaximasTipo1(apuestasMaximasTipo1);
+            partidoNuevo.setApuestasMaximasTipo2(apuestasMaximasTipo2);
+            partidoNuevo.setApuestasMaximasTipo3(apuestasMaximasTipo3);
 
             return partidoNuevo;
         }
+
+        //TODO esto es solo para copipaste
+        //Lo necesito para introducir solo hora y minutos en tiempo partido al crear objeto
+        public GregorianCalendar introducirTiempoPartido(GregorianCalendar tiempoPartido){
+            tiempoPartido.set(Calendar.HOUR_OF_DAY, pedirValidarHora());
+            tiempoPartido.set(Calendar.MINUTE, pedirValidarMinutos());
+            return tiempoPartido;
+        }
+
+        //
+//        public PartidoImpl crearObjetoPartido(){
+//            Scanner sc = new Scanner(System.in);
+//            Validar objValidar = new Validar();
+//            PartidoImpl partidoNuevo = new PartidoImpl();
+//
+//            //Variables datos
+//            int golLocal, golVisitante;
+//            GregorianCalendar fechaComun, fechaInicio, fechaFin;
+//            String nombreLocal, nombreVisitante;
+//            boolean fechasCorrectas = false;
+//            boolean periodoApuestasIsAbierto = false;
+//
+//
+//            System.out.println("Introduzca los Goles de equipo Local");
+//            golLocal = objValidar.pedirValidarNumeroGoles();
+//
+//            System.out.println("Introduzca los Goles de equipo Visitante");
+//            golVisitante = objValidar.pedirValidarNumeroGoles();
+//
+//            fechaComun = objValidar.pedirValidarFechaHora(); // Pido la fecha sólo con día, mes y año del partido, que será común al inicio y al final
+//            //Paso la fecha común a la de inicio y final, para más tarde introducirles la hora
+//            fechaInicio = new GregorianCalendar(fechaComun.get(Calendar.YEAR),fechaComun.get(Calendar.MONTH),fechaComun.get(Calendar.DAY_OF_MONTH),0,0);
+//            fechaFin = new GregorianCalendar(fechaComun.get(Calendar.YEAR),fechaComun.get(Calendar.MONTH),fechaComun.get(Calendar.DAY_OF_MONTH),0,0);
+//
+//        /*Pido introducir tiempo de inicio y final de partido y compruebo que final vaya después de inicio,
+//        se repite la operación hasta que el usuario lo introduzca correctamente*/
+//            do{
+//                System.out.println("Introduzca tiempo inicio Partido");
+//                fechaInicio = objValidar.introducirTiempoPartido(fechaInicio);
+//                System.out.println("Introduzca tiempo final partido");
+//                fechaFin = objValidar.introducirTiempoPartido(fechaFin);
+////                fechasCorrectas = objValidar.validarFechaFinPosteriorFechaInicio(fechaInicio, fechaFin);
+//            }while (!fechasCorrectas);
+//
+//            System.out.println("Introduzca Nombre del equipo Local");
+//            nombreLocal = sc.nextLine();
+//            System.out.println("Introduzca Nombre del Equipo Visitante");
+//            nombreVisitante = sc.nextLine();
+//
+//            periodoApuestasIsAbierto = objValidar.pedirValidarIsPeriodoApuestasAbierto();
+//
+//            //Creación de objeto partido pasándole los datos obtenidos por teclado
+//            partidoNuevo.setPeriodoApuestasAbierto(periodoApuestasIsAbierto);
+//            partidoNuevo.setGolesLocal(golLocal);
+//            partidoNuevo.setGolesVisitante(golVisitante);
+//            partidoNuevo.setFechaInicio(fechaInicio);
+//            partidoNuevo.setFechaFin(fechaFin);
+//            partidoNuevo.setNombreLocal(nombreLocal);
+//            partidoNuevo.setNombreVisitante(nombreVisitante);
+//
+//            return partidoNuevo;
+//        }
+
+
 
         /* Signatura:  public String pedirValidarFechaParaFormatoConversion(GregorianCalendar fechaApuesta)
          * Comentario: se convierte una fecha al formato: dia/mes/año
@@ -1143,6 +1261,28 @@
                 isAbierto = true;
             }
             return isAbierto;
+        }
+
+        //TODO añadir a común
+        /*
+         * Signatura:  public Double pedirValidarMaximoApuestas()
+         * Comentario: pide una cantidad para el máximo de apuestas y lo valida
+         * Precondiciones:
+         * Entradas:
+         * Salidas: Double maximoApuesta
+         * Postcondiciones: Asociado al nombre, devuelve un double que indica la cantidad máxima que se puede apostar
+         * */
+        public Double pedirValidarMaximoApuestas(){
+            Scanner sc = new Scanner(System.in);
+            Double maximoApuesta;
+
+            do{
+                maximoApuesta = sc.nextDouble();
+                if(maximoApuesta<0){
+                    System.out.println("Debe introducir una cantidad correcta");
+                }
+            }while(maximoApuesta<0);
+            return maximoApuesta;
         }
 
     }
