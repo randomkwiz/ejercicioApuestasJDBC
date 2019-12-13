@@ -1140,12 +1140,14 @@
 
             Validar objValidar = new Validar();
             Apuesta apuesta = null;
-            PartidoImpl partido;
+            ArrayList<PartidoImpl> listadoPartidos;
             GestionPartidos gestionPartidos = new GestionPartidos();
             ArrayList<Apuesta> listaApuestasPorFecha = new ArrayList<>();
             System.out.println("Introduzca la fecha para consultar las apuestas de dicha fecha");
             //Fecha original
-            GregorianCalendar fechaApuesta = objValidar.pedirValidarFechaHora();
+//            GregorianCalendar fechaApuesta = objValidar.pedirValidarFechaHora();
+            GregorianCalendar fechaApuesta = objValidar.pedirValidarFechaSinHora();
+
             //Fecha formateada para consulta: mes/dia/año
             String fechaFormatoConversion = objValidar.pedirValidarFechaParaFormatoConversion(fechaApuesta); //Convierto la fecha al formato necesario para la sentencia Sql
             //TODO revisar consulta de clase revisada con Leo
@@ -1161,7 +1163,7 @@
                 resultSet = preparedStatement.executeQuery();
 
                 //Partido según fecha apuesta
-                partido = gestionPartidos.obtenerPartidoPorFechaApuesta(fechaApuesta);
+                listadoPartidos = gestionPartidos.obtenerPartidoPorFechaApuesta(fechaApuesta);
 
 
                 while (resultSet.next()){
@@ -1173,7 +1175,7 @@
                     fechaApuesta.setTime(resultSet.getDate("fechaHora"));
                     apuesta.setFechaHora(fechaApuesta); //TODO creo que no hace falta
                     apuesta.setUsuario(usuarioApuesta); //TODO creo que no hace falta
-                    apuesta.setPartido(partido);
+//                    apuesta.setPartido(listadoPartidos); //TODO solucionar, esto falla porque es una arraylist y debo pasar solo un objeto
                     if(apuesta!=null){
                         listaApuestasPorFecha.add(apuesta);
                     }else{
@@ -1203,10 +1205,26 @@
          * Postcondiciones:
          * */
         public void mostrarListaApuestasPorFecha(ArrayList<Apuesta> listaApuestas){ //Recibe usuario logeado
-            //ArrayList<Apuesta> listaApuestas = obtenerListaApuestasPorFecha(usuarioApuesta);
+//            ArrayList<Apuesta> listaApuestas = obtenerListaApuestasPorFecha(usuarioApuesta);
             for (int i = 0; i < listaApuestas.size(); i++){
                 System.out.println("Id: " + listaApuestas.get(i).getId() + " Cuota: " + listaApuestas.get(i).getCuota() + " Cantidad: " + " Tipo: " + listaApuestas.get(i).getTipo() + " Fecha y Hora: " + listaApuestas.get(i).getFechaHora().getTime());
             }
+//            Utilidad utilidad = new Utilidad();
+//            if(listaApuestas.size() > 0){
+//                for(int i = 0; i < listaApuestas.size(); i ++){
+//                    System.out.println("Apuesta Nº: " + (i+1));
+//                    System.out.println("Id: ");
+//                    System.out.println(listaApuestas.get(i).getId());
+//                    System.out.println("Cuota: ");
+//                    System.out.println(listaApuestas.get(i).getCuota());
+//                    System.out.println("Fecha: ");
+//                    System.out.println(utilidad.formatearFecha(listaApuestas.get(i).getFechaHora()));
+//
+//                }
+//            }else{
+//                System.out.println("No existen apuestas");
+//            }
+//            System.out.println("------------------------------------------");
         }
 
 	/*

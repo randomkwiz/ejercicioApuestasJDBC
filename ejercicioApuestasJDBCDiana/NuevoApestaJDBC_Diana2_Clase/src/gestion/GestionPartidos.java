@@ -362,7 +362,7 @@ public class GestionPartidos
 	 * Postcondiciones: Asociado al nombre se devolverá un buleano que indicará si la operación se realizó con éxito (true) o no (false).
 	 * 					Se considerará éxito si el número de filas afectadas es igual a 1.
 	 * */
-
+//
 	public boolean insertarPartido(PartidoImpl partidoNuevo){ //TODO modificar en común 12/12/2019
 		Utilidad objUtilidad = new Utilidad();
 		//Variables inserción en base de datos
@@ -419,6 +419,8 @@ public class GestionPartidos
 	}
 
 
+
+
 	/*
 	 * Signatura: public PartidoImpl obtenerPartidoPorFechaApuesta(GregorianCalendar fechaApuestaGregCal)
 	 * Comentario: obtiene un partido según una fecha de apuesta
@@ -427,25 +429,27 @@ public class GestionPartidos
 	 * Salidas: Objeto PartidoImpl
 	 * Postcondiciones: Asociado al nombre se devolverá un objeto partido según la fecha pasada por parámetro
 	 * */
-	public PartidoImpl obtenerPartidoPorFechaApuesta(GregorianCalendar fechaApuestaGregCal){ //necesario para obtener apuesta por fecha, la fecha se insertará en el método de obtener apuestas según fecha
+	public ArrayList<PartidoImpl> obtenerPartidoPorFechaApuesta(GregorianCalendar fechaApuestaGregCal){ //necesario para obtener apuesta por fecha, la fecha se insertará en el método de obtener apuestas según fecha
 		Utilidad objUtil = new Utilidad();
 		ConexionJDBC objConexion = new ConexionJDBC();
 		Connection conexion = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultset = null;
 		PartidoImpl partido = new PartidoImpl();
+		ArrayList<PartidoImpl> listadoPartidos = new ArrayList<>();
 
 		GregorianCalendar fechaInicio = new GregorianCalendar();
 		GregorianCalendar fechaFin = new GregorianCalendar();
 
 		String fechaApuesta = objUtil.formatearFecha(fechaApuestaGregCal);
 
+		//TODO recoger partido en arrylist y  luego (en otro lado) preguntar por el id para obtener el partido en concreto
 		//Sentecia que obtiene los datos del partido según la fecha de la apuesta, se tiene en cuenta que la fecha de la apuesta esté entre fecha inicio y fecha final del partido
-		String sentenciaSql = "SELECT p.id, p.isPeriodoApuestasAbierto, p.golLocal, p.golVisitante, p.fechaInicio, p.fechaFin, p.nombreLocal, p.nombreVisitante " +
-				"FROM Partidos AS p INNER JOIN Apuestas As a ON a.id_partido = p.id " +
-				"WHERE fechaHora BETWEEN (SELECT fechaInicio FROM Partidos WHERE id = a.id_partido) " +
-				"AND (SELECT fechaFin FROM Partidos WHERE id = a.id_partido) " +
-				"AND a.fechaHora = ?\n";
+		String sentenciaSql = "SELECT p.id, p.isPeriodoApuestasAbierto, p.golLocal, p.golVisitante, p.fechaInicio, p.fechaFin, p.nombreLocal, p.nombreVisitante \n" +
+				"\t\t\t\tFROM Partidos AS p INNER JOIN Apuestas As a ON a.id_partido = p.id \n" +
+				"\t\t\t\tWHERE fechaHora BETWEEN (SELECT fechaInicio FROM Partidos WHERE id = a.id_partido) \n" +
+				"\t\t\t\tAND (SELECT fechaFin FROM Partidos WHERE id = a.id_partido) \n" +
+				"\t\t\t\tAND CAST(a.fechaHora as date) = ?";
 
 		try{
 			conexion = objConexion.getConnection();
@@ -467,6 +471,8 @@ public class GestionPartidos
 
 				partido.setNombreLocal(resultset.getString("nombreLocal"));
 				partido.setNombreVisitante(resultset.getString("nombreVisitante"));
+
+				listadoPartidos.add(partido);
 			}
 
 		}catch (SQLException e){
@@ -480,6 +486,6 @@ public class GestionPartidos
 			}
 			objConexion.closeConnection(conexion);
 		}
-		return partido;
+		return listadoPartidos;
 	}
 }

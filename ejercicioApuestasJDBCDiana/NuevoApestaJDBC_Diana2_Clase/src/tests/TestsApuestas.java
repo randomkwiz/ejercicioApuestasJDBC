@@ -16,7 +16,7 @@ public class TestsApuestas {
         Utilidad utilidad = new Utilidad();
         GestionApuestas gestionApuestas = new GestionApuestas();
         UsuarioImpl usuario = new UsuarioImpl(1,50,"aabb@gmail.com","1234",false );
-        Apuesta apuesta ;
+//        Apuesta apuesta ;
         /*
 
         GregorianCalendar fecha;
@@ -25,8 +25,7 @@ public class TestsApuestas {
         System.out.println(utilidad.formatearFecha(fecha));
 */
 
-        //gestionApuestas.
-
+        gestionApuestas.verResultadosApuesta(usuario);
 
     }
 }

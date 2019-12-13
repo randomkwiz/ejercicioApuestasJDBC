@@ -169,44 +169,47 @@ public class GestionApuestas {
         //Obtengo lista apuestas
         ArrayList<Apuesta> listaApuestas = objValidar.validarListaApuestasPorFecha(usuarioApuesta);
         //Muestro lista apuestas
-        objValidar.mostrarListaApuestasPorFecha(listaApuestas);
+            objValidar.mostrarListaApuestasPorFecha(listaApuestas);
 
+            int id = objValidar.pedirValidarIdApuesta(); //Id para realizar la consulta
+            String sentenciaSql = "SELECT * FROM Apuestas WHERE id = ?";
 
-        int id = objValidar.pedirValidarIdApuesta(); //Id para realizar la consulta
-        String sentenciaSql = "SELECT * FROM Apuestas WHERE id = ?";
+            try {
+                conexion = objConexion.getConnection();
+                preparedStatement = conexion.prepareStatement(sentenciaSql);
+                preparedStatement.setInt(1, id);
+                resultSet = preparedStatement.executeQuery();
 
-        try {
-            conexion = objConexion.getConnection();
-            preparedStatement = conexion.prepareStatement(sentenciaSql);
-            preparedStatement.setInt(1, id);
-            resultSet = preparedStatement.executeQuery();
+                while (resultSet.next()) {
+                    apuesta.setId(resultSet.getInt("id"));
+                    apuesta.setCuota(resultSet.getInt("cuota"));
+                    apuesta.setCantidad(resultSet.getInt("cantidad"));
+                    apuesta.setTipo(resultSet.getString("tipo").charAt(0));
+                }
 
-            while (resultSet.next()) {
-                apuesta.setId(resultSet.getInt("id"));
-                apuesta.setCuota(resultSet.getInt("cuota"));
-                apuesta.setCantidad(resultSet.getInt("cantidad"));
-                apuesta.setTipo(resultSet.getString("tipo").charAt(0));
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+            //De la apuesta creada según el tipo de la apuesta que se consulta y el id, obtiene el resultado de la apuesta deseada
+            switch (apuesta.getTipo()) {
+                case 1:
+                    //ApuestaTipo1 tipo1 = new ApuestaTipo1();
+                    consultarResultadoApuestaTipo1(apuesta.getId());
+                    break;
+                case 2:
+                    //ApuestaTipo2 tipo2 = new ApuestaTipo2();
+                    consultarResultadoApuestaTipo2(apuesta.getId());
+                    break;
+                case 3:
+                    //ApuestaTipo3 tipo3 = new ApuestaTipo3();
+                    consultarResultadoApuestaTipo3(apuesta.getId());
+                    break;
+            }
 
-        //De la apuesta creada según el tipo de la apuesta que se consulta y el id, obtiene el resultado de la apuesta deseada
-        switch (apuesta.getTipo()) {
-            case 1:
-                //ApuestaTipo1 tipo1 = new ApuestaTipo1();
-                consultarResultadoApuestaTipo1(apuesta.getId());
-                break;
-            case 2:
-                //ApuestaTipo2 tipo2 = new ApuestaTipo2();
-                consultarResultadoApuestaTipo2(apuesta.getId());
-                break;
-            case 3:
-                //ApuestaTipo3 tipo3 = new ApuestaTipo3();
-                consultarResultadoApuestaTipo3(apuesta.getId());
-                break;
-        }
+
+
+
 
 
     }
