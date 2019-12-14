@@ -34,11 +34,27 @@ public class ApuestaTipo1 extends Apuesta{
         this.golesVisitante = 0;
     }
 
+
     public ApuestaTipo1(double apuestasMaximas, int golesLocal, int golesVisitante) {
         this.apuestasMaximas = apuestasMaximas;
         this.golesLocal = golesLocal;
         this.golesVisitante = golesVisitante;
     }
+
+    //TODO añadido por Diana, lo necesitaba para unas pruebas
+    public ApuestaTipo1(int id, double cuota, int cantidad, char tipo, GregorianCalendar fechaHora, UsuarioImpl usuario, PartidoImpl partido, int golesLocal, int golesVisitante) {
+        super(id, cuota, cantidad, tipo, fechaHora, usuario, partido);
+//        this.apuestasMaximas = apuestasMaximas;
+        this.golesLocal = golesLocal;
+        this.golesVisitante = golesVisitante;
+    }
+
+//    public ApuestaTipo1() {
+//        super();
+////        this.apuestasMaximas = 0.0;
+//        this.golesLocal = 0;
+//        this.golesVisitante = 0;
+//    }
 
     //Getters y setters
     public double getApuestasMaximas() {

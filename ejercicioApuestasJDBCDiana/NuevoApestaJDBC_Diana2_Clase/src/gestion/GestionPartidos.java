@@ -488,4 +488,60 @@ public class GestionPartidos
 		}
 		return listadoPartidos;
 	}
+
+	public PartidoImpl obtenerPartidoPorIdApuesta(int idApuesta){ //necesario para obtener apuesta por fecha, la fecha se insertará en el método de obtener apuestas según fecha
+		Utilidad objUtil = new Utilidad();
+		ConexionJDBC objConexion = new ConexionJDBC();
+		Connection conexion = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultset = null;
+		PartidoImpl partido = new PartidoImpl();
+//		ArrayList<PartidoImpl> listadoPartidos = new ArrayList<>();
+//
+		GregorianCalendar fechaInicio = new GregorianCalendar();
+		GregorianCalendar fechaFin = new GregorianCalendar();//
+//		String fechaApuesta = objUtil.formatearFecha(fechaApuestaGregCal);
+
+		//TODO recoger partido en arrylist y  luego (en otro lado) preguntar por el id para obtener el partido en concreto
+		//Sentecia que obtiene los datos del partido según la fecha de la apuesta, se tiene en cuenta que la fecha de la apuesta esté entre fecha inicio y fecha final del partido
+		String sentenciaSql = "SELECT p.id, p.isPeriodoApuestasAbierto, p.golLocal, p.golVisitante, p.fechaInicio, \n" +
+				"p.fechaFin, p.nombreLocal, p.nombreVisitante, p.maximoApuestaTipo1, p.maximoApuestaTipo2, p.maximoApuestaTipo3 \n" +
+				"FROM Partidos p INNER JOIN Apuestas a ON p.id = a.id_partido WHERE a.id = ?";
+
+		try{
+			conexion = objConexion.getConnection();
+			preparedStatement = conexion.prepareStatement(sentenciaSql);
+			preparedStatement.setInt(1, idApuesta);
+			resultset = preparedStatement.executeQuery();
+
+			while (resultset.next()){
+				partido.setId(resultset.getInt("id"));
+				partido.setPeriodoApuestasAbierto(resultset.getBoolean("isPeriodoApuestasAbierto"));
+				partido.setGolesLocal(resultset.getInt("golLocal"));
+				partido.setGolesVisitante(resultset.getInt("golVisitante"));
+				//Fechas //TODO no tengo claro que las fechas se hagan así
+				fechaInicio.setTime(resultset.getDate("fechaInicio"));
+				partido.setFechaInicio(fechaInicio); //TODO revisar
+
+				fechaFin.setTime(resultset.getDate("fechaFin"));
+				partido.setFechaFin(fechaFin);
+
+				partido.setNombreLocal(resultset.getString("nombreLocal"));
+				partido.setNombreVisitante(resultset.getString("nombreVisitante"));
+
+			}
+
+		}catch (SQLException e){
+			e.printStackTrace();
+		}finally {
+			try {
+				resultset.close();
+				preparedStatement.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			objConexion.closeConnection(conexion);
+		}
+		return partido;
+	}
 }

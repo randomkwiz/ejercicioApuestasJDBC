@@ -20,6 +20,7 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\dianb\Desktop\DAM_GitHub\Trabajos en Grupo\ejercicioApuestasJDBC\ejercicioApuestasJDBCDiana\NuevoApestaJDBC_Diana2_Clase" />
       <recent name="D:\ejercicioApuestasJDBC\ejercicioApuestasJDBCDiana\NuevoApestaJDBC_Diana2_Clase" />
       <recent name="D:\ejercicioApuestasJDBC\ejercicioApuestasJDBCDiana\NuevoApestaJDBC_Diana2_Clase\src" />
     </key>
@@ -36,7 +37,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.Main">
+  <component name="RunManager" selected="Application.TestsApuestas">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true">
       <option name="MAIN_CLASS_NAME" value="main.Main" />
       <module name="NuevoApestaJDBC_Diana2" />
@@ -83,9 +84,9 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.TestsApuestas" />
         <item itemvalue="Application.Main" />
         <item itemvalue="Application.TestsPartidos" />
-        <item itemvalue="Application.TestsApuestas" />
       </list>
     </recent_temporary>
   </component>
@@ -114,21 +115,5 @@
         </entry>
       </map>
     </option>
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/gestion/GestionUsuarios.java</url>
-          <line>119</line>
-          <option name="timeStamp" value="3" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/Main.java</url>
-          <line>132</line>
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

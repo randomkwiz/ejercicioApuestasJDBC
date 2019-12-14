@@ -5,8 +5,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class ConexionJDBC {
-    private String sourceURL = "jdbc:sqlserver://192.168.0.166";
-//    private String sourceURL = "jdbc:sqlserver://localhost";
+//    private String sourceURL = "jdbc:sqlserver://192.168.0.166";
+    private String sourceURL = "jdbc:sqlserver://localhost";
 //    private String sourceURL = "jdbc:sqlserver://192.168.1.38";
 //    private String sourceURL = "jdbc:sqlserver://localhost";
     private String usuario = "apuestas";

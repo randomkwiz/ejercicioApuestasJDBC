@@ -44,6 +44,7 @@ package main;
 
 import java.sql.CallableStatement;
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.Scanner;
 
 import clases.*;
@@ -130,7 +131,10 @@ public class Main {
                                     //3: comprobar el resultado de una apuesta anterior
                                     //System.out.println("Opcion 3. En construcción.");
                                     System.out.println("Comprobar resultado de una apuesta");
-                                    gestionApuestas.verResultadosApuesta(usuarioLogado);
+                                    GregorianCalendar fechaApuesta = validar.pedirValidarFechaSinHora();
+//                                    gestionApuestas.verResultadosApuesta(usuarioLogado, fechaApuesta);
+                                    ArrayList<Apuesta> listadoApuestas = validar.validarListaApuestasPorFecha(usuarioLogado, fechaApuesta); //TODO da fallos
+                                    gestionApuestas.verResultadoApuesta(listadoApuestas); //Funciona
                                     break;
                                 case 4:
                                     //4: hacer un ingreso en cuenta
