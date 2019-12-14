@@ -30,8 +30,24 @@ public class PartidoImpl implements Partido {
     private String nombreLocal;
     private String nombreVisitante;
     private boolean isPeriodoApuestasAbierto;
+    //Añadido por Diana
+    private Double apuestasMaximasTipo1;
+    private Double apuestasMaximasTipo2;
+    private Double apuestasMaximasTipo3;
 
-    public PartidoImpl(int id, int golesLocal, int golesVisitante, GregorianCalendar fechaInicio, GregorianCalendar fechaFin, String nombreLocal, String nombreVisitante, boolean isPeriodoApuestasAbierto) {
+//    public PartidoImpl(int id, int golesLocal, int golesVisitante, GregorianCalendar fechaInicio, GregorianCalendar fechaFin, String nombreLocal, String nombreVisitante, boolean isPeriodoApuestasAbierto) {
+//        this.id = id;
+//        this.golesLocal = golesLocal;
+//        this.golesVisitante = golesVisitante;
+//        this.fechaInicio = fechaInicio;
+//        this.fechaFin = fechaFin;
+//        this.nombreLocal = nombreLocal;
+//        this.nombreVisitante = nombreVisitante;
+//        this.isPeriodoApuestasAbierto = isPeriodoApuestasAbierto;
+//    }
+
+    //TODO Constructor añadido por Diana para inserción de partidos
+    public PartidoImpl(int id, int golesLocal, int golesVisitante, GregorianCalendar fechaInicio, GregorianCalendar fechaFin, String nombreLocal, String nombreVisitante, boolean isPeriodoApuestasAbierto, Double apuestasMaximasTipo1, Double apuestasMaximasTipo2, Double apuestasMaximasTipo3){
         this.id = id;
         this.golesLocal = golesLocal;
         this.golesVisitante = golesVisitante;
@@ -40,6 +56,9 @@ public class PartidoImpl implements Partido {
         this.nombreLocal = nombreLocal;
         this.nombreVisitante = nombreVisitante;
         this.isPeriodoApuestasAbierto = isPeriodoApuestasAbierto;
+        this.apuestasMaximasTipo1 = apuestasMaximasTipo1;
+        this.apuestasMaximasTipo2 = apuestasMaximasTipo2;
+        this.apuestasMaximasTipo3 = apuestasMaximasTipo3;
     }
 
     public PartidoImpl(){
@@ -51,7 +70,12 @@ public class PartidoImpl implements Partido {
         this.nombreLocal = " ";
         this.nombreVisitante = " ";
         this.isPeriodoApuestasAbierto = false;
+        //Añadido Diana
+        this.apuestasMaximasTipo1 = 0.0;
+        this.apuestasMaximasTipo2 = 0.0;
+        this.apuestasMaximasTipo3 = 0.0;
     }
+
     //Getters y setters
     public int getId() {
         return id;
@@ -117,13 +141,28 @@ public class PartidoImpl implements Partido {
         isPeriodoApuestasAbierto = periodoApuestasAbierto;
     }
 
-	@Override
-	public String toString() {
-		return "PartidoImpl [id=" + id + ", golesLocal=" + golesLocal + ", golesVisitante=" + golesVisitante
-				+ ", fechaInicio=" + fechaInicio + ", fechaFin=" + fechaFin + ", nombreLocal=" + nombreLocal
-				+ ", nombreVisitante=" + nombreVisitante + ", isPeriodoApuestasAbierto=" + isPeriodoApuestasAbierto
-				+ "]";
-	}
-    
-    
+    //TODO Getters y Setters añadidos por Diana
+    public Double getApuestasMaximasTipo1() {
+        return apuestasMaximasTipo1;
+    }
+
+    public void setApuestasMaximasTipo1(Double apuestasMaximasTipo1) {
+        this.apuestasMaximasTipo1 = apuestasMaximasTipo1;
+    }
+
+    public Double getApuestasMaximasTipo2() {
+        return apuestasMaximasTipo2;
+    }
+
+    public void setApuestasMaximasTipo2(Double apuestasMaximasTipo2) {
+        this.apuestasMaximasTipo2 = apuestasMaximasTipo2;
+    }
+
+    public Double getApuestasMaximasTipo3() {
+        return apuestasMaximasTipo3;
+    }
+
+    public void setApuestasMaximasTipo3(Double apuestasMaximasTipo3) {
+        this.apuestasMaximasTipo3 = apuestasMaximasTipo3;
+    }
 }

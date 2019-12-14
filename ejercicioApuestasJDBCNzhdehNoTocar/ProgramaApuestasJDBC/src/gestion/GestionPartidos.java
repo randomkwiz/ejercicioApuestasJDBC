@@ -82,6 +82,9 @@ public class GestionPartidos
 				partido.setFechaFin(fechaFin);
 				partido.setNombreLocal(resultSet.getString("nombreLocal"));
 				partido.setNombreVisitante(resultSet.getString("nombreVisitante"));
+				partido.setApuestasMaximasTipo1(resultSet.getDouble("maximoApuestaTipo1"));
+				partido.setApuestasMaximasTipo2(resultSet.getDouble("maximoApuestaTipo2"));
+				partido.setApuestasMaximasTipo3(resultSet.getDouble("maximoApuestaTipo3"));
 
 				listadoPartidos.add(partido);
 			}

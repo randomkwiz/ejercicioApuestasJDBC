@@ -101,3 +101,43 @@ CREATE TABLE Apuestas_tipo3(
 		constraint ck_Apuestas_tipo3_puja check(puja in ('1','x','2'))
 	constraint fk_Apuestas_tipo3 foreign key (id) references Apuestas(id)
 )
+go
+
+
+set dateformat 'ymd'
+--Inserts
+INSERT INTO Usuarios
+VALUES (500,'aabb@gmail.com','1234',0),
+(5000,'bbb@gmail.com','5678',0),
+(8000,'gmasd@gmail.com','9123',1)
+go
+
+INSERT INTO Ingresos (cantidad,descripcion,id_usuario)
+VALUES (300,'Ingreso',1),(-300,'Reintegro',2),(2000,'Ingreso',3)
+go
+
+INSERT INTO Partidos 
+VALUES(1,1,2,'2019-01-12 12:00','2019-01-12 13:45','Sevilla','Betis', 5000,1000,6000),
+(0,1,5,'2019-01-13 13:00','2019-01-13 14:45','Carmona','Coria',6000,12000,500),
+(1,1,2,'2019-03-03 22:00','2019-03-03 23:45','Barcelona','Madrid',6000,9054,6987)
+go
+
+INSERT INTO Apuestas
+VALUES (1.2,50,1,'2019-01-11 12:00',1,1),
+(2.0,20,2,'2019-01-12 12:00',2,2),
+(2.50,300,3,'2019-02-03 12:00',3,3),
+(1.2,50,1,'2019-01-11 12:00',1,3),
+(2.0,20,2,'2019-01-12 12:00',2,2),
+(2.50,300,3,'2019-02-03 12:00',3,1)
+go
+
+INSERT INTO Apuestas_tipo1
+VALUES (1,3,2)
+go
+
+INSERT INTO Apuestas_tipo2
+VALUES (1,2,'2')
+go
+
+INSERT INTO Apuestas_tipo3
+VALUES (1,'x')
