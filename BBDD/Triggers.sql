@@ -143,8 +143,8 @@ AFTER INSERT AS
 			END
 		ELSE
 			BEGIN
-				--UPDATE Usuarios
-				--SET saldo -= @cantidad WHERE id=@id_usuario
+				UPDATE Usuarios
+				SET saldo -= @cantidad WHERE id=@id_usuario
 				--Insertamos el ingreso
 				INSERT INTO Ingresos (cantidad, descripcion, id_usuario) VALUES (@cantidad * -1,'Apuesta realizada',@id_usuario)
 			END

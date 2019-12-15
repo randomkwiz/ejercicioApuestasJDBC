@@ -30,6 +30,10 @@ public class PartidoImpl implements Partido {
     private String nombreLocal;
     private String nombreVisitante;
     private boolean isPeriodoApuestasAbierto;
+    private double maximoApuestasTipo1;
+    private double maximoApuestasTipo2;
+    private double maximoApuestasTipo3;
+
 
     public PartidoImpl(int id, int golesLocal, int golesVisitante, GregorianCalendar fechaInicio, GregorianCalendar fechaFin, String nombreLocal, String nombreVisitante, boolean isPeriodoApuestasAbierto) {
         this.id = id;
@@ -40,6 +44,27 @@ public class PartidoImpl implements Partido {
         this.nombreLocal = nombreLocal;
         this.nombreVisitante = nombreVisitante;
         this.isPeriodoApuestasAbierto = isPeriodoApuestasAbierto;
+        this.maximoApuestasTipo1 = 0;
+        this.maximoApuestasTipo2 = 0;
+        this.maximoApuestasTipo3 = 0;
+    }
+
+    public PartidoImpl(int id, int golesLocal, int golesVisitante, GregorianCalendar fechaInicio, GregorianCalendar fechaFin, String nombreLocal, String nombreVisitante, boolean isPeriodoApuestasAbierto, double maximoApuestasTipo1, double maximoApuestasTipo2, double maximoApuestasTipo3) {
+        this.id = id;
+        this.golesLocal = golesLocal;
+        this.golesVisitante = golesVisitante;
+        this.fechaInicio = fechaInicio;
+        this.fechaFin = fechaFin;
+        this.nombreLocal = nombreLocal;
+        this.nombreVisitante = nombreVisitante;
+        this.isPeriodoApuestasAbierto = isPeriodoApuestasAbierto;
+        this.maximoApuestasTipo1 = maximoApuestasTipo1;
+        this.maximoApuestasTipo2 = maximoApuestasTipo2;
+        this.maximoApuestasTipo3 = maximoApuestasTipo3;
+    }
+
+    public PartidoImpl(int id) {
+        this.id = id;
     }
 
     public PartidoImpl(){
@@ -51,6 +76,9 @@ public class PartidoImpl implements Partido {
         this.nombreLocal = " ";
         this.nombreVisitante = " ";
         this.isPeriodoApuestasAbierto = false;
+        this.maximoApuestasTipo1 = 0;
+        this.maximoApuestasTipo2 = 0;
+        this.maximoApuestasTipo3 = 0;
     }
     //Getters y setters
     public int getId() {
@@ -115,5 +143,29 @@ public class PartidoImpl implements Partido {
 
     public void setPeriodoApuestasAbierto(boolean periodoApuestasAbierto) {
         isPeriodoApuestasAbierto = periodoApuestasAbierto;
+    }
+
+    public double getMaximoApuestasTipo1() {
+        return maximoApuestasTipo1;
+    }
+
+    public void setMaximoApuestasTipo1(double maximoApuestasTipo1) {
+        this.maximoApuestasTipo1 = maximoApuestasTipo1;
+    }
+
+    public double getMaximoApuestasTipo2() {
+        return maximoApuestasTipo2;
+    }
+
+    public void setMaximoApuestasTipo2(double maximoApuestasTipo2) {
+        this.maximoApuestasTipo2 = maximoApuestasTipo2;
+    }
+
+    public double getMaximoApuestasTipo3() {
+        return maximoApuestasTipo3;
+    }
+
+    public void setMaximoApuestasTipo3(double maximoApuestasTipo3) {
+        this.maximoApuestasTipo3 = maximoApuestasTipo3;
     }
 }

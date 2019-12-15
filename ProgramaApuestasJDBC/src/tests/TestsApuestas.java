@@ -8,6 +8,7 @@ import gestion.GestionApuestas;
 import utilidad.Utilidad;
 import validacion.Validar;
 
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
 public class TestsApuestas {
@@ -17,15 +18,19 @@ public class TestsApuestas {
         GestionApuestas gestionApuestas = new GestionApuestas();
         UsuarioImpl usuario = new UsuarioImpl(1,50,"aabb@gmail.com","1234",false );
         Apuesta apuesta ;
-        /*
-
-        GregorianCalendar fecha;
+        GregorianCalendar fecha = new GregorianCalendar();
+        fecha.set(2019,0,11);
+/*
         fecha = validar.pedirValidarFechaHora();
         System.out.println("La fecha elegida es: ");
         System.out.println(utilidad.formatearFecha(fecha));
 */
 
-        //gestionApuestas.
+        System.out.println(utilidad.formatearFecha(fecha));
+        ArrayList<Apuesta> listadoApuestas = validar.validarListaApuestasPorFecha(usuario,fecha);
+
+        System.out.println(listadoApuestas.size());
+
 
 
     }
