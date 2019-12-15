@@ -374,7 +374,8 @@ public class GestionPartidos
 		Connection conexion = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultset;
-		String sentenciaSql = "INSERT INTO Partidos VALUES(?, ?, ?, ?, ?, ?, ?)";
+		String sentenciaSql = "INSERT INTO Partidos(isPeriodoApuestasAbierto, golLocal, golVisitante, fechaInicio, fechaFin, nombreLocal, nombreVisitante, maximoApuestaTipo1, maximoApuestaTipo2, maximoApuestaTipo3) " +
+				"VALUES(?, ?, ?, ?, ?, ?, ?,?,?,?)";
 		boolean exito = false;
 
 
@@ -391,6 +392,9 @@ public class GestionPartidos
 				preparedStatement.setString(5, objUtilidad.formatearFecha(partidoNuevo.getFechaFin()));
 				preparedStatement.setString(6, partidoNuevo.getNombreLocal());
 				preparedStatement.setString(7, partidoNuevo.getNombreVisitante());
+				preparedStatement.setDouble(8, partidoNuevo.getMaximoApuestasTipo1());
+				preparedStatement.setDouble(9, partidoNuevo.getMaximoApuestasTipo2());
+				preparedStatement.setDouble(10, partidoNuevo.getMaximoApuestasTipo3());
 
 
 
