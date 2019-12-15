@@ -80,6 +80,7 @@ CREATE TABLE Apuestas_tipo1(
 	golVisitante tinyint null
 		constraint ck_Apuestas_tipo1_golVisitante check(golVisitante >= 0),
 	constraint fk_Apuestas_tipo1 foreign key (id) references Apuestas(id)
+	on delete cascade on update cascade
 )
 
 CREATE TABLE Apuestas_tipo2(
@@ -91,6 +92,7 @@ CREATE TABLE Apuestas_tipo2(
 	puja char(1) not null
 		constraint ck_Apuestas_tipo2_puja check(puja in ('1','2')),
 	constraint fk_Apuestas_tipo2 foreign key (id) references Apuestas(id)
+	on delete cascade on update cascade
 )
 
 CREATE TABLE Apuestas_tipo3(
@@ -100,6 +102,7 @@ CREATE TABLE Apuestas_tipo3(
 	puja char(1) not null
 		constraint ck_Apuestas_tipo3_puja check(puja in ('1','x','2'))
 	constraint fk_Apuestas_tipo3 foreign key (id) references Apuestas(id)
+	on delete cascade on update cascade
 )
 go
 

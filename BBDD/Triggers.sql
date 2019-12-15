@@ -143,8 +143,8 @@ AFTER INSERT AS
 			END
 		ELSE
 			BEGIN
-				UPDATE Usuarios
-				SET saldo -= @cantidad WHERE id=@id_usuario
+				--UPDATE Usuarios
+				--SET saldo -= @cantidad WHERE id=@id_usuario
 				--Insertamos el ingreso
 				INSERT INTO Ingresos (cantidad, descripcion, id_usuario) VALUES (@cantidad * -1,'Apuesta realizada',@id_usuario)
 			END
@@ -254,21 +254,21 @@ VALUES(3,1,2,'2019-01-12 12:00','2019-01-12 13:45','Sevilla','Betis', 5000,1000,
 (2,1,2,'2019-03-03 22:00','2019-03-03 23:45','Barcelona','Madrid',6000,9054,6987)
 
 INSERT INTO Apuestas
-VALUES (1.2,50,1,'2019-01-11 12:00',1,1),
-(2.0,20,2,'2019-01-12 12:00',2,2),
-(2.50,300,3,'2019-02-03 12:00',3,3)
+VALUES (1.2,50,1,'2019-01-11 12:00',1,3),
+(2.0,20,2,'2019-01-12 12:00',2,4),
+(2.50,300,3,'2019-02-03 12:00',3,5)
 
 INSERT INTO Apuestas
 VALUES (1.2,50,1,'2019-01-11 12:00',1,4),(2.0,20,2,'2019-01-12 12:00',2,4),(2.50,300,3,'2019-02-03 12:00',3,4)
 
 INSERT INTO Apuestas_tipo1
-VALUES (9,500,3,2)
+VALUES (2,3,2)
 
 INSERT INTO Apuestas_tipo2
-VALUES (10,1000,5,'2')
+VALUES (3,5,'2')
 
 INSERT INTO Apuestas_tipo3
-VALUES (11,10000,'x')
+VALUES (4,'x')
 
 /*Actualizado por Angela*/
 GO
@@ -289,36 +289,47 @@ BEGIN
 
 	declare @temp bit
 	set @temp = dbo.COMPROBARMAXIMO(@IDPartido, @tipo)
+	declare @lastID smallint
+
+	begin transaction
 
 	if(@temp = 1)
 	begin
 
-	INSERT Apuestas (cuota, cantidad, tipo, fechaHora, id_usuario, id_partido)
-	VALUES (@cuota, @cantidad, @tipo, CURRENT_TIMESTAMP, @IDUsuario, @IDPartido)
+			INSERT Apuestas (cuota, cantidad, tipo, fechaHora, id_usuario, id_partido)
+			VALUES (@cuota, @cantidad, @tipo, CURRENT_TIMESTAMP, @IDUsuario, @IDPartido)
 
-	IF(@tipo = '1')
-	BEGIN
-		INSERT Apuestas_tipo1(id, golLocal, golVisitante)
-		VALUES (@@IDENTITY, @golLocal, @golVisitante)
-	END
+			set @lastID = @@IDENTITY
+			IF(@tipo = '1')
+			BEGIN
+				INSERT Apuestas_tipo1(id, golLocal, golVisitante)
+				VALUES (@lastID, @golLocal, @golVisitante)
 
-	ELSE IF(@tipo = '2' )
-	BEGIN
-		INSERT Apuestas_tipo2(id, gol, puja)
-		VALUES (@@IDENTITY ,  @gol, @puja)
-	END
-	ELSE
-	IF(@tipo = '3')
-	BEGIN
-		INSERT Apuestas_tipo3(id,  puja)
-		VALUES (@@IDENTITY , @puja)
-	END
+				
+			END
 
+			ELSE IF(@tipo = '2' )
+			BEGIN
+				INSERT Apuestas_tipo2(id, gol, puja)
+				VALUES (@lastID ,  @gol, @puja)
+				
+			END
+			ELSE
+			IF(@tipo = '3')
+			BEGIN
+				INSERT Apuestas_tipo3(id,  puja)
+				VALUES (@lastID , @puja)
+				
+			END
+	COMMIT
 	end
 
 	else
 	begin
-		ROLLBACK
+	
+			print @temp
+			RAISERROR('No se pudo insertar la apuesta porque se ha superado el maximo',16,1)
+					ROLLBACK
 
 	end
 END
@@ -336,13 +347,13 @@ CREATE OR ALTER FUNCTION COMPROBARMAXIMO(@IDPARTIDO SMALLINT, @TIPO CHAR(1))
 	BEGIN
 	DECLARE @RET BIT = 0
 
-
+	/*Importante faltaban los ISNULL porque si no pillaba null y no sabia comparar eso con un numero*/
 
 
 		IF(@TIPO = '1')
 			BEGIN 
 
-				IF( (SELECT SUM(cantidad * cuota) 
+				IF( (SELECT ISNULL(SUM(cantidad * cuota),0 )
 					FROM Apuestas
 					WHERE id_partido = @IDPARTIDO
 					and
@@ -361,7 +372,7 @@ CREATE OR ALTER FUNCTION COMPROBARMAXIMO(@IDPARTIDO SMALLINT, @TIPO CHAR(1))
 		IF(@TIPO = '2')
 			BEGIN 
 
-				IF( (SELECT SUM(cantidad * cuota) 
+				IF( (SELECT ISNULL(SUM(cantidad * cuota),0 )
 					FROM Apuestas
 					WHERE id_partido = @IDPARTIDO
 					and
@@ -379,8 +390,8 @@ CREATE OR ALTER FUNCTION COMPROBARMAXIMO(@IDPARTIDO SMALLINT, @TIPO CHAR(1))
 
 		IF(@TIPO = '3')
 			BEGIN 
-
-				IF( (SELECT SUM(cantidad * cuota) 
+			/*Importante faltaban los ISNULL porque si no pillaba null y no sabia comparar eso con un numero*/
+				IF( (SELECT ISNULL(SUM(cantidad * cuota),0 )
 						FROM Apuestas
 						WHERE id_partido = @IDPARTIDO
 						and
