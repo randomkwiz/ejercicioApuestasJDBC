@@ -6,6 +6,7 @@ import validacion.Validar;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 
 public class GestionApuestas {
 
@@ -166,13 +167,15 @@ public class GestionApuestas {
         Connection conexion = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
+        GregorianCalendar fecha ;
         String sentenciaSql = "SELECT * FROM Apuestas WHERE id = ?";
         int id = objValidar.pedirValidarIdApuesta(); //Id para realizar la consulta
 
         Apuesta apuesta = null;
 
+        fecha = objValidar.pedirValidarFechaHora();
         //Obtengo lista apuestas
-        ArrayList<Apuesta> listaApuestas = objValidar.validarListaApuestasPorFecha(usuarioApuesta);
+        ArrayList<Apuesta> listaApuestas = objValidar.validarListaApuestasPorFecha(usuarioApuesta, fecha);
         //Muestro lista apuestas
         objValidar.mostrarListaApuestasPorFecha(listaApuestas);
 
