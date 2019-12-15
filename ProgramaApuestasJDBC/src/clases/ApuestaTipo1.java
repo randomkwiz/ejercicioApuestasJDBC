@@ -40,6 +40,7 @@ public class ApuestaTipo1 extends Apuesta{
         this.golesVisitante = golesVisitante;
     }
 
+
     //Getters y setters
     public double getApuestasMaximas() {
         return apuestasMaximas;

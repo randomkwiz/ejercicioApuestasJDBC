@@ -130,7 +130,11 @@ public class Main {
                                     //3: comprobar el resultado de una apuesta anterior
                                     //System.out.println("Opcion 3. En construcción.");
                                     System.out.println("Comprobar resultado de una apuesta");
-                                    gestionApuestas.verResultadosApuesta(usuarioLogado);
+//                                    gestionApuestas.verResultadosApuesta(usuarioLogado);
+                                    GregorianCalendar fechaApuesta = validar.pedirValidarFechaSinHora();
+                                    ArrayList<Apuesta> listadoApuestas = validar.validarListaApuestasPorFecha(usuarioLogado, fechaApuesta);
+                                    gestionApuestas.verResultadoApuesta(listadoApuestas); //Funciona
+
                                     break;
                                 case 4:
                                     //4: hacer un ingreso en cuenta
