@@ -35,16 +35,16 @@ public class PartidoImpl implements Partido {
     private Double apuestasMaximasTipo2;
     private Double apuestasMaximasTipo3;
 
-//    public PartidoImpl(int id, int golesLocal, int golesVisitante, GregorianCalendar fechaInicio, GregorianCalendar fechaFin, String nombreLocal, String nombreVisitante, boolean isPeriodoApuestasAbierto) {
-//        this.id = id;
-//        this.golesLocal = golesLocal;
-//        this.golesVisitante = golesVisitante;
-//        this.fechaInicio = fechaInicio;
-//        this.fechaFin = fechaFin;
-//        this.nombreLocal = nombreLocal;
-//        this.nombreVisitante = nombreVisitante;
-//        this.isPeriodoApuestasAbierto = isPeriodoApuestasAbierto;
-//    }
+    public PartidoImpl(int id, int golesLocal, int golesVisitante, GregorianCalendar fechaInicio, GregorianCalendar fechaFin, String nombreLocal, String nombreVisitante, boolean isPeriodoApuestasAbierto) {
+        this.id = id;
+        this.golesLocal = golesLocal;
+        this.golesVisitante = golesVisitante;
+        this.fechaInicio = fechaInicio;
+        this.fechaFin = fechaFin;
+        this.nombreLocal = nombreLocal;
+        this.nombreVisitante = nombreVisitante;
+        this.isPeriodoApuestasAbierto = isPeriodoApuestasAbierto;
+    }
 
     //TODO Constructor añadido por Diana para inserción de partidos
     public PartidoImpl(int id, int golesLocal, int golesVisitante, GregorianCalendar fechaInicio, GregorianCalendar fechaFin, String nombreLocal, String nombreVisitante, boolean isPeriodoApuestasAbierto, Double apuestasMaximasTipo1, Double apuestasMaximasTipo2, Double apuestasMaximasTipo3){
@@ -70,12 +70,7 @@ public class PartidoImpl implements Partido {
         this.nombreLocal = " ";
         this.nombreVisitante = " ";
         this.isPeriodoApuestasAbierto = false;
-        //Añadido Diana
-        this.apuestasMaximasTipo1 = 0.0;
-        this.apuestasMaximasTipo2 = 0.0;
-        this.apuestasMaximasTipo3 = 0.0;
     }
-
     //Getters y setters
     public int getId() {
         return id;

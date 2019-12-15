@@ -30,13 +30,6 @@ public class ApuestaTipo3 extends Apuesta {
         this.equipo = ' ';
     }
 
-    //TODO añadido por Diana
-    public ApuestaTipo3(int id, double cuota, int cantidad, char tipo, GregorianCalendar fechaHora, UsuarioImpl usuario, PartidoImpl partido, char equipo) {
-        super(id, cuota, cantidad, tipo, fechaHora, usuario, partido);
-//        this.apuestasMaximas = apuestasMaximas;
-        this.equipo = equipo;
-    }
-
     //Getters y setters
     public double getApuestasMaximas() {
         return apuestasMaximas;

@@ -132,7 +132,6 @@ public class Main {
                                     //System.out.println("Opcion 3. En construcción.");
                                     System.out.println("Comprobar resultado de una apuesta");
                                     GregorianCalendar fechaApuesta = validar.pedirValidarFechaSinHora();
-//                                    gestionApuestas.verResultadosApuesta(usuarioLogado, fechaApuesta);
                                     ArrayList<Apuesta> listadoApuestas = validar.validarListaApuestasPorFecha(usuarioLogado, fechaApuesta); //TODO da fallos
                                     gestionApuestas.verResultadoApuesta(listadoApuestas); //Funciona
                                     break;
@@ -179,7 +178,7 @@ public class Main {
                                     //System.out.println("Opcion 7. En construcción.");
 
                                     System.out.println("Registrar nuevo partido");
-                                    partidoNuevo = validar.pedirValidarDatosPartido(); //TODO modificar en común
+                                    partidoNuevo = validar.pedirValidarDatosPartido();
                                     boolean exito = gestionPartidos.insertarPartido(partidoNuevo);
                                     if (exito){
                                         System.out.println("Nuevo partido registrado correctamente");

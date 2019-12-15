@@ -106,7 +106,7 @@ public class GestionUsuarios {
 		}
 		return usuario;
 	}
-
+//TODO añadir comun
     /*
      * Signatura: public UsuarioImpl insertarUsuario(UsuarioImpl nuevoUsuario)
      * Comentario: Método que inserta un nuevo usuario en la BBDD pasado por parámetro.
@@ -189,6 +189,7 @@ public class GestionUsuarios {
 					
 					System.out.println(ingreso.getId()+", "+ingreso.getCantidad()+", "+ingreso.getDescripcion()+", "+ingreso.getUsuario().getId());
 				}
+
 
 				preparedStatement.close();
 				conexionJDBC.closeConnection(connection);

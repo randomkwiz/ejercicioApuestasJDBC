@@ -1,9 +1,8 @@
 package tests;
 
-
 import clases.*;
-import conexion.ConexionJDBC;
 import gestion.GestionApuestas;
+import utilidad.Utilidad;
 import validacion.Validar;
 
 import java.util.ArrayList;
@@ -12,9 +11,18 @@ import java.util.GregorianCalendar;
 public class TestsApuestas {
     public static void main(String[] args) {
         Validar validar = new Validar();
-//        Utilidad utilidad = new Utilidad();
+        Utilidad utilidad = new Utilidad();
         GestionApuestas gestionApuestas = new GestionApuestas();
         UsuarioImpl usuario = new UsuarioImpl(1,50,"aabb@gmail.com","1234",false );
+        Apuesta apuesta ;
+        /*
+
+        GregorianCalendar fecha;
+        fecha = validar.pedirValidarFechaHora();
+        System.out.println("La fecha elegida es: ");
+        System.out.println(utilidad.formatearFecha(fecha));
+*/
+
         GregorianCalendar fechaApuesta = new GregorianCalendar(2019, 1, 11);
 
 //        ArrayList<Apuesta> listaApuestas =  validar.validarListaApuestasPorFecha(usuario, fechaApuesta);
@@ -45,23 +53,6 @@ public class TestsApuestas {
 
         gestionApuestas.verResultadoApuesta(listadoApuestas); //Funciona
 
-
-
-//        Apuesta apuesta ;
-
-//        GregorianCalendar fechaApuesta = validar.pedirValidarFechaSinHora();
-//        String fecha = validar.pedirValidarFechaParaFormatoConversion(fechaApuesta);
-//        System.out.println("La fecha elegida es: ");
-//        System.out.println(fecha);
-
-
-//        ConexionJDBC conexionJDBC =  new ConexionJDBC();
-//        if(conexionJDBC.getConnection() != null){
-//            System.out.println("exito");
-//        }else{
-//            System.out.println("fallo conexión");
-//        }
-//        System.out.println(conexionJDBC.getConnection());
 
 
 

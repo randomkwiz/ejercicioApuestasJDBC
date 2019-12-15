@@ -15,7 +15,7 @@
 package clases;
 import java.util.GregorianCalendar;
 
-public class ApuestaTipo1 extends Apuesta{
+public class ApuestaTipo1 extends Apuesta {
     private double apuestasMaximas;
     private int golesLocal;
     private int golesVisitante;
@@ -48,13 +48,6 @@ public class ApuestaTipo1 extends Apuesta{
         this.golesLocal = golesLocal;
         this.golesVisitante = golesVisitante;
     }
-
-//    public ApuestaTipo1() {
-//        super();
-////        this.apuestasMaximas = 0.0;
-//        this.golesLocal = 0;
-//        this.golesVisitante = 0;
-//    }
 
     //Getters y setters
     public double getApuestasMaximas() {

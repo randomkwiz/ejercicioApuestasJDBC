@@ -34,16 +34,6 @@ public class ApuestaTipo2 extends Apuesta{
         this.equipo = ' ';
     }
 
-    //TODO añadido por Diana
-    public ApuestaTipo2(int id, double cuota, int cantidad, char tipo, GregorianCalendar fechaHora, UsuarioImpl usuario, PartidoImpl partido, int cantidadGoles, char equipo) {
-        super(id, cuota, cantidad, tipo, fechaHora, usuario, partido);
-//        this.apuestasMaximas = apuestasMaximas;
-        this.cantidadGoles = cantidadGoles;
-        this.equipo = equipo;
-    }
-
-
-
     //Getters y setters
     public double getApuestasMaximas() {
         return apuestasMaximas;
