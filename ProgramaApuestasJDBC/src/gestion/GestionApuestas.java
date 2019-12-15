@@ -4,6 +4,8 @@ import clases.*;
 import conexion.ConexionJDBC;
 import validacion.Validar;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
@@ -285,7 +287,17 @@ public class GestionApuestas {
         double cantidadTotalApostadaEnApuestasIguales = 0.0;
         double cantidadTotalApostadaEnApuestasDeEseTipo = 0.0;
 
-        if(apuesta.getCantidad() < 40){
+        cantidadTotalApostadaEnApuestasIguales = calcularCantidadTotalApostadaEnApuestasIguales(apuesta, tipoApuesta);
+        //Para el debug
+        //System.out.println("Cantidad total apostada en apuestas iguales : " +cantidadTotalApostadaEnApuestasIguales);
+
+        cantidadTotalApostadaEnApuestasDeEseTipo = calcularCantidadTotalApostadaEnApuestasDeEseTipo(apuesta, tipoApuesta);
+        //Para el debug
+        //System.out.println("Cantidad total apostada en apuestas de ese tipo : " +cantidadTotalApostadaEnApuestasDeEseTipo);
+
+
+
+        if(cantidadTotalApostadaEnApuestasIguales <= 40){
             switch (tipoApuesta){
                 case 1:
                     cuota = 4;
@@ -298,9 +310,6 @@ public class GestionApuestas {
                     break;
             }
         }else{
-            cantidadTotalApostadaEnApuestasIguales = calcularCantidadTotalApostadaEnApuestasIguales(apuesta, tipoApuesta);
-            cantidadTotalApostadaEnApuestasDeEseTipo = calcularCantidadTotalApostadaEnApuestasDeEseTipo(apuesta, tipoApuesta);
-
             cuota = ((cantidadTotalApostadaEnApuestasDeEseTipo/cantidadTotalApostadaEnApuestasIguales)-1)*0.8;
         }
 

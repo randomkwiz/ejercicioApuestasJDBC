@@ -44,6 +44,7 @@ package main;
 
 import java.sql.CallableStatement;
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.Scanner;
 
 import clases.*;
@@ -112,7 +113,7 @@ public class Main {
                                     String mensaje = "";
                                     apuesta = validar.pedirValidarApuesta(usuarioLogado);
 
-                                    if(apuesta.getCuota() > 1.5){
+                                    if(apuesta.getCuota() >= 1.5){
                                         mensaje = (gestionApuestas.realizarApuesta(apuesta)) ? "La apuesta se realizó correctamente" :
                                                 "Hubo un problema, inténtelo de nuevo más tarde";
                                     }else{

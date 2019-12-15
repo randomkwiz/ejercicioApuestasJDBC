@@ -1072,9 +1072,9 @@
             partidoNuevo.setNombreLocal(nombreLocal);
             partidoNuevo.setNombreVisitante(nombreVisitante);
             //TODO nuevo 12/12/2019
-            partidoNuevo.setApuestasMaximasTipo1(apuestasMaximasTipo1);
-            partidoNuevo.setApuestasMaximasTipo2(apuestasMaximasTipo2);
-            partidoNuevo.setApuestasMaximasTipo3(apuestasMaximasTipo3);
+            partidoNuevo.setMaximoApuestasTipo1(apuestasMaximasTipo1);
+            partidoNuevo.setMaximoApuestasTipo2(apuestasMaximasTipo2);
+            partidoNuevo.setMaximoApuestasTipo3(apuestasMaximasTipo3);
 
             return partidoNuevo;
         }

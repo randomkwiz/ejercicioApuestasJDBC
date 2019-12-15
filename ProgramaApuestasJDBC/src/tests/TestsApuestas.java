@@ -17,7 +17,6 @@ public class TestsApuestas {
         Utilidad utilidad = new Utilidad();
         GestionApuestas gestionApuestas = new GestionApuestas();
         UsuarioImpl usuario = new UsuarioImpl(1,50,"aabb@gmail.com","1234",false );
-        Apuesta apuesta ;
         GregorianCalendar fecha = new GregorianCalendar();
         fecha.set(2019,0,11);
 /*
@@ -25,12 +24,15 @@ public class TestsApuestas {
         System.out.println("La fecha elegida es: ");
         System.out.println(utilidad.formatearFecha(fecha));
 */
-
+/*
         System.out.println(utilidad.formatearFecha(fecha));
         ArrayList<Apuesta> listadoApuestas = validar.validarListaApuestasPorFecha(usuario,fecha);
 
         System.out.println(listadoApuestas.size());
+*/
+        Apuesta apuesta = validar.pedirValidarApuesta(usuario);
 
+        System.out.println( "Cuota : " + apuesta.getCuota());
 
 
     }

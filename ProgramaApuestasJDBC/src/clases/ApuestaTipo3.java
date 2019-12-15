@@ -15,29 +15,29 @@ package clases;
 import java.util.GregorianCalendar;
 
 public class ApuestaTipo3 extends Apuesta {
-    private double apuestasMaximas;
+    //private double apuestasMaximas;
     private char equipo;
 
     public ApuestaTipo3(int id, double cuota, int cantidad, char tipo, GregorianCalendar fechaHora, UsuarioImpl usuario, PartidoImpl partido, double apuestasMaximas, char equipo) {
         super(id, cuota, cantidad, tipo, fechaHora, usuario, partido);
-        this.apuestasMaximas = apuestasMaximas;
+        //this.apuestasMaximas = apuestasMaximas;
         this.equipo = equipo;
     }
 
     public ApuestaTipo3(){
         super();
-        this.apuestasMaximas = 0.0;
+        //this.apuestasMaximas = 0.0;
         this.equipo = ' ';
     }
 
     //Getters y setters
-    public double getApuestasMaximas() {
-        return apuestasMaximas;
-    }
+//    public double getApuestasMaximas() {
+//        return apuestasMaximas;
+//    }
 
-    public void setApuestasMaximas(double apuestasMaximas) {
-        this.apuestasMaximas = apuestasMaximas;
-    }
+//    public void setApuestasMaximas(double apuestasMaximas) {
+//        this.apuestasMaximas = apuestasMaximas;
+//    }
 
     public char getEquipo() {
         return equipo;
