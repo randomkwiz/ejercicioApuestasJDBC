@@ -6,6 +6,7 @@ import validacion.Validar;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 
 public class GestionApuestas {
 
@@ -38,7 +39,7 @@ public class GestionApuestas {
 
             while (resultset.next()){
                 apuestaTipo1.setId(resultset.getInt("id"));
-                //apuestaTipo1.setApuestasMaximas(resultset.getInt("apuestasM�ximas"));
+
                 apuestaTipo1.setGolesLocal(resultset.getInt("golLocal"));
                 apuestaTipo1.setGolesVisitante(resultset.getInt("golVisitante"));
             }
@@ -55,7 +56,7 @@ public class GestionApuestas {
             objConexion.closeConnection(conexion);
         }
         //TODO ver si esto podemos sacarlo fuera
-        System.out.println("Id: " + apuestaTipo1.getId() + " Goles Local: " + apuestaTipo1.getGolesLocal() + " Goles Visitante: " + apuestaTipo1.getGolesVisitante());
+        System.out.println("Id: " + apuestaTipo1.getId()  + " Goles Local: " + apuestaTipo1.getGolesLocal() + " Goles Visitante: " + apuestaTipo1.getGolesVisitante());
     }
 
     /*
@@ -84,7 +85,7 @@ public class GestionApuestas {
 
             while (resultset.next()){
                 apuestaTipo2.setId(resultset.getInt("id"));
-                //apuestaTipo2.setApuestasMaximas(resultset.getInt("apuestasMáximas"));
+
                 apuestaTipo2.setCantidadGoles(resultset.getInt("gol"));
                 apuestaTipo2.setEquipo(resultset.getString("puja").charAt(0));
             }
@@ -101,7 +102,7 @@ public class GestionApuestas {
             objConexion.closeConnection(conexion);
         }
         //TODO ver si esto podemos sacarlo fuera
-        System.out.println("Id: " + apuestaTipo2.getId() + " Goles : " + apuestaTipo2.getCantidadGoles() + " Puja: " + apuestaTipo2.getEquipo());
+        System.out.println("Id: " + apuestaTipo2.getId()  + " Goles : " + apuestaTipo2.getCantidadGoles() + " Puja: " + apuestaTipo2.getEquipo());
 
     }
 
@@ -130,7 +131,7 @@ public class GestionApuestas {
 
             while (resultset.next()){
                 apuestaTipo3.setId(resultset.getInt("id"));
-                //apuestaTipo3.setApuestasMaximas(resultset.getInt("apuestasMáximas"));
+
                 apuestaTipo3.setEquipo(resultset.getString("puja").charAt(0));
             }
 
@@ -146,7 +147,7 @@ public class GestionApuestas {
             objConexion.closeConnection(conexion);
         }
         //TODO ver si esto se puede sacar fuera
-        System.out.println("Id: " + apuestaTipo3.getId() + " Puja: " + apuestaTipo3.getEquipo());
+        System.out.println("Id: " + apuestaTipo3.getId()  + " Puja: " + apuestaTipo3.getEquipo());
     }
 
 
@@ -166,13 +167,15 @@ public class GestionApuestas {
         Connection conexion = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
+        GregorianCalendar fecha ;
         String sentenciaSql = "SELECT * FROM Apuestas WHERE id = ?";
         int id = objValidar.pedirValidarIdApuesta(); //Id para realizar la consulta
 
         Apuesta apuesta = null;
 
+        fecha = objValidar.pedirValidarFechaHora();
         //Obtengo lista apuestas
-        ArrayList<Apuesta> listaApuestas = objValidar.validarListaApuestasPorFecha(usuarioApuesta);
+        ArrayList<Apuesta> listaApuestas = objValidar.validarListaApuestasPorFecha(usuarioApuesta, fecha);
         //Muestro lista apuestas
         objValidar.mostrarListaApuestasPorFecha(listaApuestas);
 

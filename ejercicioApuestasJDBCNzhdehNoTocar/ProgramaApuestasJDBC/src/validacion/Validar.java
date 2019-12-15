@@ -15,6 +15,117 @@
 
     public class Validar {
 
+
+        /*
+         * Signatura: public ArrayList<Apuesta> validarListaApuestasPorFecha(UsuarioImpl usuarioApuesta, GregorianCalendar fechaApuesta)
+         * Comentario: obtiene un listado de apuestas según la fecha
+         * Precondiciones:
+         * Entradas:
+         * Salidas: ArrayList de apuesta
+         * Postcondiciones: asociado al nombre se devuelve la lista de apuestas según la fecha instroudcida por el usuario
+         * */
+        public ArrayList<Apuesta> validarListaApuestasPorFecha(UsuarioImpl usuarioApuesta, GregorianCalendar fechaApuesta){  //Usuario que realiza la consulta, no estoy segura de si haría falta
+
+            ConexionJDBC objConexion = new ConexionJDBC();
+            Connection conexion = null;
+            PreparedStatement preparedStatement = null;
+            ResultSet resultSet = null;
+            Apuesta apuesta = null;
+            PartidoImpl partido;
+            //ArrayList<PartidoImpl> listadoPartidos = new ArrayList<>();
+            GestionPartidos gestionPartidos = new GestionPartidos();
+            ArrayList<Apuesta> listaApuestasPorFecha = new ArrayList<>();
+
+            //TODO revisar consulta de clase revisada con Leo
+            //String sentenciaSql = "SELECT * FROM  Apuestas WHERE Convert(VARCHAR(10),fechaHora,101) =  ? and id_usuario = ?"; //Hecha con Leo
+            String sentenciaSql = "select * from Apuestas as a\n" +
+                    "full join Apuestas_tipo1 as at1\n" +
+                    "on a.id = at1.id\n" +
+                    "full join Apuestas_tipo2 as at2\n" +
+                    "on a.id = at2.id\n" +
+                    "full join Apuestas_tipo3 as at3\n" +
+                    "on a.id = at3.id\n" +
+                    "\n" +
+                    "where DAY(fechaHora) = ?\n" +
+                    "and\n" +
+                    "MONTH(fechaHora) = ?\n" +
+                    "and\n" +
+                    "YEAR(fechaHora) = ?\n" +
+                    "and \n" +
+                    "id_usuario = ?";
+
+            try{
+                conexion = objConexion.getConnection();
+                preparedStatement = conexion.prepareStatement(sentenciaSql);
+
+                if (fechaApuesta != null) {
+                    preparedStatement.setInt(1, fechaApuesta.get(Calendar.DAY_OF_MONTH));
+                    preparedStatement.setInt(2, (fechaApuesta.get(Calendar.MONTH)+1));  //porque calendar va de 0 a 11
+                    preparedStatement.setInt(3, fechaApuesta.get(Calendar.YEAR));
+                } else {
+                    preparedStatement.setInt(1, 0);
+                    preparedStatement.setInt(2, 0);
+                    preparedStatement.setInt(3, 0);
+
+                }
+
+                preparedStatement.setInt(4, usuarioApuesta.getId());
+                resultSet = preparedStatement.executeQuery();
+                String equipo = "";
+                while (resultSet.next()){
+
+                    switch (resultSet.getString("tipo").charAt(0)){
+                        case '1':
+                            apuesta = new ApuestaTipo1();
+                            ((ApuestaTipo1)apuesta).setGolesLocal(resultSet.getInt("golLocal"));
+                            ((ApuestaTipo1) apuesta).setGolesVisitante(resultSet.getInt("golVisitante"));
+                            break;
+                        case '2':
+                            apuesta = new ApuestaTipo2();
+                            equipo = resultSet.getString("puja");
+                            ((ApuestaTipo2)apuesta).setCantidadGoles(resultSet.getInt("gol"));
+                            ((ApuestaTipo2) apuesta).setEquipo(equipo.charAt(0));
+                            break;
+                        case '3':
+                            apuesta = new ApuestaTipo3();
+                            equipo = resultSet.getString("puja");
+                            ((ApuestaTipo3)apuesta).setEquipo(equipo.charAt(0));
+                            break;
+                    }
+
+                    apuesta.setId(resultSet.getInt("id"));
+                    apuesta.setCuota(resultSet.getDouble("cuota"));
+                    apuesta.setCantidad(resultSet.getDouble("cantidad"));
+                    apuesta.setTipo(resultSet.getString("tipo").charAt(0)); //Para tipo char
+
+                    fechaApuesta.setTime(resultSet.getDate("fechaHora"));
+                    apuesta.setFechaHora(fechaApuesta);
+                    apuesta.setUsuario(usuarioApuesta);
+
+                    //TODO hace falta un metodo de obtener partido por ID
+                    apuesta.setPartido(new PartidoImpl(resultSet.getInt("id_partido")));    //apaño
+
+                    listaApuestasPorFecha.add(apuesta);
+                }
+            }catch (SQLException e){
+                e.printStackTrace();
+            }finally {
+                try {
+                    resultSet.close();
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                objConexion.closeConnection(conexion);
+            }
+            return listaApuestasPorFecha;
+        }
+
+
+
+
+
+
         /*
          * Signatura: public UsuarioImpl pedirValidarDatosUsuario()
          * Comentario: crea un objeto usuario
@@ -122,9 +233,9 @@
             try {
                 do {
 
-                    System.out.println("Introduce tu correo electronico: ");
+                    System.out.println("Introduce tu correo electrónico: ");
                     correo = sc.nextLine();
-                    System.out.println("Introduce tu contrase�a: ");
+                    System.out.println("Introduce tu contraseña: ");
                     if (console == null) {
                         password = sc.nextLine();
                     } else {
@@ -163,7 +274,7 @@
 
             String miSelect = "select * from Usuarios  where correo = ?\n" +
                     "        and\n" +
-                    "                contrase�a = ?";
+                    "                contraseña = ?";
             try {
                 connection = conexionJDBC.getConnection();
                 //Preparo el statement
@@ -994,73 +1105,6 @@
                 }
             }while (idApuesta < 0);
             return idApuesta;
-        }
-
-        /*
-         * Signatura: public ArrayList<Apuesta> obtenerListaApuestasPorFecha(UsuarioImpl usuarioApuesta)
-         * Comentario: obtiene un listado de apuestas según la fecha
-         * Precondiciones:
-         * Entradas:
-         * Salidas: ArrayList de apuesta
-         * Postcondiciones: asociado al nombre se devuelve la lista de apuestas según la fecha instroudcida por el usuario
-         * */
-        public ArrayList<Apuesta> validarListaApuestasPorFecha(UsuarioImpl usuarioApuesta){  //Usuario que realiza la consulta, no estoy segura de si haría falta
-            //Atributos conexion
-            ConexionJDBC objConexion = new ConexionJDBC();
-            Connection conexion = null;
-            PreparedStatement preparedStatement = null;
-            ResultSet resultSet = null;
-
-            Validar objValidar = new Validar();
-            Apuesta apuesta = null;
-            PartidoImpl partido;
-            GestionPartidos gestionPartidos = new GestionPartidos();
-            ArrayList<Apuesta> listaApuestasPorFecha = new ArrayList<>();
-
-            //Fecha original
-            GregorianCalendar fechaApuesta = objValidar.pedirValidarFechaHora();
-            //Fecha formateada para consulta: mes/dia/año
-            String fechaFormatoConversion = objValidar.pedirValidarFechaParaFormatoConversion(fechaApuesta); //Convierto la fecha al formato necesario para la sentencia Sql
-
-            String sentenciaSql = "SELECT * FROM  Apuestas WHERE Convert(VARCHAR(10),fechaHora,101) =  Convert(Varchar(10), ?,101) and id_usuario = ?";
-
-
-            try{
-                conexion = objConexion.getConnection();
-                preparedStatement = conexion.prepareStatement(sentenciaSql);
-                preparedStatement.setString(1, fechaFormatoConversion);
-                preparedStatement.setInt(2, usuarioApuesta.getId());
-                resultSet = preparedStatement.executeQuery();
-
-                //Partido según fecha apuesta
-                partido = gestionPartidos.obtenerPartidoPorFechaApuesta(fechaApuesta);
-
-
-                while (resultSet.next()){
-                    apuesta.setId(resultSet.getInt("id"));
-                    apuesta.setCuota(resultSet.getInt("cuota"));
-                    apuesta.setCantidad(resultSet.getDouble("cantidad"));
-                    apuesta.setTipo(resultSet.getString("tipo").charAt(0)); //Para tipo char
-//              //Fecha //TODO revisar
-                    fechaApuesta.setTime(resultSet.getDate("fechaHora"));
-                    apuesta.setFechaHora(fechaApuesta); //TODO creo que no hace falta
-                    apuesta.setUsuario(usuarioApuesta); //TODO creo que no hace falta
-                    apuesta.setPartido(partido);
-
-                    listaApuestasPorFecha.add(apuesta);
-                }
-            }catch (SQLException e){
-                e.printStackTrace();
-            }finally {
-                try {
-                    resultSet.close();
-                    preparedStatement.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-                objConexion.closeConnection(conexion);
-            }
-            return listaApuestasPorFecha;
         }
 
         /*
