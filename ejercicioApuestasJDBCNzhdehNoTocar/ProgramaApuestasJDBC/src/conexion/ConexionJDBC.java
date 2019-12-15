@@ -6,6 +6,7 @@ import java.sql.SQLException;
 
 public class ConexionJDBC {
     private String sourceURL = "jdbc:sqlserver://localhost";
+    //private String sourceURL = "jdbc:sqlserver://192.168.0.166";
     private String usuario = "apuestas";
     private String password = "apuestas";
 

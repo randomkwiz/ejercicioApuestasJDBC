@@ -26,7 +26,7 @@ public class Utilidad {
      */
     public String formatearFecha(GregorianCalendar fecha) {
         String fechaFormateada = " ";
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:s");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         if (fecha != null) {
             fechaFormateada = sdf.format(fecha.getTime());
         }

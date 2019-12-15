@@ -64,4 +64,9 @@ public class ApuestaTipo1 extends Apuesta{
     public void setGolesVisitante(int golesVisitante) {
         this.golesVisitante = golesVisitante;
     }
+
+
+
+
+
 }

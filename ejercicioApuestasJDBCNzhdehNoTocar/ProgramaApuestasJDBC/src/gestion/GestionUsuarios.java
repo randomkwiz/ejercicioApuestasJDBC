@@ -32,7 +32,7 @@ public class GestionUsuarios {
 
         String miSelect = "select * from Usuarios  where correo = ?\n" +
                 "        and\n" +
-                "                contraseña = ?";
+                "                contraseÃ±a = ?";
         try {
             //Preparo el statement
             preparedStatement = connection.prepareStatement(miSelect);
@@ -46,7 +46,7 @@ public class GestionUsuarios {
                 usuario.setId(resultSet.getInt("id"));
                 usuario.setCantidadActualDinero(resultSet.getDouble("saldo"));
                 usuario.setCorreo(resultSet.getString("correo"));
-                usuario.setPassword(resultSet.getString("contraseña"));
+                usuario.setPassword(resultSet.getString("contraseÃ±a"));
                 usuario.setAdmin(resultSet.getBoolean("isAdmin"));
             }
             exito = true;
@@ -94,7 +94,7 @@ public class GestionUsuarios {
 				usuario.setId(resultSet.getInt("id"));
                 usuario.setCantidadActualDinero(resultSet.getDouble("saldo"));
                 usuario.setCorreo(resultSet.getString("correo"));
-                usuario.setPassword(resultSet.getString("contraseña"));
+                usuario.setPassword(resultSet.getString("contraseÃ±a"));
                 usuario.setAdmin(resultSet.getBoolean("isAdmin"));
 			}
 
