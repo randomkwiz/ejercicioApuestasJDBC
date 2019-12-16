@@ -32,7 +32,8 @@ AFTER INSERT AS
 	BEGIN
 		IF EXISTS (SELECT * FROM inserted AS I
 		INNER JOIN Partidos AS P ON I.id_partido = P.id
-		WHERE I.fechaHora NOT BETWEEN DATEADD(DAY, -2, P.fechaInicio) AND DATEADD(MINUTE, -10, P.fechaFin)) 
+		WHERE isPeriodoApuestasAbierto=0)
+		--I.fechaHora NOT BETWEEN DATEADD(DAY, -2, P.fechaInicio) AND DATEADD(MINUTE, -10, P.fechaFin)) 
 		BEGIN
 			RAISERROR ('La apuesta para ese partido no ha empezado o se ha cerrado', 16,1)
 			ROLLBACK
