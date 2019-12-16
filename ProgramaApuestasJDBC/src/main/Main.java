@@ -226,7 +226,8 @@ public class Main {
                                     case 11:
                                     //11: pagar las apuestas ganadoras de un partido finalizado
                                     //System.out.println("Opcion 11. En construcción.");
-                                        System.out.println("Los pagos se realizan automaticamente");
+                                    System.out.println("Los pagos se realizan automaticamente");
+
                                     break;
 
 
