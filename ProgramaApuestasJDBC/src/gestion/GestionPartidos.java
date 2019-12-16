@@ -118,11 +118,11 @@ public class GestionPartidos
 		String pujaTipo2=" ",pujaTipo3=" ";
 		double cantidadApostada=0.;
 
-		String miSelect = "select AT1.golLocal,AT1.golVisitante,AT2.gol,AT2.puja as PujaTipo2,AT3.puja as PujaTipo3,SUM(A.cantidad) as CantidatTotal from Apuestas as A\r\n" + 
-				"	left join Apuestas_tipo1 as AT1 on A.id=AT1.id\r\n" + 
-				"	left join Apuestas_tipo2 as AT2 on A.id=AT2.id\r\n" + 
-				"	left join Apuestas_tipo3 as AT3 on A.id=AT3.id\r\n" + 
-				"	where A.id_partido=?\r\n" + 
+		String miSelect = "select AT1.golLocal,AT1.golVisitante,AT2.gol,AT2.puja as PujaTipo2,AT3.puja as PujaTipo3,SUM(A.cantidad) as CantidatTotal from Apuestas as A" +
+				"	left join Apuestas_tipo1 as AT1 on A.id=AT1.id " +
+				"	left join Apuestas_tipo2 as AT2 on A.id=AT2.id " +
+				"	left join Apuestas_tipo3 as AT3 on A.id=AT3.id " +
+				"	where A.id_partido= ? " +
 				"	group by AT1.golLocal,AT1.golVisitante,AT2.gol,AT2.puja,AT3.puja";
 		try {
 			//Preparo el statement
