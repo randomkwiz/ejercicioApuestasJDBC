@@ -88,10 +88,10 @@ select * from Ingresos
 --go
 
 go
-alter procedure PR_DineroApostadoPorUnPosibleResultadoDeUnPartido(@IDPartido int)
+create or alter procedure PR_DineroApostadoPorUnPosibleResultadoDeUnPartido(@IDPartido int)
 as
 begin
-	select AT1.golLocal,AT1.golVisitante,AT2.gol,AT2.puja as PujaTipo2,AT3.puja as PujaTipo3,SUM(A.cantidad) as [Cantidat Total] from Apuestas as A
+	select AT1.golLocal,AT1.golVisitante,AT2.gol,AT2.puja as PujaTipo2,AT3.puja as PujaTipo3,SUM(A.cantidad) as CantidatTotal from Apuestas as A
 	left join Apuestas_tipo1 as AT1 on A.id=AT1.id
 	left join Apuestas_tipo2 as AT2 on A.id=AT2.id
 	left join Apuestas_tipo3 as AT3 on A.id=AT3.id

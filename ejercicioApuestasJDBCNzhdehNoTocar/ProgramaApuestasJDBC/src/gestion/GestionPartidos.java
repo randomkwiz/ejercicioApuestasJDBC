@@ -127,7 +127,7 @@ public class GestionPartidos
 		try {
 			//Preparo el statement
 			preparedStatement = connection.prepareStatement(miSelect);
-			preparedStatement.setBoolean(1, true);
+			preparedStatement.setInt(1, idPartido);
 			//Ejecuto
 			resultSet = preparedStatement.executeQuery();
 
