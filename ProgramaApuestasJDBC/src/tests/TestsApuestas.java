@@ -18,22 +18,23 @@ public class TestsApuestas {
         GestionApuestas gestionApuestas = new GestionApuestas();
         UsuarioImpl usuario = new UsuarioImpl(1,50,"aabb@gmail.com","1234",false );
         GregorianCalendar fecha = new GregorianCalendar();
-        fecha.set(2019,0,11);
+        //fecha.set(2017,0,11);
 /*
         fecha = validar.pedirValidarFechaHora();
         System.out.println("La fecha elegida es: ");
         System.out.println(utilidad.formatearFecha(fecha));
 */
-/*
+
         System.out.println(utilidad.formatearFecha(fecha));
         ArrayList<Apuesta> listadoApuestas = validar.validarListaApuestasPorFecha(usuario,fecha);
 
         System.out.println(listadoApuestas.size());
-*/
+
+/*
         Apuesta apuesta = validar.pedirValidarApuesta(usuario);
 
         System.out.println( "Cuota : " + apuesta.getCuota());
-
+*/
 
     }
 }

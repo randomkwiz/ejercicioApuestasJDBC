@@ -52,6 +52,7 @@ import gestion.GestionApuestas;
 import gestion.GestionPartidos;
 import gestion.GestionSaldo;
 import gestion.GestionUsuarios;
+import utilidad.Utilidad;
 import validacion.Validar;
 
 public class Main {
@@ -133,8 +134,14 @@ public class Main {
                                     System.out.println("Comprobar resultado de una apuesta");
 //                                    gestionApuestas.verResultadosApuesta(usuarioLogado);
                                     GregorianCalendar fechaApuesta = validar.pedirValidarFechaSinHora();
+                                    //System.out.println(new Utilidad().formatearFecha(fechaApuesta));
                                     ArrayList<Apuesta> listadoApuestas = validar.validarListaApuestasPorFecha(usuarioLogado, fechaApuesta);
-                                    gestionApuestas.verResultadoApuesta(listadoApuestas); //Funciona
+                                    if(listadoApuestas.size() > 0){
+                                        gestionApuestas.verResultadoApuesta(listadoApuestas); //Funciona
+                                    }else{
+                                        System.out.println("No hay apuestas");
+                                    }
+
 
                                     break;
                                 case 4:
@@ -215,10 +222,14 @@ public class Main {
                                 	
                                 	gestionPartidos.DineroApostadoPorUnPosibleResultadoDeUnPartido(opcionCaso10);
                                     break;
-                                case 11:
+
+                                    case 11:
                                     //11: pagar las apuestas ganadoras de un partido finalizado
-                                    System.out.println("Opcion 11. En construcción.");
+                                    //System.out.println("Opcion 11. En construcción.");
+                                        System.out.println("Los pagos se realizan automaticamente");
                                     break;
+
+
                             }
                         }while (opcionMenu != 0);
                         break;
