@@ -43,7 +43,7 @@ AFTER INSERT AS
 
 --Procedimiento que comprueba que una apuesta es ganada o no
 GO
-CREATE OR ALTER PROCEDURE comprobarApuestaAcertada @idApuesta INT, @tipo CHAR(1), @acertada BIT OUTPUT
+CREATE PROCEDURE comprobarApuestaAcertada @idApuesta INT, @tipo CHAR(1), @acertada BIT OUTPUT
 AS
 BEGIN
 --DECLARE @acertada BIT
@@ -84,7 +84,6 @@ SET @acertada = 0
 END
 GO
 
-GO
 /*
 ESTAN COMENTADOS PORQUE EN EL TRIGGER APUESTA ABIERTA LO CONTROLAMOS TODO
 */
@@ -127,7 +126,7 @@ GO
 --1er Trigger actualiza el saldo del usuario cuando realiza una apuesta
 GO	
 --DROP TRIGGER actualizarSaldo
-CREATE OR ALTER TRIGGER actualizarSaldo on Apuestas
+CREATE TRIGGER actualizarSaldo on Apuestas
 AFTER INSERT AS
 	BEGIN
 		DECLARE @saldo money
@@ -158,59 +157,59 @@ GO
 
 -- Se comprueba que en cada apuesta ganada no se supere el maximo beneficio definido en la tabla
 -- Si esto ocurre, el pago de la apuesta quedaria anulada
-GO
-CREATE OR ALTER PROCEDURE noSePagaMaximo @IDApuesta SMALLINT, @Tipo CHAR(1), @fallado BIT OUTPUT 
-AS
-BEGIN
-SET @fallado = 0
-	BEGIN TRANSACTION
-	IF(@Tipo = 1)
-	BEGIN
-		IF EXISTS(SELECT * FROM Apuestas AS A
-		INNER JOIN Apuestas_tipo1 AS AT1 ON A.id = AT1.id
-		WHERE AT1.apuestasMáximas < A.cantidad * A.cuota AND A.id = @IDApuesta)
-		BEGIN
-			SET @fallado = 1
-			RAISERROR('Tu apuesta supera el maximo permitido en esta apuesta',16,1)
-			ROLLBACK
-		END
-	END
+--GO
+--CREATE OR ALTER PROCEDURE noSePagaMaximo @IDApuesta SMALLINT, @Tipo CHAR(1), @fallado BIT OUTPUT 
+--AS
+--BEGIN
+--SET @fallado = 0
+--	BEGIN TRANSACTION
+--	IF(@Tipo = 1)
+--	BEGIN
+--		IF EXISTS(SELECT * FROM Apuestas AS A
+--		INNER JOIN Apuestas_tipo1 AS AT1 ON A.id = AT1.id
+--		WHERE AT1.apuestasMáximas < A.cantidad * A.cuota AND A.id = @IDApuesta)
+--		BEGIN
+--			SET @fallado = 1
+--			RAISERROR('Tu apuesta supera el maximo permitido en esta apuesta',16,1)
+--			ROLLBACK
+--		END
+--	END
 
-	IF(@Tipo = 2)
-	BEGIN
-		IF EXISTS(SELECT * FROM Apuestas AS A
-		INNER JOIN Apuestas_tipo2 AS AT2 ON A.id = AT2.id
-		WHERE AT2.apuestasMáximas < A.cantidad * A.cuota AND A.id = @IDApuesta)
-		BEGIN
-			SET @fallado = 1
-			ROLLBACK
-			RAISERROR('Tu apuesta supera el maximo permitido en esta apuesta',16,1)
+--	IF(@Tipo = 2)
+--	BEGIN
+--		IF EXISTS(SELECT * FROM Apuestas AS A
+--		INNER JOIN Apuestas_tipo2 AS AT2 ON A.id = AT2.id
+--		WHERE AT2.apuestasMáximas < A.cantidad * A.cuota AND A.id = @IDApuesta)
+--		BEGIN
+--			SET @fallado = 1
+--			ROLLBACK
+--			RAISERROR('Tu apuesta supera el maximo permitido en esta apuesta',16,1)
 			
-		END
-	END
+--		END
+--	END
 
-	IF(@Tipo = 3)
-	BEGIN
-		IF EXISTS(SELECT * FROM Apuestas AS A
-		INNER JOIN Apuestas_tipo3 AS AT3 ON A.id = AT3.id
-		WHERE AT3.apuestasMáximas < A.cantidad * A.cuota AND A.id = @IDApuesta)
-		BEGIN
-			SET @fallado = 1
-			RAISERROR('Tu apuesta supera el maximo permitido en esta apuesta',16,1)
-			ROLLBACK
-		END
-	END
-	IF(@fallado = 0)
-	BEGIN
-		COMMIT
-	END
+--	IF(@Tipo = 3)
+--	BEGIN
+--		IF EXISTS(SELECT * FROM Apuestas AS A
+--		INNER JOIN Apuestas_tipo3 AS AT3 ON A.id = AT3.id
+--		WHERE AT3.apuestasMáximas < A.cantidad * A.cuota AND A.id = @IDApuesta)
+--		BEGIN
+--			SET @fallado = 1
+--			RAISERROR('Tu apuesta supera el maximo permitido en esta apuesta',16,1)
+--			ROLLBACK
+--		END
+--	END
+--	IF(@fallado = 0)
+--	BEGIN
+--		COMMIT
+--	END
 	
-END
-GO
+--END
+--GO
 
-----Este procedimiento es sumar la apuesta en caso de que este acertada
+--Este procedimiento es sumar la apuesta en caso de que este acertada
 GO
-CREATE OR ALTER PROCEDURE sumarApuesta 
+alter PROCEDURE sumarApuesta 
 				 @IDApuest int,
 				 @IDUsuario int
 AS
@@ -219,7 +218,7 @@ BEGIN
 	declare @acertada bit
 	declare @tipo tinyint
 
-	set @tipo = (Select tipo FROM Apuestas WHERE ID = @IDApuest and id_usuario=@IDUsuario)--añadido and id_usuario=@IDUsuario
+	set @tipo = (Select tipo FROM Apuestas WHERE ID = @IDApuest)--añadido and id_usuario=@IDUsuario
 	EXECUTE @acertada = comprobarApuestaAcertada @IDApuest,@tipo, @acertada
 	--EXECUTE @acertada = dbo.noSePagaMaximo @IDApuest, @tipo, @acertada
 	IF(@acertada = 1)
@@ -228,7 +227,7 @@ BEGIN
 		SELECT @salgoGanado = saldo + (cantidad*cuota) FROM Apuestas AS A
 		INNER JOIN Usuarios AS U
 			ON U.id = A.id_usuario
-		WHERE @IDApuest = A.id AND @IDUsuario = id_usuario and cast(A.fechaHora as date)=cast(CURRENT_TIMESTAMP as date)
+		WHERE @IDApuest = A.id AND @IDUsuario = id_usuario --and cast(A.fechaHora as date)=cast(CURRENT_TIMESTAMP as date)
 		
 		/*UPDATE Usuarios 
 		SET saldo = @salgoGanado
@@ -240,11 +239,11 @@ BEGIN
 		end
 	END
 END
-GO
+
 --revisar el metodo sumarApuesta
 --Este procedimiento es sumar la apuesta en caso de que este acertada
 GO
-CREATE OR ALTER PROCEDURE sumarApuestaAutomaticamente 
+CREATE PROCEDURE sumarApuestaAutomaticamente 
 AS
 BEGIN
 	declare @IDApuest int
