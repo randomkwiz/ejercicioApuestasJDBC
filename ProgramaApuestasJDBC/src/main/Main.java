@@ -133,6 +133,7 @@ public class Main {
                                     //System.out.println("Opcion 3. En construcción.");
                                     System.out.println("Comprobar resultado de una apuesta");
 //                                    gestionApuestas.verResultadosApuesta(usuarioLogado);
+                                    System.out.println("Introduzca los datos de la fecha de la apuesta");
                                     GregorianCalendar fechaApuesta = validar.pedirValidarFechaSinHora();
                                     //System.out.println(new Utilidad().formatearFecha(fechaApuesta));
                                     ArrayList<Apuesta> listadoApuestas = validar.validarListaApuestasPorFecha(usuarioLogado, fechaApuesta);
