@@ -133,6 +133,7 @@ public class Main {
                                     //System.out.println("Opcion 3. En construcción.");
                                     System.out.println("Comprobar resultado de una apuesta");
 //                                    gestionApuestas.verResultadosApuesta(usuarioLogado);
+                                    System.out.println("Introduzca los datos de la fecha de la apuesta");
                                     GregorianCalendar fechaApuesta = validar.pedirValidarFechaSinHora();
                                     //System.out.println(new Utilidad().formatearFecha(fechaApuesta));
                                     ArrayList<Apuesta> listadoApuestas = validar.validarListaApuestasPorFecha(usuarioLogado, fechaApuesta);
@@ -226,7 +227,8 @@ public class Main {
                                     case 11:
                                     //11: pagar las apuestas ganadoras de un partido finalizado
                                     //System.out.println("Opcion 11. En construcción.");
-                                        System.out.println("Los pagos se realizan automaticamente");
+                                    System.out.println("Los pagos se realizan automaticamente");
+
                                     break;
 
 

@@ -8,6 +8,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 public class GestionApuestas {
@@ -315,5 +316,53 @@ public class GestionApuestas {
 
         return cuota;
     }
+
+
+//
+//
+//    /*Pagar apuestas ganadas*/
+//    public boolean pagarApuestas(Apuesta apuesta){
+//        CallableStatement cstmt = null;
+//        ResultSet rs = null;
+//        ConexionJDBC conexionJDBC = new ConexionJDBC();
+//        Connection connection ;
+//        int results = 0;
+//        boolean exito = false;
+//        try {
+//            connection = conexionJDBC.getConnection();
+//            cstmt = connection.prepareCall(
+//                    "{call sumarApuesta(?,?)}"
+//            );
+//
+//            cstmt.setInt(1, apuesta.getId());
+//            cstmt.setDouble(2, apuesta.getUsuario().getId());
+//
+//            results = cstmt.executeUpdate();
+//            if(results == 1){
+//                exito = true;
+//            }
+//
+//            cstmt.close();
+//            conexionJDBC.closeConnection(connection);
+//
+//        } catch (Exception e) {
+//            e.getStackTrace();
+//        }
+//        return exito;
+//    }
+
+
+//    /*Pagar TODAS las apuestas*/
+//    public void pagarTodasLasApuestas(ArrayList<Apuesta> listadoApuestas){
+//        if(listadoApuestas.size() > 0){
+//            for (int i =0; i < listadoApuestas.size(); i++){
+//                pagarApuestas(listadoApuestas.get(i));
+//            }
+//        }
+//
+//    }
+
+
+
 
 }
