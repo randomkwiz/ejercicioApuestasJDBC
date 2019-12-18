@@ -235,7 +235,7 @@ BEGIN
 		if(@salgoGanado>0)
 		begin
 			INSERT INTO Ingresos (cantidad,descripcion,id_usuario)
-			SELECT @salgoGanado,'apuesta ganada',@IDUsuario
+			VALUES( @salgoGanado,'apuesta ganada',@IDUsuario)
 		end
 	END
 END
