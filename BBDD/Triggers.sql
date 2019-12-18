@@ -27,18 +27,18 @@ GO
 
 -- Para poder apostar, el tiempo del partido debe estar abierto (que la fecha de la apuesta este entre fechaHoraInicio y 
 --fechaHoraFin del partido), trigger o procedimiento almacenado (no estoy seguro)
-CREATE TRIGGER partidoAbiertoApuesta ON Apuestas
-AFTER INSERT AS 
-	BEGIN
-		IF EXISTS (SELECT * FROM inserted AS I
-		INNER JOIN Partidos AS P ON I.id_partido = P.id
-		WHERE isPeriodoApuestasAbierto=0)
-		--I.fechaHora NOT BETWEEN DATEADD(DAY, -2, P.fechaInicio) AND DATEADD(MINUTE, -10, P.fechaFin)) 
-		BEGIN
-			RAISERROR ('La apuesta para ese partido no ha empezado o se ha cerrado', 16,1)
-			ROLLBACK
-		END
-	END
+--CREATE TRIGGER partidoAbiertoApuesta ON Apuestas
+--AFTER INSERT AS 
+--	BEGIN
+--		IF EXISTS (SELECT * FROM inserted AS I
+--		INNER JOIN Partidos AS P ON I.id_partido = P.id
+--		WHERE isPeriodoApuestasAbierto=0)
+--		--I.fechaHora NOT BETWEEN DATEADD(DAY, -2, P.fechaInicio) AND DATEADD(MINUTE, -10, P.fechaFin)) 
+--		BEGIN
+--			RAISERROR ('La apuesta para ese partido no ha empezado o se ha cerrado', 16,1)
+--			ROLLBACK
+--		END
+--	END
 
 
 --Procedimiento que comprueba que una apuesta es ganada o no
@@ -274,35 +274,35 @@ go
 
 
 
-set dateformat 'ymd'
---Inserts
-INSERT INTO Usuarios
-VALUES (500,'aabb@gmail.com','1234',0),(5000,'bbb@gmail.com','5678',0),(8000,'gmasd@gmail.com','9123',1)
+--set dateformat 'ymd'
+----Inserts
+--INSERT INTO Usuarios
+--VALUES (500,'aabb@gmail.com','1234',0),(5000,'bbb@gmail.com','5678',0),(8000,'gmasd@gmail.com','9123',1)
 
-INSERT INTO Ingresos (cantidad,descripcion,id_usuario)
-VALUES (300,'Ingreso',1),(-300,'Reintegro',2),(2000,'Ingreso',3)
+--INSERT INTO Ingresos (cantidad,descripcion,id_usuario)
+--VALUES (300,'Ingreso',1),(-300,'Reintegro',2),(2000,'Ingreso',3)
 
-INSERT INTO Partidos 
-VALUES(3,1,2,'2019-01-12 12:00','2019-01-12 13:45','Sevilla','Betis', 5000,1000,6000),
-(0,1,5,'2019-01-13 13:00','2019-01-13 14:45','Carmona','Coria',6000,12000,500),
-(2,1,2,'2019-03-03 22:00','2019-03-03 23:45','Barcelona','Madrid',6000,9054,6987)
+--INSERT INTO Partidos 
+--VALUES(3,1,2,'2019-01-12 12:00','2019-01-12 13:45','Sevilla','Betis', 5000,1000,6000),
+--(0,1,5,'2019-01-13 13:00','2019-01-13 14:45','Carmona','Coria',6000,12000,500),
+--(2,1,2,'2019-03-03 22:00','2019-03-03 23:45','Barcelona','Madrid',6000,9054,6987)
 
-INSERT INTO Apuestas
-VALUES (1.2,50,1,'2019-01-11 12:00',1,3),
-(2.0,20,2,'2019-01-12 12:00',2,4),
-(2.50,300,3,'2019-02-03 12:00',3,5)
+--INSERT INTO Apuestas
+--VALUES (1.2,50,1,'2019-01-11 12:00',1,3),
+--(2.0,20,2,'2019-01-12 12:00',2,4),
+--(2.50,300,3,'2019-02-03 12:00',3,5)
 
-INSERT INTO Apuestas
-VALUES (1.2,50,1,'2019-01-11 12:00',1,4),(2.0,20,2,'2019-01-12 12:00',2,4),(2.50,300,3,'2019-02-03 12:00',3,4)
+--INSERT INTO Apuestas
+--VALUES (1.2,50,1,'2019-01-11 12:00',1,4),(2.0,20,2,'2019-01-12 12:00',2,4),(2.50,300,3,'2019-02-03 12:00',3,4)
 
-INSERT INTO Apuestas_tipo1
-VALUES (2,3,2)
+--INSERT INTO Apuestas_tipo1
+--VALUES (2,3,2)
 
-INSERT INTO Apuestas_tipo2
-VALUES (3,5,'2')
+--INSERT INTO Apuestas_tipo2
+--VALUES (3,5,'2')
 
-INSERT INTO Apuestas_tipo3
-VALUES (4,'x')
+--INSERT INTO Apuestas_tipo3
+--VALUES (4,'x')
 
 /*Actualizado por Angela*/
 GO
@@ -449,27 +449,27 @@ CREATE OR ALTER FUNCTION COMPROBARMAXIMO(@IDPARTIDO SMALLINT, @TIPO CHAR(1))
 
 --PRUEBAS 
 -- modificarSaldo
-SELECT * FROM Usuarios
-INSERT INTO Ingresos (cantidad,descripcion,id_usuario)
-VALUES (2,'Ingreso',1)
+--SELECT * FROM Usuarios
+--INSERT INTO Ingresos (cantidad,descripcion,id_usuario)
+--VALUES (2,'Ingreso',1)
 
---No se puede modificar las apuestas
-SELECT * FROM Apuestas
-UPDATE Apuestas
-SET cantidad = 3
-WHERE id = 1
+----No se puede modificar las apuestas
+--SELECT * FROM Apuestas
+--UPDATE Apuestas
+--SET cantidad = 3
+--WHERE id = 1
 
-DELETE FROM Apuestas
-WHERE id = 1
+--DELETE FROM Apuestas
+--WHERE id = 1
 
---partidoAbiertoApuesta
-SELECT * FROM Partidos
-SELECT * FROM Apuestas
+----partidoAbiertoApuesta
+--SELECT * FROM Partidos
+--SELECT * FROM Apuestas
 
-INSERT INTO Apuestas
-VALUES (1.2,50,1,'1-01-2019 12:00',1,1)
+--INSERT INTO Apuestas
+--VALUES (1.2,50,1,'1-01-2019 12:00',1,1)
 
---partidoFinalizado
+----partidoFinalizado
 /*
 SELECT * FROM Partidos
 
@@ -513,37 +513,37 @@ VALUES (1.2,50,2,'08-10-2019 12:00',1,4)
 
 --comprobarApuestaAcertada
 --Acertado
-BEGIN TRANSACTION
---DECLARE @acertada BIT
-EXECUTE @acertada = comprobarApuestaAcertada 1,1,@acertada
-PRINT @acertada
---ROLLBACK
---COMMIT
-
---Fallado
-INSERT INTO Apuestas_tipo1
-VALUES (2,2,0,0)
-BEGIN TRANSACTION
-DECLARE @acertada BIT
-EXECUTE @acertada = comprobarApuestaAcertada 2,1,@acertada
-PRINT @acertada
---ROLLBACK
---COMMIT
-
---noSePagaMaximo
-INSERT INTO Apuestas
-VALUES (1.8,250,2,'13-01-2019 14:00',1,2)
-
-INSERT INTO Apuestas_tipo2
-VALUES (4,2,5,2)
-
-UPDATE Apuestas_tipo2
-SET apuestasMáximas = 2
-WHERE id = 4
-
 --BEGIN TRANSACTION
-EXECUTE noSePagaMaximo 4,2
---ROLLBACK
---COMMIT
+----DECLARE @acertada BIT
+--EXECUTE @acertada = comprobarApuestaAcertada 1,1,@acertada
+--PRINT @acertada
+----ROLLBACK
+----COMMIT
+
+----Fallado
+--INSERT INTO Apuestas_tipo1
+--VALUES (2,2,0,0)
+--BEGIN TRANSACTION
+--DECLARE @acertada BIT
+--EXECUTE @acertada = comprobarApuestaAcertada 2,1,@acertada
+--PRINT @acertada
+----ROLLBACK
+----COMMIT
+
+----noSePagaMaximo
+--INSERT INTO Apuestas
+--VALUES (1.8,250,2,'13-01-2019 14:00',1,2)
+
+--INSERT INTO Apuestas_tipo2
+--VALUES (4,2,5,2)
+
+--UPDATE Apuestas_tipo2
+--SET apuestasMáximas = 2
+--WHERE id = 4
+
+----BEGIN TRANSACTION
+--EXECUTE noSePagaMaximo 4,2
+----ROLLBACK
+----COMMIT
 
 --SumarApuesta

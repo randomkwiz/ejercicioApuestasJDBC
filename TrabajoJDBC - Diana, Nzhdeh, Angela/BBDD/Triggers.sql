@@ -27,22 +27,23 @@ GO
 
 -- Para poder apostar, el tiempo del partido debe estar abierto (que la fecha de la apuesta este entre fechaHoraInicio y 
 --fechaHoraFin del partido), trigger o procedimiento almacenado (no estoy seguro)
-CREATE TRIGGER partidoAbiertoApuesta ON Apuestas
-AFTER INSERT AS 
-	BEGIN
-		IF EXISTS (SELECT * FROM inserted AS I
-		INNER JOIN Partidos AS P ON I.id_partido = P.id
-		WHERE I.fechaHora NOT BETWEEN DATEADD(DAY, -2, P.fechaInicio) AND DATEADD(MINUTE, -10, P.fechaFin)) 
-		BEGIN
-			RAISERROR ('La apuesta para ese partido no ha empezado o se ha cerrado', 16,1)
-			ROLLBACK
-		END
-	END
+--CREATE TRIGGER partidoAbiertoApuesta ON Apuestas
+--AFTER INSERT AS 
+--	BEGIN
+--		IF EXISTS (SELECT * FROM inserted AS I
+--		INNER JOIN Partidos AS P ON I.id_partido = P.id
+--		WHERE isPeriodoApuestasAbierto=0)
+--		--I.fechaHora NOT BETWEEN DATEADD(DAY, -2, P.fechaInicio) AND DATEADD(MINUTE, -10, P.fechaFin)) 
+--		BEGIN
+--			RAISERROR ('La apuesta para ese partido no ha empezado o se ha cerrado', 16,1)
+--			ROLLBACK
+--		END
+--	END
 
 
 --Procedimiento que comprueba que una apuesta es ganada o no
 GO
-CREATE OR ALTER PROCEDURE comprobarApuestaAcertada @idApuesta INT, @tipo CHAR(1), @acertada BIT OUTPUT
+CREATE PROCEDURE comprobarApuestaAcertada @idApuesta INT, @tipo CHAR(1), @acertada BIT OUTPUT
 AS
 BEGIN
 --DECLARE @acertada BIT
@@ -83,7 +84,6 @@ SET @acertada = 0
 END
 GO
 
-GO
 /*
 ESTAN COMENTADOS PORQUE EN EL TRIGGER APUESTA ABIERTA LO CONTROLAMOS TODO
 */
@@ -126,7 +126,7 @@ GO
 --1er Trigger actualiza el saldo del usuario cuando realiza una apuesta
 GO	
 --DROP TRIGGER actualizarSaldo
-CREATE OR ALTER TRIGGER actualizarSaldo on Apuestas
+CREATE TRIGGER actualizarSaldo on Apuestas
 AFTER INSERT AS
 	BEGIN
 		DECLARE @saldo money
@@ -157,57 +157,57 @@ GO
 
 -- Se comprueba que en cada apuesta ganada no se supere el maximo beneficio definido en la tabla
 -- Si esto ocurre, el pago de la apuesta quedaria anulada
-GO
-CREATE OR ALTER PROCEDURE noSePagaMaximo @IDApuesta SMALLINT, @Tipo CHAR(1), @fallado BIT OUTPUT 
-AS
-BEGIN
-SET @fallado = 0
-	BEGIN TRANSACTION
-	IF(@Tipo = 1)
-	BEGIN
-		IF EXISTS(SELECT * FROM Apuestas AS A
-		INNER JOIN Apuestas_tipo1 AS AT1 ON A.id = AT1.id
-		WHERE AT1.apuestasMáximas < A.cantidad * A.cuota AND A.id = @IDApuesta)
-		BEGIN
-			SET @fallado = 1
-			RAISERROR('Tu apuesta supera el maximo permitido en esta apuesta',16,1)
-			ROLLBACK
-		END
-	END
+--GO
+--CREATE OR ALTER PROCEDURE noSePagaMaximo @IDApuesta SMALLINT, @Tipo CHAR(1), @fallado BIT OUTPUT 
+--AS
+--BEGIN
+--SET @fallado = 0
+--	BEGIN TRANSACTION
+--	IF(@Tipo = 1)
+--	BEGIN
+--		IF EXISTS(SELECT * FROM Apuestas AS A
+--		INNER JOIN Apuestas_tipo1 AS AT1 ON A.id = AT1.id
+--		WHERE AT1.apuestasMáximas < A.cantidad * A.cuota AND A.id = @IDApuesta)
+--		BEGIN
+--			SET @fallado = 1
+--			RAISERROR('Tu apuesta supera el maximo permitido en esta apuesta',16,1)
+--			ROLLBACK
+--		END
+--	END
 
-	IF(@Tipo = 2)
-	BEGIN
-		IF EXISTS(SELECT * FROM Apuestas AS A
-		INNER JOIN Apuestas_tipo2 AS AT2 ON A.id = AT2.id
-		WHERE AT2.apuestasMáximas < A.cantidad * A.cuota AND A.id = @IDApuesta)
-		BEGIN
-			SET @fallado = 1
-			ROLLBACK
-			RAISERROR('Tu apuesta supera el maximo permitido en esta apuesta',16,1)
+--	IF(@Tipo = 2)
+--	BEGIN
+--		IF EXISTS(SELECT * FROM Apuestas AS A
+--		INNER JOIN Apuestas_tipo2 AS AT2 ON A.id = AT2.id
+--		WHERE AT2.apuestasMáximas < A.cantidad * A.cuota AND A.id = @IDApuesta)
+--		BEGIN
+--			SET @fallado = 1
+--			ROLLBACK
+--			RAISERROR('Tu apuesta supera el maximo permitido en esta apuesta',16,1)
 			
-		END
-	END
+--		END
+--	END
 
-	IF(@Tipo = 3)
-	BEGIN
-		IF EXISTS(SELECT * FROM Apuestas AS A
-		INNER JOIN Apuestas_tipo3 AS AT3 ON A.id = AT3.id
-		WHERE AT3.apuestasMáximas < A.cantidad * A.cuota AND A.id = @IDApuesta)
-		BEGIN
-			SET @fallado = 1
-			RAISERROR('Tu apuesta supera el maximo permitido en esta apuesta',16,1)
-			ROLLBACK
-		END
-	END
-	IF(@fallado = 0)
-	BEGIN
-		COMMIT
-	END
+--	IF(@Tipo = 3)
+--	BEGIN
+--		IF EXISTS(SELECT * FROM Apuestas AS A
+--		INNER JOIN Apuestas_tipo3 AS AT3 ON A.id = AT3.id
+--		WHERE AT3.apuestasMáximas < A.cantidad * A.cuota AND A.id = @IDApuesta)
+--		BEGIN
+--			SET @fallado = 1
+--			RAISERROR('Tu apuesta supera el maximo permitido en esta apuesta',16,1)
+--			ROLLBACK
+--		END
+--	END
+--	IF(@fallado = 0)
+--	BEGIN
+--		COMMIT
+--	END
 	
-END
-GO
+--END
+--GO
 
---Este procedimiento es sumar la apuesta en caso de que este acertada
+--Este procedimiento es sumar la apuesta en caso de que esté acertada
 GO
 CREATE OR ALTER PROCEDURE sumarApuesta 
 				 @IDApuest int,
@@ -218,57 +218,91 @@ BEGIN
 	declare @acertada bit
 	declare @tipo tinyint
 
-	set @tipo = (Select tipo FROM Apuestas WHERE ID = @IDApuest)
+	set @tipo = (Select tipo FROM Apuestas WHERE ID = @IDApuest)--añadido and id_usuario=@IDUsuario
 	EXECUTE @acertada = comprobarApuestaAcertada @IDApuest,@tipo, @acertada
-	EXECUTE @acertada = dbo.noSePagaMaximo @IDApuest, @tipo, @acertada
+	
 	IF(@acertada = 1)
 	BEGIN
 		
 		SELECT @salgoGanado = saldo + (cantidad*cuota) FROM Apuestas AS A
 		INNER JOIN Usuarios AS U
 			ON U.id = A.id_usuario
-		WHERE @IDApuest = A.id AND @IDUsuario = id_usuario
+		WHERE @IDApuest = A.id AND @IDUsuario = id_usuario and cast(A.fechaHora as date)=cast(CURRENT_TIMESTAMP as date)
 		
 		/*UPDATE Usuarios 
 		SET saldo = @salgoGanado
 		WHERE id = @IDUsuario*/
-		 
-		INSERT INTO Ingresos (cantidad,descripcion,id_usuario)
-		SELECT @salgoGanado,'apuesta ganada',@IDUsuario
-
+		if(@salgoGanado>0)
+		begin
+			INSERT INTO Ingresos (cantidad,descripcion,id_usuario)
+			VALUES( @salgoGanado,'apuesta ganada',@IDUsuario)
+		end
 	END
 END
+
+--Este procedimiento es sumar la apuesta en caso de que este acertada
 GO
+CREATE OR ALTER PROCEDURE sumarApuestaAutomaticamente 
+AS
+BEGIN
+	declare @IDApuest int
+	declare  @IDUsuario int
 
-set dateformat 'ymd'
---Inserts
-INSERT INTO Usuarios
-VALUES (500,'aabb@gmail.com','1234',0),(5000,'bbb@gmail.com','5678',0),(8000,'gmasd@gmail.com','9123',1)
+	declare miCursor cursor for select id,id_usuario from Apuestas
 
-INSERT INTO Ingresos (cantidad,descripcion,id_usuario)
-VALUES (300,'Ingreso',1),(-300,'Reintegro',2),(2000,'Ingreso',3)
+	open miCursor
 
-INSERT INTO Partidos 
-VALUES(3,1,2,'2019-01-12 12:00','2019-01-12 13:45','Sevilla','Betis', 5000,1000,6000),
-(0,1,5,'2019-01-13 13:00','2019-01-13 14:45','Carmona','Coria',6000,12000,500),
-(2,1,2,'2019-03-03 22:00','2019-03-03 23:45','Barcelona','Madrid',6000,9054,6987)
+	fetch next from miCursor into @IDApuest,@IDUsuario
 
-INSERT INTO Apuestas
-VALUES (1.2,50,1,'2019-01-11 12:00',1,3),
-(2.0,20,2,'2019-01-12 12:00',2,4),
-(2.50,300,3,'2019-02-03 12:00',3,5)
+	while(@@FETCH_STATUS=0)
+	begin
+	
+		exec sumarApuesta @IDApuest,@IDUsuario
+		fetch next from miCursor into @IDApuest,@IDUsuario
 
-INSERT INTO Apuestas
-VALUES (1.2,50,1,'2019-01-11 12:00',1,4),(2.0,20,2,'2019-01-12 12:00',2,4),(2.50,300,3,'2019-02-03 12:00',3,4)
+	end--fin de while
+	close miCursor--cerramos
+	deallocate miCursor--liberamos la memoria
 
-INSERT INTO Apuestas_tipo1
-VALUES (2,3,2)
+END
+GO
+begin tran
+EXECUTE sumarApuestaAutomaticamente
+commit
+rollback
+go
 
-INSERT INTO Apuestas_tipo2
-VALUES (3,5,'2')
 
-INSERT INTO Apuestas_tipo3
-VALUES (4,'x')
+
+--set dateformat 'ymd'
+----Inserts
+--INSERT INTO Usuarios
+--VALUES (500,'aabb@gmail.com','1234',0),(5000,'bbb@gmail.com','5678',0),(8000,'gmasd@gmail.com','9123',1)
+
+--INSERT INTO Ingresos (cantidad,descripcion,id_usuario)
+--VALUES (300,'Ingreso',1),(-300,'Reintegro',2),(2000,'Ingreso',3)
+
+--INSERT INTO Partidos 
+--VALUES(3,1,2,'2019-01-12 12:00','2019-01-12 13:45','Sevilla','Betis', 5000,1000,6000),
+--(0,1,5,'2019-01-13 13:00','2019-01-13 14:45','Carmona','Coria',6000,12000,500),
+--(2,1,2,'2019-03-03 22:00','2019-03-03 23:45','Barcelona','Madrid',6000,9054,6987)
+
+--INSERT INTO Apuestas
+--VALUES (1.2,50,1,'2019-01-11 12:00',1,3),
+--(2.0,20,2,'2019-01-12 12:00',2,4),
+--(2.50,300,3,'2019-02-03 12:00',3,5)
+
+--INSERT INTO Apuestas
+--VALUES (1.2,50,1,'2019-01-11 12:00',1,4),(2.0,20,2,'2019-01-12 12:00',2,4),(2.50,300,3,'2019-02-03 12:00',3,4)
+
+--INSERT INTO Apuestas_tipo1
+--VALUES (2,3,2)
+
+--INSERT INTO Apuestas_tipo2
+--VALUES (3,5,'2')
+
+--INSERT INTO Apuestas_tipo3
+--VALUES (4,'x')
 
 /*Actualizado por Angela*/
 GO
@@ -415,27 +449,27 @@ CREATE OR ALTER FUNCTION COMPROBARMAXIMO(@IDPARTIDO SMALLINT, @TIPO CHAR(1))
 
 --PRUEBAS 
 -- modificarSaldo
-SELECT * FROM Usuarios
-INSERT INTO Ingresos (cantidad,descripcion,id_usuario)
-VALUES (2,'Ingreso',1)
+--SELECT * FROM Usuarios
+--INSERT INTO Ingresos (cantidad,descripcion,id_usuario)
+--VALUES (2,'Ingreso',1)
 
---No se puede modificar las apuestas
-SELECT * FROM Apuestas
-UPDATE Apuestas
-SET cantidad = 3
-WHERE id = 1
+----No se puede modificar las apuestas
+--SELECT * FROM Apuestas
+--UPDATE Apuestas
+--SET cantidad = 3
+--WHERE id = 1
 
-DELETE FROM Apuestas
-WHERE id = 1
+--DELETE FROM Apuestas
+--WHERE id = 1
 
---partidoAbiertoApuesta
-SELECT * FROM Partidos
-SELECT * FROM Apuestas
+----partidoAbiertoApuesta
+--SELECT * FROM Partidos
+--SELECT * FROM Apuestas
 
-INSERT INTO Apuestas
-VALUES (1.2,50,1,'1-01-2019 12:00',1,1)
+--INSERT INTO Apuestas
+--VALUES (1.2,50,1,'1-01-2019 12:00',1,1)
 
---partidoFinalizado
+----partidoFinalizado
 /*
 SELECT * FROM Partidos
 
@@ -479,37 +513,37 @@ VALUES (1.2,50,2,'08-10-2019 12:00',1,4)
 
 --comprobarApuestaAcertada
 --Acertado
-BEGIN TRANSACTION
---DECLARE @acertada BIT
-EXECUTE @acertada = comprobarApuestaAcertada 1,1,@acertada
-PRINT @acertada
---ROLLBACK
---COMMIT
-
---Fallado
-INSERT INTO Apuestas_tipo1
-VALUES (2,2,0,0)
-BEGIN TRANSACTION
-DECLARE @acertada BIT
-EXECUTE @acertada = comprobarApuestaAcertada 2,1,@acertada
-PRINT @acertada
---ROLLBACK
---COMMIT
-
---noSePagaMaximo
-INSERT INTO Apuestas
-VALUES (1.8,250,2,'13-01-2019 14:00',1,2)
-
-INSERT INTO Apuestas_tipo2
-VALUES (4,2,5,2)
-
-UPDATE Apuestas_tipo2
-SET apuestasMáximas = 2
-WHERE id = 4
-
 --BEGIN TRANSACTION
-EXECUTE noSePagaMaximo 4,2
---ROLLBACK
---COMMIT
+----DECLARE @acertada BIT
+--EXECUTE @acertada = comprobarApuestaAcertada 1,1,@acertada
+--PRINT @acertada
+----ROLLBACK
+----COMMIT
+
+----Fallado
+--INSERT INTO Apuestas_tipo1
+--VALUES (2,2,0,0)
+--BEGIN TRANSACTION
+--DECLARE @acertada BIT
+--EXECUTE @acertada = comprobarApuestaAcertada 2,1,@acertada
+--PRINT @acertada
+----ROLLBACK
+----COMMIT
+
+----noSePagaMaximo
+--INSERT INTO Apuestas
+--VALUES (1.8,250,2,'13-01-2019 14:00',1,2)
+
+--INSERT INTO Apuestas_tipo2
+--VALUES (4,2,5,2)
+
+--UPDATE Apuestas_tipo2
+--SET apuestasMáximas = 2
+--WHERE id = 4
+
+----BEGIN TRANSACTION
+--EXECUTE noSePagaMaximo 4,2
+----ROLLBACK
+----COMMIT
 
 --SumarApuesta
