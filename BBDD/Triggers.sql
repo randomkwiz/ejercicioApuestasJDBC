@@ -268,6 +268,7 @@ END
 GO
 begin tran
 EXECUTE sumarApuestaAutomaticamente
+commit
 rollback
 go
 
