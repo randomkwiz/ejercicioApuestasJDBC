@@ -207,9 +207,9 @@ GO
 --END
 --GO
 
---Este procedimiento es sumar la apuesta en caso de que este acertada
+--Este procedimiento es sumar la apuesta en caso de que esté acertada
 GO
-alter PROCEDURE sumarApuesta 
+CREATE OR ALTER PROCEDURE sumarApuesta 
 				 @IDApuest int,
 				 @IDUsuario int
 AS
@@ -220,14 +220,14 @@ BEGIN
 
 	set @tipo = (Select tipo FROM Apuestas WHERE ID = @IDApuest)--añadido and id_usuario=@IDUsuario
 	EXECUTE @acertada = comprobarApuestaAcertada @IDApuest,@tipo, @acertada
-	--EXECUTE @acertada = dbo.noSePagaMaximo @IDApuest, @tipo, @acertada
+	
 	IF(@acertada = 1)
 	BEGIN
 		
 		SELECT @salgoGanado = saldo + (cantidad*cuota) FROM Apuestas AS A
 		INNER JOIN Usuarios AS U
 			ON U.id = A.id_usuario
-		WHERE @IDApuest = A.id AND @IDUsuario = id_usuario --and cast(A.fechaHora as date)=cast(CURRENT_TIMESTAMP as date)
+		WHERE @IDApuest = A.id AND @IDUsuario = id_usuario and cast(A.fechaHora as date)=cast(CURRENT_TIMESTAMP as date)
 		
 		/*UPDATE Usuarios 
 		SET saldo = @salgoGanado
@@ -240,10 +240,9 @@ BEGIN
 	END
 END
 
---revisar el metodo sumarApuesta
 --Este procedimiento es sumar la apuesta en caso de que este acertada
 GO
-CREATE PROCEDURE sumarApuestaAutomaticamente 
+CREATE OR ALTER PROCEDURE sumarApuestaAutomaticamente 
 AS
 BEGIN
 	declare @IDApuest int
